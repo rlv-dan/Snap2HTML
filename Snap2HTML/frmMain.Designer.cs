@@ -44,7 +44,7 @@
 			this.chkSystem = new System.Windows.Forms.CheckBox();
 			this.cmdCreate = new System.Windows.Forms.Button();
 			this.txtRoot = new System.Windows.Forms.TextBox();
-			this.label1 = new System.Windows.Forms.Label();
+			this.labelRootFolder = new System.Windows.Forms.Label();
 			this.cmdBrowse = new System.Windows.Forms.Button();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.linkLabel5 = new System.Windows.Forms.LinkLabel();
@@ -65,9 +65,9 @@
 			this.pictureBox2 = new System.Windows.Forms.PictureBox();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-			this.label5 = new System.Windows.Forms.Label();
-			this.labelVersion = new System.Windows.Forms.Label();
-			this.label3 = new System.Windows.Forms.Label();
+			this.labelAboutSoftware = new System.Windows.Forms.Label();
+			this.labelAboutVersion = new System.Windows.Forms.Label();
+			this.labelAboutTitle = new System.Windows.Forms.Label();
 			this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
 			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
 			this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
@@ -124,7 +124,7 @@
 			this.tabPage1.Controls.Add(this.chkSystem);
 			this.tabPage1.Controls.Add(this.cmdCreate);
 			this.tabPage1.Controls.Add(this.txtRoot);
-			this.tabPage1.Controls.Add(this.label1);
+			this.tabPage1.Controls.Add(this.labelRootFolder);
 			this.tabPage1.Controls.Add(this.cmdBrowse);
 			this.tabPage1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
@@ -251,14 +251,14 @@
 			this.txtRoot.TabIndex = 0;
 			this.txtRoot.Text = global::Snap2HTML.Properties.Settings.Default.txtRoot;
 			// 
-			// label1
+			// labelRootFolder
 			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(6, 12);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(62, 13);
-			this.label1.TabIndex = 1;
-			this.label1.Text = "Root folder:";
+			this.labelRootFolder.AutoSize = true;
+			this.labelRootFolder.Location = new System.Drawing.Point(6, 12);
+			this.labelRootFolder.Name = "labelRootFolder";
+			this.labelRootFolder.Size = new System.Drawing.Size(62, 13);
+			this.labelRootFolder.TabIndex = 1;
+			this.labelRootFolder.Text = "Root folder:";
 			// 
 			// cmdBrowse
 			// 
@@ -357,9 +357,9 @@
 			this.tabPage2.Controls.Add(this.groupBoxMoreApps);
 			this.tabPage2.Controls.Add(this.pictureBox1);
 			this.tabPage2.Controls.Add(this.linkLabel1);
-			this.tabPage2.Controls.Add(this.label5);
-			this.tabPage2.Controls.Add(this.labelVersion);
-			this.tabPage2.Controls.Add(this.label3);
+			this.tabPage2.Controls.Add(this.labelAboutSoftware);
+			this.tabPage2.Controls.Add(this.labelAboutVersion);
+			this.tabPage2.Controls.Add(this.labelAboutTitle);
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -383,7 +383,7 @@
 			this.groupBoxMoreApps.Size = new System.Drawing.Size(318, 130);
 			this.groupBoxMoreApps.TabIndex = 5;
 			this.groupBoxMoreApps.TabStop = false;
-			this.groupBoxMoreApps.Text = "More utilities from RL Vision";
+			this.groupBoxMoreApps.Text = "More utilities by me";
 			// 
 			// label33
 			// 
@@ -492,33 +492,33 @@
 			this.linkLabel1.Text = "http://www.rlvision.com";
 			this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
 			// 
-			// label5
+			// labelAboutSoftware
 			// 
-			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(163, 87);
-			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(113, 13);
-			this.label5.TabIndex = 2;
-			this.label5.Text = "Freeware by RL Vision";
+			this.labelAboutSoftware.AutoSize = true;
+			this.labelAboutSoftware.Location = new System.Drawing.Point(163, 87);
+			this.labelAboutSoftware.Name = "labelAboutSoftware";
+			this.labelAboutSoftware.Size = new System.Drawing.Size(135, 13);
+			this.labelAboutSoftware.TabIndex = 2;
+			this.labelAboutSoftware.Text = "Free Software by RL Vision";
 			// 
-			// labelVersion
+			// labelAboutVersion
 			// 
-			this.labelVersion.AutoSize = true;
-			this.labelVersion.Location = new System.Drawing.Point(163, 53);
-			this.labelVersion.Name = "labelVersion";
-			this.labelVersion.Size = new System.Drawing.Size(41, 13);
-			this.labelVersion.TabIndex = 1;
-			this.labelVersion.Text = "version";
+			this.labelAboutVersion.AutoSize = true;
+			this.labelAboutVersion.Location = new System.Drawing.Point(163, 53);
+			this.labelAboutVersion.Name = "labelAboutVersion";
+			this.labelAboutVersion.Size = new System.Drawing.Size(41, 13);
+			this.labelAboutVersion.TabIndex = 1;
+			this.labelAboutVersion.Text = "version";
 			// 
-			// label3
+			// labelAboutTitle
 			// 
-			this.label3.AutoSize = true;
-			this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label3.Location = new System.Drawing.Point(161, 23);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(148, 29);
-			this.label3.TabIndex = 0;
-			this.label3.Text = "Snap2HTML";
+			this.labelAboutTitle.AutoSize = true;
+			this.labelAboutTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.labelAboutTitle.Location = new System.Drawing.Point(161, 23);
+			this.labelAboutTitle.Name = "labelAboutTitle";
+			this.labelAboutTitle.Size = new System.Drawing.Size(148, 29);
+			this.labelAboutTitle.TabIndex = 0;
+			this.labelAboutTitle.Text = "Snap2HTML";
 			// 
 			// folderBrowserDialog1
 			// 
@@ -549,7 +549,7 @@
 			this.MinimizeBox = false;
 			this.Name = "frmMain";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "Snap2HTML (Press F1 for Help)";
+			this.Text = "Snap2HTML";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
 			this.Load += new System.EventHandler(this.frmMain_Load);
 			this.Shown += new System.EventHandler(this.frmMain_Shown);
@@ -581,7 +581,7 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TextBox txtRoot;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelRootFolder;
         private System.Windows.Forms.Button cmdBrowse;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Button cmdCreate;
@@ -589,9 +589,9 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
 		private System.Windows.Forms.PictureBox pictureBox1;
 		private System.Windows.Forms.LinkLabel linkLabel1;
-		private System.Windows.Forms.Label label5;
-		private System.Windows.Forms.Label labelVersion;
-		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.Label labelAboutSoftware;
+		private System.Windows.Forms.Label labelAboutVersion;
+		private System.Windows.Forms.Label labelAboutTitle;
         private System.ComponentModel.BackgroundWorker backgroundWorker;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.CheckBox chkOpenOutput;

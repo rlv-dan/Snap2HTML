@@ -1,4 +1,5 @@
 ﻿// Source: http://jake.ginnivan.net/c-sharp-argument-parser/ (which is based on http://www.codeproject.com/Articles/3111/C-NET-Command-Line-Arguments-Parser , MIT License)
+// Removed support for array arguments since snap2html does not need it, and it throws if you try adding a path with comma
 
 /*  Examples:
 
@@ -117,7 +118,9 @@ namespace CommandLine.Utility
                         //Because of the split index 0 will be a empty string
                         string valuesWithoutQuotes = RemoveMatchingQuotes(parts[2]);
 
-                        AddListValues(parts[1], valuesWithoutQuotes.Split(','));
+						// MOD: Don't split on commas
+                        //AddListValues(parts[1], valuesWithoutQuotes.Split(','));
+						Add( parts[1], valuesWithoutQuotes );
                         break;
                 }
             }

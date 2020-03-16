@@ -26,7 +26,7 @@
     <Setting Name="WindowTop" Provider="PortableSettingsProvider" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">-1</Value>
     </Setting>
-    <Setting Name="txtTitle" Type="System.String" Scope="User">
+    <Setting Name="txtTitle" Provider="PortableSettingsProvider" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

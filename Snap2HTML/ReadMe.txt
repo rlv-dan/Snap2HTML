@@ -1,7 +1,7 @@
 
  --- Snap2HTML ----------------------------------------------------------------
  
-  Freeware by RL Vision (c) 2011-2017
+  Freeware by RL Vision (c) 2011-2020
   Homepage: http://www.rlvision.com
   
   Portable:
@@ -22,7 +22,7 @@
   ability to export data as plain text, csv or json. Still, everything is 
   contained in a single HTML file that you can easily store or distribute.
   
-  Exported file listings can be used in many ways. One is as a complement
+  Snap2html file listings can be used in many ways. One is as a complement
   to your backups (note however that this program does not backup your
   files! It only creates a list of the files and directories). You can
   also keep a file list of e.g. external HDDs and other computers, in case 
@@ -119,6 +119,9 @@
             
               -system                    - Include system items
 
+			  -silent                    - Run without showing the window (only
+                                           if both -path and -outfile are used)
+
 
   Notes:    Using -path and -outfile will cause the program to automatically
             start generating the snapshot, and quit when done!
@@ -135,7 +138,10 @@
   "template.html" in the application folder. This is the base for the
   output, and you can modify it with your own enhancements and design changes. 
   If you make something nice you are welcome, to send it to me and I might 
-  distribute it with future versions of the program!
+  distribute it with future versions of the program or add a link below!
+
+  Showcases:
+    Amstrad CPC Memory Engraved: https://acpc.me (Amazing!)
 
 
   --- Known Problems ----------------------------------------------------------
@@ -149,13 +155,16 @@
   on Win7 Basic, otherwise it would hang when clicking on the browse for 
   folders button.
 
-  Internet Explorer may fail to load very large files. The problems seems 
-  to be a hard limit in some versions of IE. I have seen this problem in 
-  IE11 myself. Being a hard limit there is no easy solution right now.
+  Only files you have access to can be read. Try "Run as Admin" if files are 
+  missing.
 
-  Large file tables can be slow to render and appear to have hung the 
-  browser, especially in Internet Explorer. The same can happen when 
-  navigating away from such a large folder and freeing the memory.
+  Internet Explorer may fail to load very large files. The problems seems to 
+  be a hard limit in some versions of IE. I have seen this problem in IE11 
+  myself. Being a hard limit there is no easy solution right now.
+
+  Large file tables can be slow to render and appear to have hung the browser,
+  especially in Internet Explorer. The same can happen when navigating away 
+  from such a large folder and freeing the memory.
 
  
   --- Version History ---------------------------------------------------------
@@ -208,6 +217,14 @@
 	Data format was tweaked to give slightly smaller output
 	Fixed some bugs concerning filenames with odd characters
 	Many other tweaks and fixes to improve the HTML template
+
+  v2.1 (2020-03-16)
+    Export functionality now has a button to save directly to disk
+    Added -silent option to run completely hidden from command line
+    Dates now show formatted in user's locale independent of who created
+      the file listing. Sort by date also works better.
+    8 or so other bug fixes and minor enhancements
+    Internal code refactoring in preparation for future features
 
 
  --- End User License Agreement -----------------------------------------------

@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("RL Vision")]
 [assembly: AssemblyProduct("Snap2HTML")]
-[assembly: AssemblyCopyright( "Copyright © RL Vision 2011-2017" )]
+[assembly: AssemblyCopyright( "Copyright © RL Vision 2011-2020" )]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion( "2.00.0.0" )]
-[assembly: AssemblyFileVersion( "2.00.0.0" )]
+[assembly: AssemblyVersion( "2.1.0.0" )]
+[assembly: AssemblyFileVersion( "2.1.0.0" )]

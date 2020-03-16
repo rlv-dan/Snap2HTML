@@ -21,7 +21,8 @@ namespace Snap2HTML
 
 		private void frmMain_Load( object sender, EventArgs e )
 		{
-			labelVersion.Text = "version " + Application.ProductVersion.Split( '.' )[0] + "." + Application.ProductVersion.Split( '.' )[1];
+			this.Text = Application.ProductName + " (Press F1 for Help)";
+			labelAboutVersion.Text = "version " + Application.ProductVersion.Split( '.' )[0] + "." + Application.ProductVersion.Split( '.' )[1];
 
 			// initialize some settings
 			int left = Snap2HTML.Properties.Settings.Default.WindowLeft;
@@ -51,6 +52,8 @@ namespace Snap2HTML
 				cnt.AllowDrop = true;
 			}
 
+			Opacity = 0;	// for silent mode
+
 			initDone = true;
 		}
 
@@ -70,6 +73,8 @@ namespace Snap2HTML
                 }
             }
 
+			var autoRun = false;
+
             if (arguments.IsTrue("hidden")) chkHidden.Checked = true;
             if (arguments.IsTrue("system")) chkSystem.Checked = true;
 			if( arguments.Exists( "path" ) )
@@ -85,11 +90,22 @@ namespace Snap2HTML
                     // if outfile is also given, start generating snapshot
                     if (arguments.Exists("outfile"))
                     {
+						autoRun = true;
                         outFile = arguments.Single("outfile");
                         cmdCreate.PerformClick();
                     }
                 }
             }
+
+			// keep window hidden in silent mode
+			if( arguments.IsTrue( "silent" ) && autoRun )
+			{
+				Visible = false;
+			}
+			else
+			{
+				Opacity = 100;
+			}
 
 			// run link/title after path, since path automatically updates title
 			if( arguments.Exists( "link" ) )

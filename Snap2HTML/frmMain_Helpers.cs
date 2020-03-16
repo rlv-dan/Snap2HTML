@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using CommandLine.Utility;
 using System.IO;
+using System.Diagnostics;
 
 namespace Snap2HTML
 {
@@ -40,7 +41,7 @@ namespace Snap2HTML
 		}
 
 		// Recursive function to get all folders and subfolders of given path path
-		private void DirSearch( string sDir, List<string> lstDirs, bool skipHidden, bool skipSystem )
+		public void DirSearch( string sDir, List<string> lstDirs, bool skipHidden, bool skipSystem, Stopwatch stopwatch )
 		{
 			if( backgroundWorker.CancellationPending ) return;
 
@@ -79,12 +80,13 @@ namespace Snap2HTML
 					{
 						lstDirs.Add( d );
 
-						if( lstDirs.Count % 9 == 0 ) // for performance don't update gui for each file
+						if(stopwatch.ElapsedMilliseconds >= 50)
 						{
-							backgroundWorker.ReportProgress( 0, "Aquiring folders... " + lstDirs.Count + " (" + d + ")" );
+							backgroundWorker.ReportProgress( 0, "Getting folders... " + lstDirs.Count + " (" + d + ")" );
+							stopwatch.Restart();
 						}
 
-						DirSearch( d, lstDirs, skipHidden, skipSystem );
+						DirSearch( d, lstDirs, skipHidden, skipSystem, stopwatch );
 					}
 				}
 			}
@@ -118,7 +120,8 @@ namespace Snap2HTML
 			return s.Replace( "\\", "\\\\" )
 					.Replace( "&", "&amp;" )
 					.Replace( "\u2028", "" )
-					.Replace( "\u2029", "" );
+					.Replace( "\u2029", "" )
+					.Replace( "\u0004", "" );
 		}
 
 		// Test string for matches against a wildcard pattern. Use ? and * as wildcards. (Wrapper around RegEx)
@@ -151,5 +154,11 @@ namespace Snap2HTML
 
 			return regex.IsMatch( text );
 		}
+
+		private int ToUnixTimestamp(DateTime value)
+		{
+			return (int)Math.Truncate( ( value.ToUniversalTime().Subtract( new DateTime( 1970, 1, 1 ) ) ).TotalSeconds );
+		}
+
 	}
 }
