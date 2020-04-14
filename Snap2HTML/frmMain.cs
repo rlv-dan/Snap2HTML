@@ -155,14 +155,14 @@ namespace Snap2HTML
 			// ensure source path format
             txtRoot.Text = System.IO.Path.GetFullPath( txtRoot.Text );
             if (txtRoot.Text.EndsWith(@"\")) txtRoot.Text = txtRoot.Text.Substring(0, txtRoot.Text.Length - 1);
-            if ( IsWildcardMatch( "?:" , txtRoot.Text , false ) ) txtRoot.Text += @"\";	// add backslash to path if only letter and colon eg "c:"
+			if( Utils.IsWildcardMatch( "?:", txtRoot.Text, false ) ) txtRoot.Text += @"\";	// add backslash to path if only letter and colon eg "c:"
 
 			// add slash or backslash to end of link (in cases where it is clearthat we we can)
 			if( !txtLinkRoot.Text.EndsWith( @"/" ) && txtLinkRoot.Text.ToLower().StartsWith( @"http" ) )	// web site
 			{
 				txtLinkRoot.Text += @"/";
 			}
-			if( !txtLinkRoot.Text.EndsWith( @"\" ) && IsWildcardMatch( "?:*" , txtLinkRoot.Text , false ))	// local disk
+			if( !txtLinkRoot.Text.EndsWith( @"\" ) && Utils.IsWildcardMatch( "?:*", txtLinkRoot.Text, false ) )	// local disk
 			{
 				txtLinkRoot.Text += @"\";
 			}
@@ -201,8 +201,38 @@ namespace Snap2HTML
 			Cursor.Current = Cursors.WaitCursor;
 			this.Text = "Snap2HTML (Working... Press Escape to Cancel)";
 			tabControl1.Enabled = false;
-			backgroundWorker.RunWorkerAsync();
 
+			var settings = new SnapSettings()
+			{
+				rootFolder = txtRoot.Text,
+				title = txtTitle.Text,
+				outputFile = saveFileDialog1.FileName,
+				skipHiddenItems = !chkHidden.Checked,
+				skipSystemItems = !chkSystem.Checked,
+				openInBrowser = chkOpenOutput.Checked,
+				linkFiles = chkLinkFiles.Checked,
+				linkRoot = txtLinkRoot.Text,
+			};
+			backgroundWorker.RunWorkerAsync(argument: settings);
+
+		}
+
+		private void backgroundWorker_ProgressChanged( object sender, ProgressChangedEventArgs e )
+		{
+			toolStripStatusLabel1.Text = e.UserState.ToString();
+		}
+
+		private void backgroundWorker_RunWorkerCompleted( object sender, RunWorkerCompletedEventArgs e )
+		{
+			Cursor.Current = Cursors.Default;
+			tabControl1.Enabled = true;
+			this.Text = "Snap2HTML";
+
+			// Quit when finished if automated via command line
+			if( outFile != "" )
+			{
+				Application.Exit();
+			}
 		}
 
         private void chkLinkFiles_CheckedChanged(object sender, EventArgs e)
@@ -274,6 +304,33 @@ namespace Snap2HTML
 				if( e.KeyCode == Keys.F1 )
 				{
 					System.Diagnostics.Process.Start( System.IO.Path.GetDirectoryName( Application.ExecutablePath ) + "\\ReadMe.txt" );
+				}
+			}
+		}
+
+		// Sets the root path input box and makes related gui parts ready to use
+		private void SetRootPath( string path, bool pathIsValid = true )
+		{
+			if( pathIsValid )
+			{
+				txtRoot.Text = path;
+				cmdCreate.Enabled = true;
+				toolStripStatusLabel1.Text = "";
+				if( initDone )
+				{
+					txtLinkRoot.Text = txtRoot.Text;
+					txtTitle.Text = "Snapshot of " + txtRoot.Text;
+				}
+			}
+			else
+			{
+				txtRoot.Text = "";
+				cmdCreate.Enabled = false;
+				toolStripStatusLabel1.Text = "";
+				if( initDone )
+				{
+					txtLinkRoot.Text = txtRoot.Text;
+					txtTitle.Text = "";
 				}
 			}
 		}

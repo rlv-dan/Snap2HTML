@@ -13,29 +13,21 @@ namespace Snap2HTML
 {
 	public partial class frmMain : Form
 	{
+		// This runs on a separate thread from the GUI
 		private void backgroundWorker_DoWork( object sender, DoWorkEventArgs e )
 		{
-			var skipHidden = ( chkHidden.CheckState == CheckState.Unchecked );
-			var skipSystem = ( chkSystem.CheckState == CheckState.Unchecked );
+			var settings = (SnapSettings)e.Argument;
 
 			// Get files & folders
-			var content = GetContent( txtRoot.Text, skipHidden, skipSystem );
+			var content = GetContent( settings, backgroundWorker );
+			if( backgroundWorker.CancellationPending )
+			{
+				backgroundWorker.ReportProgress( 0, "User cancelled" );
+				return;
+			}
 			if( content == null )
 			{
 				backgroundWorker.ReportProgress( 0, "Error reading source" );
-				return;
-			}
-			if( backgroundWorker.CancellationPending )
-			{
-				backgroundWorker.ReportProgress( 0, "User cancelled" );
-				return;
-			}
-
-			// Convert to string with JS data object
-			var jsContent = BuildJavascriptContentArray( content, 0 );
-			if( backgroundWorker.CancellationPending )
-			{
-				backgroundWorker.ReportProgress( 0, "User cancelled" );
 				return;
 			}
 
@@ -51,6 +43,14 @@ namespace Snap2HTML
 					totFiles++;
 					totSize += Int64.Parse( file.GetProp( "Size" ) );
 				}
+			}
+	
+			// Convert to string with JS data object
+			var jsContent = BuildJavascriptContentArray( content, 0, backgroundWorker );
+			if( backgroundWorker.CancellationPending )
+			{
+				backgroundWorker.ReportProgress( 0, "User cancelled" );
+				return;
 			}
 
 			// Let's generate the output
@@ -75,7 +75,7 @@ namespace Snap2HTML
 
 			// Build HTML
 			sbContent.Replace( "[DIR DATA]", jsContent );
-			sbContent.Replace( "[TITLE]", txtTitle.Text );
+			sbContent.Replace( "[TITLE]", settings.title );
 			sbContent.Replace( "[APP LINK]", "http://www.rlvision.com" );
 			sbContent.Replace( "[APP NAME]", Application.ProductName );
 			sbContent.Replace( "[APP VER]", Application.ProductVersion.Split( '.' )[0] + "." + Application.ProductVersion.Split( '.' )[1] );
@@ -87,11 +87,11 @@ namespace Snap2HTML
 			if( chkLinkFiles.Checked )
 			{
 				sbContent.Replace( "[LINK FILES]", "true" );
-				sbContent.Replace( "[LINK ROOT]", txtLinkRoot.Text.Replace( @"\", "/" ) );
-				sbContent.Replace( "[SOURCE ROOT]", txtRoot.Text.Replace( @"\", "/" ) );
+				sbContent.Replace( "[LINK ROOT]", settings.linkRoot.Replace( @"\", "/" ) );
+				sbContent.Replace( "[SOURCE ROOT]", settings.rootFolder.Replace( @"\", "/" ) );
 
-				string link_root = txtLinkRoot.Text.Replace( @"\", "/" );
-				if( IsWildcardMatch( @"?:/*", link_root, false ) )  // "file://" is needed in the browser if path begins with drive letter, else it should not be used
+				string link_root = settings.linkRoot.Replace( @"\", "/" );
+				if( Utils.IsWildcardMatch( @"?:/*", link_root, false ) )  // "file://" is needed in the browser if path begins with drive letter, else it should not be used
 				{
 					sbContent.Replace( "[LINK PROTOCOL]", @"file://" );
 				}
@@ -105,25 +105,25 @@ namespace Snap2HTML
 				sbContent.Replace( "[LINK FILES]", "false" );
 				sbContent.Replace( "[LINK PROTOCOL]", "" );
 				sbContent.Replace( "[LINK ROOT]", "" );
-				sbContent.Replace( "[SOURCE ROOT]", txtRoot.Text.Replace( @"\", "/" ) );
+				sbContent.Replace( "[SOURCE ROOT]", settings.rootFolder.Replace( @"\", "/" ) );
 			}
 
 			// Write output file
 			try
 			{
-				using( System.IO.StreamWriter writer = new System.IO.StreamWriter( saveFileDialog1.FileName ) )
+				using( System.IO.StreamWriter writer = new System.IO.StreamWriter( settings.outputFile ) )
 				{
 					writer.Write( sbContent.ToString() );
 				}
 
-				if( chkOpenOutput.Checked == true )
+				if( settings.openInBrowser )
 				{
-					System.Diagnostics.Process.Start( saveFileDialog1.FileName );
+					System.Diagnostics.Process.Start( settings.outputFile );
 				}
 			}
-			catch( System.Exception excpt )
+			catch( Exception ex )
 			{
-				MessageBox.Show( "Failed to open file for writing:\n\n" + excpt, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+				MessageBox.Show( "Failed to open file for writing:\n\n" + ex, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
 				backgroundWorker.ReportProgress( 0, "An error occurred..." );
 				return;
 			}
@@ -133,77 +133,7 @@ namespace Snap2HTML
 			backgroundWorker.ReportProgress( 100, "Ready!" );
 		}
 
-		private void backgroundWorker_ProgressChanged( object sender, ProgressChangedEventArgs e )
-		{
-			toolStripStatusLabel1.Text = e.UserState.ToString();
-		}
-
-		private void backgroundWorker_RunWorkerCompleted( object sender, RunWorkerCompletedEventArgs e )
-		{
-			Cursor.Current = Cursors.Default;
-			tabControl1.Enabled = true;
-			this.Text = "Snap2HTML";
-
-			// Quit when finished if automated via command line
-			if( outFile != "" )
-			{
-				Application.Exit();
-			}
-		}
-
-
-		// --------------------------------------------------------------------
-
-		public class SnappedFile
-		{
-			public SnappedFile( string name )
-			{
-				this.Name = name;
-				this.Properties = new Dictionary<string, string>();
-			}
-
-			public string Name { get; set; }
-			public Dictionary<string, string> Properties { get; set; }
-
-			public string GetProp( string key )
-			{
-				if( this.Properties.ContainsKey( key ) )
-					return this.Properties[key];
-				else
-					return "";
-			}
-
-		}
-
-		public class SnappedFolder
-		{
-			public SnappedFolder( string name, string path )
-			{
-				this.Name = name;
-				this.Path = path;
-				this.Properties = new Dictionary<string, string>();
-				this.Files = new List<SnappedFile>();
-				this.FullPath = ( this.Path + "\\" + this.Name ).Replace( "\\\\", "\\" );
-			}
-
-			public string Name { get; set; }
-			public string Path { get; set; }
-			public string FullPath { get; set; }
-			public Dictionary<string, string> Properties { get; set; }
-			public List<SnappedFile> Files { get; set; }
-
-			public string GetProp( string key )
-			{
-				if( this.Properties.ContainsKey( key ) )
-					return this.Properties[key];
-				else
-					return "";
-			}
-		}
-
-		// --------------------------------------------------------------------
-
-		private List<SnappedFolder> GetContent( string rootFolder, bool skipHidden, bool skipSystem )
+		private static List<SnappedFolder> GetContent( SnapSettings settings, BackgroundWorker bgWorker )
 		{
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
@@ -212,11 +142,11 @@ namespace Snap2HTML
 
 			// Get all folders
 			var dirs = new List<string>();
-			dirs.Insert( 0, rootFolder );
-			DirSearch( rootFolder, dirs, skipHidden, skipSystem, stopwatch );
-			dirs = SortDirList( dirs );
+			dirs.Insert( 0, settings.rootFolder );
+			Utils.DirSearch( settings.rootFolder, dirs, settings.skipHiddenItems, settings.skipSystemItems, stopwatch, bgWorker );
+			dirs = Utils.SortDirList( dirs );
 
-			if( backgroundWorker.CancellationPending )
+			if( bgWorker.CancellationPending )
 			{
 				return null;
 			}
@@ -245,8 +175,8 @@ namespace Snap2HTML
 					created_date = "";
 					try
 					{
-						modified_date = ToUnixTimestamp(System.IO.Directory.GetLastWriteTime( dirName ).ToLocalTime()).ToString();
-						created_date = ToUnixTimestamp( System.IO.Directory.GetCreationTime( dirName ).ToLocalTime() ).ToString();
+						modified_date = Utils.ToUnixTimestamp( System.IO.Directory.GetLastWriteTime( dirName ).ToLocalTime() ).ToString();
+						created_date = Utils.ToUnixTimestamp( System.IO.Directory.GetCreationTime( dirName ).ToLocalTime() ).ToString();
 					}
 					catch( Exception ex )
 					{
@@ -254,7 +184,6 @@ namespace Snap2HTML
 					}
 					currentDir.Properties.Add( "Modified", modified_date );
 					currentDir.Properties.Add( "Created", created_date );
-
 
 					// Get files in folder
 					List<string> files;
@@ -276,11 +205,11 @@ namespace Snap2HTML
 						totFiles++;
 						if(stopwatch.ElapsedMilliseconds >= 50)
 						{
-							backgroundWorker.ReportProgress( 0, "Reading files... " + totFiles + " (" + sFile + ")" );
+							bgWorker.ReportProgress( 0, "Reading files... " + totFiles + " (" + sFile + ")" );
 							stopwatch.Restart();
 						}
 
-						if( backgroundWorker.CancellationPending )
+						if( bgWorker.CancellationPending )
 						{
 							return null;
 						}
@@ -292,7 +221,7 @@ namespace Snap2HTML
 							var isHidden = ( fi.Attributes & System.IO.FileAttributes.Hidden ) == System.IO.FileAttributes.Hidden;
 							var isSystem = ( fi.Attributes & System.IO.FileAttributes.System ) == System.IO.FileAttributes.System;
 
-							if( ( isHidden && skipHidden ) || ( isSystem && skipSystem ) )
+							if( ( isHidden && settings.skipHiddenItems ) || ( isSystem && settings.skipSystemItems ) )
 							{
 								continue;
 							}
@@ -303,8 +232,8 @@ namespace Snap2HTML
 							created_date = "-";
 							try
 							{
-								modified_date = ToUnixTimestamp( fi.LastWriteTime.ToLocalTime() ).ToString();
-								created_date = ToUnixTimestamp( fi.CreationTime.ToLocalTime() ).ToString();
+								modified_date = Utils.ToUnixTimestamp( fi.LastWriteTime.ToLocalTime() ).ToString();
+								created_date = Utils.ToUnixTimestamp( fi.CreationTime.ToLocalTime() ).ToString();
 							}
 							catch( Exception ex )
 							{
@@ -334,7 +263,7 @@ namespace Snap2HTML
 			return result;
 		}
 
-		private string BuildJavascriptContentArray(List<SnappedFolder> content, int startIndex)
+		private static string BuildJavascriptContentArray(List<SnappedFolder> content, int startIndex, BackgroundWorker bgWorker)
 		{
 			//  Data format:
 			//    Each index in "dirs" array is an array representing a directory:
@@ -346,7 +275,7 @@ namespace Snap2HTML
 			//        ID is the item index in dirs array.
 			//    Note: Modified date is in UNIX format
 
-			backgroundWorker.ReportProgress( 0, "Processing content..." );
+			bgWorker.ReportProgress( 0, "Processing content..." );
 
 			var result = new StringBuilder();
 
@@ -394,13 +323,13 @@ namespace Snap2HTML
 				sbCurrentDirArrays.Append( "D.p([" + lineBreakSymbol );
 
 				var sDirWithForwardSlash = currentDir.FullPath.Replace( @"\", "/" );
-				sbCurrentDirArrays.Append( "\"" ).Append( MakeCleanJsString( sDirWithForwardSlash ) ).Append( "*" ).Append( "0" ).Append( "*" ).Append( currentDir.GetProp("Modified") ).Append( "\"," + lineBreakSymbol );
+				sbCurrentDirArrays.Append( "\"" ).Append( Utils.MakeCleanJsString( sDirWithForwardSlash ) ).Append( "*" ).Append( "0" ).Append( "*" ).Append( currentDir.GetProp( "Modified" ) ).Append( "\"," + lineBreakSymbol );
 
 				long dirSize = 0;
 
 				foreach( var currentFile in currentDir.Files )
 				{
-					sbCurrentDirArrays.Append( "\"" ).Append( MakeCleanJsString( currentFile.Name ) ).Append( "*" ).Append( currentFile.GetProp( "Size" ) ).Append( "*" ).Append( currentFile.GetProp("Modified") ).Append( "\"," + lineBreakSymbol );
+					sbCurrentDirArrays.Append( "\"" ).Append( Utils.MakeCleanJsString( currentFile.Name ) ).Append( "*" ).Append( currentFile.GetProp( "Size" ) ).Append( "*" ).Append( currentFile.GetProp( "Modified" ) ).Append( "\"," + lineBreakSymbol );
 					try
 					{
 						dirSize += Int64.Parse( currentFile.GetProp("Size") );
@@ -420,7 +349,7 @@ namespace Snap2HTML
 				sbCurrentDirArrays.Append( "\n" );
 				result.Append( sbCurrentDirArrays.ToString() );
 
-				if( backgroundWorker.CancellationPending )
+				if( bgWorker.CancellationPending )
 				{
 					return null;
 				}

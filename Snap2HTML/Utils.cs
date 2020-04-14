@@ -1,47 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using CommandLine.Utility;
+//using System.Data;
+//using System.Drawing;
+//using System.Text;
+//using System.Windows.Forms;
+//using CommandLine.Utility;
 using System.IO;
 using System.Diagnostics;
 
 namespace Snap2HTML
 {
-	public partial class frmMain : Form
+	class Utils
 	{
-		// Sets the root path input box and makes related gui parts ready to use
-		private void SetRootPath( string path, bool pathIsValid = true )
-		{
-			if( pathIsValid )
-			{
-				txtRoot.Text = path;
-				cmdCreate.Enabled = true;
-				toolStripStatusLabel1.Text = "";
-				if( initDone )
-				{
-					txtLinkRoot.Text = txtRoot.Text;
-					txtTitle.Text = "Snapshot of " + txtRoot.Text;
-				}
-			}
-			else
-			{
-				txtRoot.Text = "";
-				cmdCreate.Enabled = false;
-				toolStripStatusLabel1.Text = "";
-				if( initDone )
-				{
-					txtLinkRoot.Text = txtRoot.Text;
-					txtTitle.Text = "";
-				}
-			}
-		}
-
 		// Recursive function to get all folders and subfolders of given path path
-		public void DirSearch( string sDir, List<string> lstDirs, bool skipHidden, bool skipSystem, Stopwatch stopwatch )
+		public static void DirSearch( string sDir, List<string> lstDirs, bool skipHidden, bool skipSystem, Stopwatch stopwatch, BackgroundWorker backgroundWorker)
 		{
 			if( backgroundWorker.CancellationPending ) return;
 
@@ -51,7 +24,7 @@ namespace Snap2HTML
 				{
 					bool includeThisFolder = true;
 
-					if( d.ToUpper().EndsWith( "SYSTEM VOLUME INFORMATION" ) ) includeThisFolder = false;
+					//if( d.ToUpper().EndsWith( "SYSTEM VOLUME INFORMATION" ) ) includeThisFolder = false;
 
 					// exclude folders that have the system or hidden attr set (if required)
 					if( skipHidden || skipSystem )
@@ -86,7 +59,7 @@ namespace Snap2HTML
 							stopwatch.Restart();
 						}
 
-						DirSearch( d, lstDirs, skipHidden, skipSystem, stopwatch );
+						DirSearch( d, lstDirs, skipHidden, skipSystem, stopwatch, backgroundWorker );
 					}
 				}
 			}
@@ -97,7 +70,7 @@ namespace Snap2HTML
 		}
 
 		// Hack to sort folders correctly even if they have spaces/periods in them
-		private List<string> SortDirList( List<string> lstDirs )
+		public static List<string> SortDirList( List<string> lstDirs )
 		{
 			for( int n = 0; n < lstDirs.Count; n++ )
 			{
@@ -115,7 +88,7 @@ namespace Snap2HTML
 
 		// Replaces characters that may appear in filenames/paths that have special meaning to JavaScript
 		// Info on u2028/u2029: https://en.wikipedia.org/wiki/Newline#Unicode
-		private string MakeCleanJsString( string s )
+		public static string MakeCleanJsString( string s )
 		{
 			return s.Replace( "\\", "\\\\" )
 					.Replace( "&", "&amp;" )
@@ -125,7 +98,7 @@ namespace Snap2HTML
 		}
 
 		// Test string for matches against a wildcard pattern. Use ? and * as wildcards. (Wrapper around RegEx)
-		private bool IsWildcardMatch( String wildcard, String text, bool casesensitive )
+		public static bool IsWildcardMatch( String wildcard, String text, bool casesensitive )
 		{
 			System.Text.StringBuilder sb = new System.Text.StringBuilder( wildcard.Length + 10 );
 			sb.Append( "^" );
@@ -155,10 +128,9 @@ namespace Snap2HTML
 			return regex.IsMatch( text );
 		}
 
-		private int ToUnixTimestamp(DateTime value)
+		public static int ToUnixTimestamp( DateTime value )
 		{
 			return (int)Math.Truncate( ( value.ToUniversalTime().Subtract( new DateTime( 1970, 1, 1 ) ) ).TotalSeconds );
 		}
-
 	}
 }
