@@ -226,6 +226,9 @@
     8 or so other bug fixes and minor enhancements
     Internal code refactoring in preparation for future features
 
+  v2.11 (2020-04-18)
+    Fixed a threading issue that caused the program to hang on some systems
+
 
  --- End User License Agreement -----------------------------------------------
   

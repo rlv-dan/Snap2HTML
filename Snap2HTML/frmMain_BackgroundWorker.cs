@@ -31,6 +31,8 @@ namespace Snap2HTML
 				return;
 			}
 
+			backgroundWorker.ReportProgress( 0, "Processing content..." );
+
 			// Calculate some stats
 			int totDirs = 0;
 			int totFiles = 0;
@@ -41,7 +43,7 @@ namespace Snap2HTML
 				foreach( var file in folder.Files )
 				{
 					totFiles++;
-					totSize += Int64.Parse( file.GetProp( "Size" ) );
+					totSize += Utils.ParseLong( file.GetProp( "Size" ) );
 				}
 			}
 	
@@ -133,6 +135,9 @@ namespace Snap2HTML
 			backgroundWorker.ReportProgress( 100, "Ready!" );
 		}
 
+
+		// --- Helper functions (must be static to avoid thread problems) ---
+
 		private static List<SnappedFolder> GetContent( SnapSettings settings, BackgroundWorker bgWorker )
 		{
 			var stopwatch = new Stopwatch();
@@ -143,7 +148,7 @@ namespace Snap2HTML
 			// Get all folders
 			var dirs = new List<string>();
 			dirs.Insert( 0, settings.rootFolder );
-			Utils.DirSearch( settings.rootFolder, dirs, settings.skipHiddenItems, settings.skipSystemItems, stopwatch, bgWorker );
+			DirSearch( settings.rootFolder, dirs, settings.skipHiddenItems, settings.skipSystemItems, stopwatch, bgWorker );
 			dirs = Utils.SortDirList( dirs );
 
 			if( bgWorker.CancellationPending )
@@ -263,6 +268,63 @@ namespace Snap2HTML
 			return result;
 		}
 
+		// Recursive function to get all folders and subfolders of given path path
+		private static void DirSearch( string sDir, List<string> lstDirs, bool skipHidden, bool skipSystem, Stopwatch stopwatch, BackgroundWorker backgroundWorker )
+		{
+			if( backgroundWorker.CancellationPending ) return;
+
+			try
+			{
+				foreach( string d in System.IO.Directory.GetDirectories( sDir ) )
+				{
+					bool includeThisFolder = true;
+
+					//if( d.ToUpper().EndsWith( "SYSTEM VOLUME INFORMATION" ) ) includeThisFolder = false;
+
+					// exclude folders that have the system or hidden attr set (if required)
+					if( skipHidden || skipSystem )
+					{
+						var attr = new DirectoryInfo( d ).Attributes;
+
+						if( skipHidden )
+						{
+							if( ( attr & FileAttributes.Hidden ) == FileAttributes.Hidden )
+							{
+								includeThisFolder = false;
+							}
+						}
+
+						if( skipSystem )
+						{
+							if( ( attr & FileAttributes.System ) == FileAttributes.System )
+							{
+								includeThisFolder = false;
+							}
+						}
+					}
+
+
+					if( includeThisFolder )
+					{
+						lstDirs.Add( d );
+
+						if( stopwatch.ElapsedMilliseconds >= 50 )
+						{
+							backgroundWorker.ReportProgress( 0, "Getting folders... " + lstDirs.Count + " (" + d + ")" );
+							stopwatch.Restart();
+						}
+
+						DirSearch( d, lstDirs, skipHidden, skipSystem, stopwatch, backgroundWorker );
+					}
+				}
+			}
+			catch( System.Exception ex )
+			{
+				Console.WriteLine( "ERROR in DirSearch():" + ex.Message );
+			}
+		}
+
+
 		private static string BuildJavascriptContentArray(List<SnappedFolder> content, int startIndex, BackgroundWorker bgWorker)
 		{
 			//  Data format:
@@ -274,8 +336,6 @@ namespace Snap2HTML
 			//      Last item in array refrences IDs to all subdirectories of this dir (if any).
 			//        ID is the item index in dirs array.
 			//    Note: Modified date is in UNIX format
-
-			bgWorker.ReportProgress( 0, "Processing content..." );
 
 			var result = new StringBuilder();
 
@@ -332,7 +392,7 @@ namespace Snap2HTML
 					sbCurrentDirArrays.Append( "\"" ).Append( Utils.MakeCleanJsString( currentFile.Name ) ).Append( "*" ).Append( currentFile.GetProp( "Size" ) ).Append( "*" ).Append( currentFile.GetProp( "Modified" ) ).Append( "\"," + lineBreakSymbol );
 					try
 					{
-						dirSize += Int64.Parse( currentFile.GetProp("Size") );
+						dirSize += Utils.ParseLong( currentFile.GetProp( "Size" ) );
 					}
 					catch( Exception ex)
 					{

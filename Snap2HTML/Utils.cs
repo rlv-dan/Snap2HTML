@@ -13,62 +13,6 @@ namespace Snap2HTML
 {
 	class Utils
 	{
-		// Recursive function to get all folders and subfolders of given path path
-		public static void DirSearch( string sDir, List<string> lstDirs, bool skipHidden, bool skipSystem, Stopwatch stopwatch, BackgroundWorker backgroundWorker)
-		{
-			if( backgroundWorker.CancellationPending ) return;
-
-			try
-			{
-				foreach( string d in System.IO.Directory.GetDirectories( sDir ) )
-				{
-					bool includeThisFolder = true;
-
-					//if( d.ToUpper().EndsWith( "SYSTEM VOLUME INFORMATION" ) ) includeThisFolder = false;
-
-					// exclude folders that have the system or hidden attr set (if required)
-					if( skipHidden || skipSystem )
-					{
-						var attr = new DirectoryInfo( d ).Attributes;
-
-						if( skipHidden )
-						{
-							if( ( attr & FileAttributes.Hidden ) == FileAttributes.Hidden )
-							{
-								includeThisFolder = false;
-							}
-						}
-
-						if( skipSystem )
-						{
-							if( ( attr & FileAttributes.System ) == FileAttributes.System )
-							{
-								includeThisFolder = false;
-							}
-						}						
-					}
-
-
-					if( includeThisFolder )
-					{
-						lstDirs.Add( d );
-
-						if(stopwatch.ElapsedMilliseconds >= 50)
-						{
-							backgroundWorker.ReportProgress( 0, "Getting folders... " + lstDirs.Count + " (" + d + ")" );
-							stopwatch.Restart();
-						}
-
-						DirSearch( d, lstDirs, skipHidden, skipSystem, stopwatch, backgroundWorker );
-					}
-				}
-			}
-			catch( System.Exception ex )
-			{
-				Console.WriteLine( "ERROR in DirSearch():" + ex.Message );
-			}
-		}
-
 		// Hack to sort folders correctly even if they have spaces/periods in them
 		public static List<string> SortDirList( List<string> lstDirs )
 		{
@@ -131,6 +75,16 @@ namespace Snap2HTML
 		public static int ToUnixTimestamp( DateTime value )
 		{
 			return (int)Math.Truncate( ( value.ToUniversalTime().Subtract( new DateTime( 1970, 1, 1 ) ) ).TotalSeconds );
+		}
+
+		public static long ParseLong(string s)
+		{
+			long num;
+			if( Int64.TryParse( s, out num ) )
+			{
+				return num;
+			}
+			return 0;
 		}
 	}
 }
