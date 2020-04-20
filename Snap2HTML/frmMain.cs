@@ -180,6 +180,7 @@ namespace Snap2HTML
                 saveFileDialog1.DefaultExt = "html";
 				if( !fileName.ToLower().EndsWith( ".html" ) ) fileName += ".html";
 				saveFileDialog1.FileName = fileName;
+				saveFileDialog1.Filter = "HTML files (*.html)|*.html|All files (*.*)|*.*";
                 saveFileDialog1.InitialDirectory = System.IO.Path.GetDirectoryName(txtRoot.Text);
                 if (saveFileDialog1.ShowDialog() != DialogResult.OK) return;
             }

@@ -235,3 +235,10 @@
   RL Vision can not be held responsible for any damages whatsoever, direct or 
   indirect, caused by this software or other material from RL Vision.
 
+
+  --- Privacy Notice ----------------------------------------------------------
+
+  Snap2HTML does not connect to the internet. It does not phone home, check 
+  for updates, submit telemetry, spy on you or any other crap like that. It 
+  simply doesn't do anything behind your back and any data related to the 
+  program is yours. As it should be.
