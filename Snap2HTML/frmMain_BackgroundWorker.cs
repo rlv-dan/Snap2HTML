@@ -59,13 +59,13 @@ namespace Snap2HTML
 
 			backgroundWorker.ReportProgress( 0, "Generating HTML file..." );
 
-			// Read template
-			var sbContent = new StringBuilder();
+			// Read sbTemplate
+			var sbTemplate = new StringBuilder();
 			try
 			{
 				using( System.IO.StreamReader reader = new System.IO.StreamReader( System.IO.Path.GetDirectoryName( Application.ExecutablePath ) + System.IO.Path.DirectorySeparatorChar + "template.html" ) )
 				{
-					sbContent.Append( reader.ReadToEnd() );
+					sbTemplate.Append(reader.ReadToEnd());
 				}
 			}
 			catch( System.Exception ex )
@@ -76,38 +76,37 @@ namespace Snap2HTML
 			}
 
 			// Build HTML
-			sbContent.Replace( "[DIR DATA]", jsContent );
-			sbContent.Replace( "[TITLE]", settings.title );
-			sbContent.Replace( "[APP LINK]", "http://www.rlvision.com" );
-			sbContent.Replace( "[APP NAME]", Application.ProductName );
-			sbContent.Replace( "[APP VER]", Application.ProductVersion.Split( '.' )[0] + "." + Application.ProductVersion.Split( '.' )[1] );
-			sbContent.Replace( "[GEN TIME]", DateTime.Now.ToString( "t" ) );
-			sbContent.Replace( "[GEN DATE]", DateTime.Now.ToString( "d" ) );
-			sbContent.Replace( "[NUM FILES]", totFiles.ToString() );
-			sbContent.Replace( "[NUM DIRS]", totDirs.ToString() );
-			sbContent.Replace( "[TOT SIZE]", totSize.ToString() );
+			sbTemplate.Replace( "[TITLE]", settings.title );
+			sbTemplate.Replace( "[APP LINK]", "http://www.rlvision.com" );
+			sbTemplate.Replace( "[APP NAME]", Application.ProductName );
+			sbTemplate.Replace( "[APP VER]", Application.ProductVersion.Split( '.' )[0] + "." + Application.ProductVersion.Split( '.' )[1] );
+			sbTemplate.Replace( "[GEN TIME]", DateTime.Now.ToString( "t" ) );
+			sbTemplate.Replace( "[GEN DATE]", DateTime.Now.ToString( "d" ) );
+			sbTemplate.Replace( "[NUM FILES]", totFiles.ToString() );
+			sbTemplate.Replace( "[NUM DIRS]", totDirs.ToString() );
+			sbTemplate.Replace( "[TOT SIZE]", totSize.ToString() );
 			if( chkLinkFiles.Checked )
 			{
-				sbContent.Replace( "[LINK FILES]", "true" );
-				sbContent.Replace( "[LINK ROOT]", settings.linkRoot.Replace( @"\", "/" ) );
-				sbContent.Replace( "[SOURCE ROOT]", settings.rootFolder.Replace( @"\", "/" ) );
+				sbTemplate.Replace( "[LINK FILES]", "true" );
+				sbTemplate.Replace( "[LINK ROOT]", settings.linkRoot.Replace( @"\", "/" ) );
+				sbTemplate.Replace( "[SOURCE ROOT]", settings.rootFolder.Replace( @"\", "/" ) );
 
 				string link_root = settings.linkRoot.Replace( @"\", "/" );
 				if( Utils.IsWildcardMatch( @"?:/*", link_root, false ) )  // "file://" is needed in the browser if path begins with drive letter, else it should not be used
 				{
-					sbContent.Replace( "[LINK PROTOCOL]", @"file://" );
+					sbTemplate.Replace( "[LINK PROTOCOL]", @"file://" );
 				}
 				else
 				{
-					sbContent.Replace( "[LINK PROTOCOL]", "" );
+					sbTemplate.Replace( "[LINK PROTOCOL]", "" );
 				}
 			}
 			else
 			{
-				sbContent.Replace( "[LINK FILES]", "false" );
-				sbContent.Replace( "[LINK PROTOCOL]", "" );
-				sbContent.Replace( "[LINK ROOT]", "" );
-				sbContent.Replace( "[SOURCE ROOT]", settings.rootFolder.Replace( @"\", "/" ) );
+				sbTemplate.Replace( "[LINK FILES]", "false" );
+				sbTemplate.Replace( "[LINK PROTOCOL]", "" );
+				sbTemplate.Replace( "[LINK ROOT]", "" );
+				sbTemplate.Replace( "[SOURCE ROOT]", settings.rootFolder.Replace( @"\", "/" ) );
 			}
 
 			// Write output file
@@ -115,8 +114,25 @@ namespace Snap2HTML
 			{
 				using( System.IO.StreamWriter writer = new System.IO.StreamWriter( settings.outputFile ) )
 				{
-					writer.Write( sbContent.ToString() );
+					var template = sbTemplate.ToString();
+					var startOfData = template.IndexOf( "[DIR DATA]" );
+
+					writer.Write(template.Substring(0, startOfData));
+
+					var pos = 0;
+					while( pos < jsContent.Length )
+					{
+						var length = 1024 * 100;
+						if( ( pos + length ) > jsContent.Length ) length = jsContent.Length - pos;
+						writer.Write( jsContent.ToString( pos, length ) );	// writing in chunks reduces memory consumtion
+						pos += length;
+					}
+
+					writer.Write( template.Substring( startOfData + 10) );
 				}
+
+				sbTemplate.Clear();
+				jsContent.Clear();
 
 				if( settings.openInBrowser )
 				{
@@ -325,7 +341,7 @@ namespace Snap2HTML
 		}
 
 
-		private static string BuildJavascriptContentArray(List<SnappedFolder> content, int startIndex, BackgroundWorker bgWorker)
+		private static StringBuilder BuildJavascriptContentArray(List<SnappedFolder> content, int startIndex, BackgroundWorker bgWorker)
 		{
 			//  Data format:
 			//    Each index in "dirs" array is an array representing a directory:
@@ -337,10 +353,7 @@ namespace Snap2HTML
 			//        ID is the item index in dirs array.
 			//    Note: Modified date is in UNIX format
 
-			var result = new StringBuilder();
-
 			var lineBreakSymbol = "";	// Could be set to \n to make the html output more readable, at the expense of increased size
-
 
 			// Assign an ID to each folder. This is equal to the index in the JS data array
 			var dirIndexes = new Dictionary<string, string>();
@@ -374,40 +387,32 @@ namespace Snap2HTML
 				}
 			}
 
-
 			// Generate the data array
-
+			var result = new StringBuilder();
 			foreach( var currentDir in content )
 			{
-				var sbCurrentDirArrays = new StringBuilder();
-				sbCurrentDirArrays.Append( "D.p([" + lineBreakSymbol );
+				result.Append( "D.p([" + lineBreakSymbol );
 
 				var sDirWithForwardSlash = currentDir.FullPath.Replace( @"\", "/" );
-				sbCurrentDirArrays.Append( "\"" ).Append( Utils.MakeCleanJsString( sDirWithForwardSlash ) ).Append( "*" ).Append( "0" ).Append( "*" ).Append( currentDir.GetProp( "Modified" ) ).Append( "\"," + lineBreakSymbol );
+				result.Append( "\"" ).Append( Utils.MakeCleanJsString( sDirWithForwardSlash ) ).Append( "*" ).Append( "0" ).Append( "*" ).Append( currentDir.GetProp( "Modified" ) ).Append( "\"," + lineBreakSymbol );
 
 				long dirSize = 0;
 
 				foreach( var currentFile in currentDir.Files )
 				{
-					sbCurrentDirArrays.Append( "\"" ).Append( Utils.MakeCleanJsString( currentFile.Name ) ).Append( "*" ).Append( currentFile.GetProp( "Size" ) ).Append( "*" ).Append( currentFile.GetProp( "Modified" ) ).Append( "\"," + lineBreakSymbol );
-					try
-					{
-						dirSize += Utils.ParseLong( currentFile.GetProp( "Size" ) );
-					}
-					catch( Exception ex)
-					{
-					}
+					result.Append( "\"" ).Append( Utils.MakeCleanJsString( currentFile.Name ) ).Append( "*" ).Append( currentFile.GetProp( "Size" ) ).Append( "*" ).Append( currentFile.GetProp( "Modified" ) ).Append( "\"," + lineBreakSymbol );
+					dirSize += Utils.ParseLong( currentFile.GetProp( "Size" ) );
 				}
 
 				// Add total dir size
-				sbCurrentDirArrays.Append( "" ).Append( dirSize ).Append( "," + lineBreakSymbol );
+				result.Append( "" ).Append( dirSize ).Append( "," + lineBreakSymbol );
 
-				sbCurrentDirArrays.Append( "\"" ).Append( String.Join( "*", subdirs[currentDir.FullPath].ToArray() ) ).Append( "\"" + lineBreakSymbol );	// subdirs
+				// Add reference to subdirs
+				result.Append( "\"" ).Append( String.Join( "*", subdirs[currentDir.FullPath].ToArray() ) ).Append( "\"" + lineBreakSymbol );	// subdirs
 
 				// Finalize
-				sbCurrentDirArrays.Append( "])" );
-				sbCurrentDirArrays.Append( "\n" );
-				result.Append( sbCurrentDirArrays.ToString() );
+				result.Append( "])" );
+				result.Append( "\n" );
 
 				if( bgWorker.CancellationPending )
 				{
@@ -415,7 +420,7 @@ namespace Snap2HTML
 				}
 			}
 
-			return result.ToString();
+			return result;
 		}
 
 	}
