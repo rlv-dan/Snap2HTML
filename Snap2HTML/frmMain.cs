@@ -225,6 +225,9 @@ namespace Snap2HTML
 
 		private void backgroundWorker_RunWorkerCompleted( object sender, RunWorkerCompletedEventArgs e )
 		{
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+
 			Cursor.Current = Cursors.Default;
 			tabControl1.Enabled = true;
 			this.Text = "Snap2HTML";

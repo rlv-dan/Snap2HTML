@@ -31,8 +31,6 @@ namespace Snap2HTML
 				return;
 			}
 
-			backgroundWorker.ReportProgress( 0, "Processing content..." );
-
 			// Calculate some stats
 			int totDirs = 0;
 			int totFiles = 0;
@@ -47,19 +45,11 @@ namespace Snap2HTML
 				}
 			}
 	
-			// Convert to string with JS data object
-			var jsContent = BuildJavascriptContentArray( content, 0, backgroundWorker );
-			if( backgroundWorker.CancellationPending )
-			{
-				backgroundWorker.ReportProgress( 0, "User cancelled" );
-				return;
-			}
-
 			// Let's generate the output
 
 			backgroundWorker.ReportProgress( 0, "Generating HTML file..." );
 
-			// Read sbTemplate
+			// Read template
 			var sbTemplate = new StringBuilder();
 			try
 			{
@@ -119,20 +109,18 @@ namespace Snap2HTML
 
 					writer.Write(template.Substring(0, startOfData));
 
-					var pos = 0;
-					while( pos < jsContent.Length )
+					BuildJavascriptContentArray( content, 0, writer, backgroundWorker );
+
+					if( backgroundWorker.CancellationPending )
 					{
-						var length = 1024 * 100;
-						if( ( pos + length ) > jsContent.Length ) length = jsContent.Length - pos;
-						writer.Write( jsContent.ToString( pos, length ) );	// writing in chunks reduces memory consumtion
-						pos += length;
+						backgroundWorker.ReportProgress( 0, "User cancelled" );
+						return;
 					}
 
 					writer.Write( template.Substring( startOfData + 10) );
 				}
 
-				sbTemplate.Clear();
-				jsContent.Clear();
+				sbTemplate = null;
 
 				if( settings.openInBrowser )
 				{
@@ -340,8 +328,7 @@ namespace Snap2HTML
 			}
 		}
 
-
-		private static StringBuilder BuildJavascriptContentArray(List<SnappedFolder> content, int startIndex, BackgroundWorker bgWorker)
+		private static void BuildJavascriptContentArray( List<SnappedFolder> content, int startIndex, StreamWriter writer, BackgroundWorker bgWorker )
 		{
 			//  Data format:
 			//    Each index in "dirs" array is an array representing a directory:
@@ -357,7 +344,7 @@ namespace Snap2HTML
 
 			// Assign an ID to each folder. This is equal to the index in the JS data array
 			var dirIndexes = new Dictionary<string, string>();
-			for(var i=0; i<content.Count; i++)
+			for( var i = 0; i < content.Count; i++ )
 			{
 				dirIndexes.Add( content[i].FullPath, ( i + startIndex ).ToString() );
 			}
@@ -414,13 +401,22 @@ namespace Snap2HTML
 				result.Append( "])" );
 				result.Append( "\n" );
 
+				// Write result in chunks to limit memory consumtion
+				if( result.Length > 10240 )
+				{
+					writer.Write( result.ToString() );
+					result.Clear();
+				}
+
 				if( bgWorker.CancellationPending )
 				{
-					return null;
+					return;
 				}
 			}
 
-			return result;
+			writer.Write( result.ToString() );
+
+			return;
 		}
 
 	}
