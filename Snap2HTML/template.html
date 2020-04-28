@@ -773,6 +773,7 @@
 			var originalHash = location.hash.replace(/#/,"");
 			var SelectedFolderID = "-1";
 			var currentView;
+			var onlyLinkExtensions = [];	// example: ["jpg","png"]
 
 			/* ---  Init --- */
 
@@ -1074,29 +1075,33 @@
 
 							if( linkFiles )
 							{
-								file_tmp = linkProtocol + linkRoot + dir_tmp.replace("\\","/") + SearchFilenames[index][3] + "\">";
-								if( navigator.userAgent.toLowerCase().indexOf("msie") !== -1  &&  linkProtocol.indexOf("file:") !== -1 )
-								{
-									file_tmp = "javascript:alert('Internet Explorer does not allow linking to local files...')" + "\">";
-								}
-								if( file_tmp.substr(0,1) === "/" ) file_tmp = file_tmp.substr(1);
-								file_tmp = file_tmp.replace(/\\/g,"/");
-								file_tmp = file_tmp.replace(/#/g,"%23");
-							
-								var indx = file_tmp.indexOf("://");
-								if( indx !== -1 )
-								{
-									var protocol_tmp = file_tmp.substr(0,indx+3);
-									file_tmp = file_tmp.substr(indx+3);
-									file_tmp = file_tmp.replace(/\/\//g,"/");
-									file_tmp = protocol_tmp + file_tmp;
-								}
-								else
-								{
-									file_tmp = file_tmp.replace(/\/\//g,"/");
-								}
+								var ext = file_tmp.split('.').pop();
+								if(onlyLinkExtensions.length === 0 || onlyLinkExtensions.indexOf(ext) !== -1) {
 
-								file_tmp = "<a href=\"" + file_tmp + SearchFilenames[index][3] + "</a>";
+									file_tmp = linkProtocol + linkRoot + dir_tmp.replace("\\","/") + SearchFilenames[index][3] + "\">";
+									if( navigator.userAgent.toLowerCase().indexOf("msie") !== -1  &&  linkProtocol.indexOf("file:") !== -1 )
+									{
+										file_tmp = "javascript:alert('Internet Explorer does not allow linking to local files...')" + "\">";
+									}
+									if( file_tmp.substr(0,1) === "/" ) file_tmp = file_tmp.substr(1);
+									file_tmp = file_tmp.replace(/\\/g,"/");
+									file_tmp = file_tmp.replace(/#/g,"%23");
+							
+									var indx = file_tmp.indexOf("://");
+									if( indx !== -1 )
+									{
+										var protocol_tmp = file_tmp.substr(0,indx+3);
+										file_tmp = file_tmp.substr(indx+3);
+										file_tmp = file_tmp.replace(/\/\//g,"/");
+										file_tmp = protocol_tmp + file_tmp;
+									}
+									else
+									{
+										file_tmp = file_tmp.replace(/\/\//g,"/");
+									}
+
+									file_tmp = "<a href=\"" + file_tmp + SearchFilenames[index][3] + "</a>";
+								}
 							}
 
 							var located_in = SearchLocations[index];
@@ -1231,29 +1236,33 @@
 					if( dir_tmp != "" ) dir_tmp += "/";
 					if( linkFiles )
 					{
-						file_tmp = linkProtocol + linkRoot + dir_tmp + sTmp[0] + "\">";
-						if( navigator.userAgent.toLowerCase().indexOf("msie") !== -1  &&  linkProtocol.indexOf("file:") !== -1 )
-						{
-							file_tmp = "javascript:alert('Internet Explorer does not allow linking to local files...')" + "\">";
-						}
-						if( file_tmp.substr(0,1) === "/" ) file_tmp = file_tmp.substr(1);
-						file_tmp = file_tmp.replace(/\\/g,"/");
-						file_tmp = file_tmp.replace(/#/g,"%23");
 
-						var indx = file_tmp.indexOf("://");
-						if( indx !== -1 )
-						{
-							var protocol_tmp = file_tmp.substr(0,indx+3);
-							file_tmp = file_tmp.substr(indx+3);
-							file_tmp = file_tmp.replace(/\/\//g,"/");
-							file_tmp = protocol_tmp + file_tmp;
-						}
-						else
-						{
-							file_tmp = file_tmp.replace(/\/\//g,"/");
-						}
+						var ext = file_tmp.split('.').pop();
+						if(onlyLinkExtensions.length === 0 || onlyLinkExtensions.indexOf(ext) !== -1) {
+							file_tmp = linkProtocol + linkRoot + dir_tmp + sTmp[0] + "\">";
+							if( navigator.userAgent.toLowerCase().indexOf("msie") !== -1  &&  linkProtocol.indexOf("file:") !== -1 )
+							{
+								file_tmp = "javascript:alert('Internet Explorer does not allow linking to local files...')" + "\">";
+							}
+							if( file_tmp.substr(0,1) === "/" ) file_tmp = file_tmp.substr(1);
+							file_tmp = file_tmp.replace(/\\/g,"/");
+							file_tmp = file_tmp.replace(/#/g,"%23");
 
-						file_tmp = "<a href=\"" + file_tmp + sTmp[0] + "</a>";
+							var indx = file_tmp.indexOf("://");
+							if( indx !== -1 )
+							{
+								var protocol_tmp = file_tmp.substr(0,indx+3);
+								file_tmp = file_tmp.substr(indx+3);
+								file_tmp = file_tmp.replace(/\/\//g,"/");
+								file_tmp = protocol_tmp + file_tmp;
+							}
+							else
+							{
+								file_tmp = file_tmp.replace(/\/\//g,"/");
+							}
+
+							file_tmp = "<a href=\"" + file_tmp + sTmp[0] + "</a>";
+						}
 					}
 					
 					var timestamp = timestampToDate(sTmp[2]);
@@ -1599,7 +1608,6 @@
 					if (callNow) func.apply(context, args);
 				};
 			};
-
 
 			// Save export to local file. Based on https://stackoverflow.com/a/29304414/1087811
 			function downloadToFile(content, fileName, mimeType) {
