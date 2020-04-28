@@ -346,14 +346,14 @@ namespace Snap2HTML
 			var dirIndexes = new Dictionary<string, string>();
 			for( var i = 0; i < content.Count; i++ )
 			{
-				dirIndexes.Add( content[i].FullPath, ( i + startIndex ).ToString() );
+				dirIndexes.Add( content[i].GetFullPath(), ( i + startIndex ).ToString() );
 			}
 
 			// Build a lookup table with subfolder IDs for each folder
 			var subdirs = new Dictionary<string, List<string>>();
 			foreach( var dir in content )
 			{
-				subdirs.Add( dir.FullPath, new List<string>() );
+				subdirs.Add( dir.GetFullPath(), new List<string>() );
 			}
 			if( !subdirs.ContainsKey( content[0].Path ) && content[0].Name != "" )
 			{
@@ -365,7 +365,7 @@ namespace Snap2HTML
 				{
 					try
 					{
-						subdirs[dir.Path].Add( dirIndexes[dir.FullPath] );
+						subdirs[dir.Path].Add( dirIndexes[dir.GetFullPath()] );
 					}
 					catch( Exception ex )
 					{
@@ -380,7 +380,7 @@ namespace Snap2HTML
 			{
 				result.Append( "D.p([" + lineBreakSymbol );
 
-				var sDirWithForwardSlash = currentDir.FullPath.Replace( @"\", "/" );
+				var sDirWithForwardSlash = currentDir.GetFullPath().Replace( @"\", "/" );
 				result.Append( "\"" ).Append( Utils.MakeCleanJsString( sDirWithForwardSlash ) ).Append( "*" ).Append( "0" ).Append( "*" ).Append( currentDir.GetProp( "Modified" ) ).Append( "\"," + lineBreakSymbol );
 
 				long dirSize = 0;
@@ -395,7 +395,7 @@ namespace Snap2HTML
 				result.Append( "" ).Append( dirSize ).Append( "," + lineBreakSymbol );
 
 				// Add reference to subdirs
-				result.Append( "\"" ).Append( String.Join( "*", subdirs[currentDir.FullPath].ToArray() ) ).Append( "\"" + lineBreakSymbol );	// subdirs
+				result.Append( "\"" ).Append( String.Join( "*", subdirs[currentDir.GetFullPath()].ToArray() ) ).Append( "\"" + lineBreakSymbol );	// subdirs
 
 				// Finalize
 				result.Append( "])" );

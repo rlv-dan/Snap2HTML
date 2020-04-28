@@ -47,14 +47,17 @@ namespace Snap2HTML
 			this.Path = path;
 			this.Properties = new Dictionary<string, string>();
 			this.Files = new List<SnappedFile>();
-			this.FullPath = ( this.Path + "\\" + this.Name ).Replace( "\\\\", "\\" );
 		}
 
 		public string Name { get; set; }
 		public string Path { get; set; }
-		public string FullPath { get; set; }
 		public Dictionary<string, string> Properties { get; set; }
 		public List<SnappedFile> Files { get; set; }
+
+		public string GetFullPath()
+		{
+			return ( this.Path + "\\" + this.Name ).Replace( "\\\\", "\\" );
+		}
 
 		public string GetProp( string key )
 		{
