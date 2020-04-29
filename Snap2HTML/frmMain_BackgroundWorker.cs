@@ -75,7 +75,7 @@ namespace Snap2HTML
 			sbTemplate.Replace( "[NUM FILES]", totFiles.ToString() );
 			sbTemplate.Replace( "[NUM DIRS]", totDirs.ToString() );
 			sbTemplate.Replace( "[TOT SIZE]", totSize.ToString() );
-			if( chkLinkFiles.Checked )
+			if( settings.linkFiles )
 			{
 				sbTemplate.Replace( "[LINK FILES]", "true" );
 				sbTemplate.Replace( "[LINK ROOT]", settings.linkRoot.Replace( @"\", "/" ) );

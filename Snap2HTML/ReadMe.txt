@@ -99,9 +99,9 @@
               Starts the program with the given root path already set
 
 
-  Full:     Snap2HTMl.exe [-path:"root folder path"] [-outfile:"filename"] 
+  Full:     Snap2HTMl.exe -path:"root folder path" -outfile:"filename"
                           [-link:"link to path"] [-title:"page title"] 
-						  [-hidden] [-system]
+						  [-hidden] [-system] [-silent]
 
               -path:"root folder path"   - The root path to load.
                                            Example: -path:"c:\temp"
@@ -113,23 +113,26 @@
               -link:"link to path"       - The path to link files to.
                                            Example: -link:"c:\temp"
                                          
-              -title:"page title"        - Set the page title
+              -title:"page title"        - Set the page title. If omitted, title 
+                                           is generated based on path.
 			  
-			  -hidden                    - Include hidden items
-            
+              -hidden                    - Include hidden items
+
               -system                    - Include system items
 
 			  -silent                    - Run without showing the window (only
                                            if both -path and -outfile are used)
 
-
-  Notes:    Using -path and -outfile will cause the program to automatically
-            start generating the snapshot, and quit when done!
+  Notes:    When both -path and -outfile are specified, the program will 
+            automatically start generating the snapshot, and quit when done.
 
             Always surround paths and filenames with quotes ("")!
             
-            Do not include the [sqaure brackets] when you write your command 
-            line. (Sqaure brackets signify optional command line parameters)
+            In silent mode, in case or error the program will just quit 
+            without telling why.
+
+            Do not include the [square brackets] when you write your command 
+            line. (Square brackets signify optional command line parameters)
 
 
   --- Template Design ---------------------------------------------------------
@@ -228,6 +231,8 @@
 
   v2.11 (2020-04-18)
     Fixed a threading issue that caused the program to hang on some systems
+
+  v2.12 (2020-04-)
 
 
  --- End User License Agreement -----------------------------------------------

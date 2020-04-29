@@ -15,6 +15,15 @@ namespace Snap2HTML
 		public bool openInBrowser { get; set; }
 		public bool linkFiles { get; set; }
 		public string linkRoot { get; set; }
+
+		public SnapSettings()
+		{
+			this.skipHiddenItems = true;
+			this.skipSystemItems = true;
+			this.openInBrowser = false;
+			this.linkFiles = false;
+			this.linkRoot = "";
+		}
 	}
 
 

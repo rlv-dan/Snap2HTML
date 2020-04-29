@@ -11,8 +11,8 @@ namespace Snap2HTML
 {
     public partial class frmMain : Form
     {
-        private string outFile = "";	// set when automating via command line
 		private bool initDone = false;
+		private bool runningAutomated = false;
 
         public frmMain()
         {
@@ -65,40 +65,63 @@ namespace Snap2HTML
             var arguments = new Arguments(splitCommandLine);
 
             // first test for single argument (ie path only)
-            if (splitCommandLine.Length == 2 && !arguments.Exists("path"))
-            {
-                if (System.IO.Directory.Exists(splitCommandLine[1]))
-                {
+			if( splitCommandLine.Length == 2 && !arguments.Exists( "path" ) )
+			{
+				if( System.IO.Directory.Exists( splitCommandLine[1] ) )
+				{
 					SetRootPath( splitCommandLine[1] );
-                }
-            }
+				}
+			}
 
-			var autoRun = false;
-
-            if (arguments.IsTrue("hidden")) chkHidden.Checked = true;
-            if (arguments.IsTrue("system")) chkSystem.Checked = true;
-			if( arguments.Exists( "path" ) )
+			var settings = new SnapSettings();
+			if( arguments.Exists( "path" ) && arguments.Exists( "outfile" ) )
             {
-				// note: relative paths not handled
-                string path = arguments.Single( "path" );
-                if( !System.IO.Directory.Exists( path ) ) path = Environment.CurrentDirectory + System.IO.Path.DirectorySeparatorChar + path;
+				this.runningAutomated = true;
 
-                if( System.IO.Directory.Exists( path ) )
-                {
-					SetRootPath( path );
+				settings.rootFolder = arguments.Single( "path" );
+				settings.outputFile = arguments.Single( "outfile" );
 
-                    // if outfile is also given, start generating snapshot
-                    if (arguments.Exists("outfile"))
-                    {
-						autoRun = true;
-                        outFile = arguments.Single("outfile");
-                        cmdCreate.PerformClick();
-                    }
-                }
+				// First validate paths
+				if( !System.IO.Directory.Exists( settings.rootFolder ) )
+				{
+					if( !arguments.Exists( "silent" ) )
+					{
+						MessageBox.Show( "Input path does not exist: " + settings.rootFolder, "Automation Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+					}
+					Application.Exit();
+				}
+				if( !System.IO.Directory.Exists( System.IO.Path.GetDirectoryName(settings.outputFile) ) )
+				{
+					if( !arguments.Exists( "silent" ) )
+					{
+						MessageBox.Show( "Output path does not exist: " + System.IO.Path.GetDirectoryName( settings.outputFile ), "Automation Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+					}
+					Application.Exit();
+				}
+
+				// Rest of settings
+
+				settings.skipHiddenItems = !arguments.Exists( "hidden" );
+				settings.skipSystemItems = !arguments.Exists( "system" );
+				settings.openInBrowser = false;
+				
+				settings.linkFiles = false;
+				if( arguments.Exists( "link" ) )
+				{
+					settings.linkFiles = true;
+					settings.linkRoot = arguments.Single( "link" );
+				}
+
+				settings.title = "Snapshot of " + settings.rootFolder;
+				if( arguments.Exists( "title" ) )
+				{
+					settings.title = arguments.Single( "title" );
+				}
+
             }
 
 			// keep window hidden in silent mode
-			if( arguments.IsTrue( "silent" ) && autoRun )
+			if( arguments.IsTrue( "silent" ) && this.runningAutomated )
 			{
 				Visible = false;
 			}
@@ -107,24 +130,17 @@ namespace Snap2HTML
 				Opacity = 100;
 			}
 
-			// run link/title after path, since path automatically updates title
-			if( arguments.Exists( "link" ) )
+			if( this.runningAutomated )
 			{
-				chkLinkFiles.Checked = true;
-				txtLinkRoot.Text = arguments.Single( "link" );
-				txtLinkRoot.Enabled = true;
+				StartProcessing( settings );
 			}
-			if( arguments.Exists( "title" ) )
-			{
-				txtTitle.Text = arguments.Single( "title" );
-			}           
         }
 
 		private void frmMain_FormClosing( object sender, FormClosingEventArgs e )
 		{
 			if( backgroundWorker.IsBusy ) e.Cancel = true;
 
-			if( outFile == "" ) // don't save settings when automated through command line
+			if( !this.runningAutomated ) // don't save settings when automated through command line
 			{
 				Snap2HTML.Properties.Settings.Default.WindowLeft = this.Left;
 				Snap2HTML.Properties.Settings.Default.WindowTop = this.Top;
@@ -152,57 +168,25 @@ namespace Snap2HTML
 
         private void cmdCreate_Click(object sender, EventArgs e)
 		{
-			// ensure source path format
-            txtRoot.Text = System.IO.Path.GetFullPath( txtRoot.Text );
-            if (txtRoot.Text.EndsWith(@"\")) txtRoot.Text = txtRoot.Text.Substring(0, txtRoot.Text.Length - 1);
-			if( Utils.IsWildcardMatch( "?:", txtRoot.Text, false ) ) txtRoot.Text += @"\";	// add backslash to path if only letter and colon eg "c:"
-
-			// add slash or backslash to end of link (in cases where it is clearthat we we can)
-			if( !txtLinkRoot.Text.EndsWith( @"/" ) && txtLinkRoot.Text.ToLower().StartsWith( @"http" ) )	// web site
+			// ask for output file
+			string fileName = new System.IO.DirectoryInfo( txtRoot.Text + @"\" ).Name;
+			char[] invalid = System.IO.Path.GetInvalidFileNameChars();
+			for (int i = 0; i < invalid.Length; i++)
 			{
-				txtLinkRoot.Text += @"/";
-			}
-			if( !txtLinkRoot.Text.EndsWith( @"\" ) && Utils.IsWildcardMatch( "?:*", txtLinkRoot.Text, false ) )	// local disk
-			{
-				txtLinkRoot.Text += @"\";
+				fileName = fileName.Replace(invalid[i].ToString(), "");
 			}
 
-			// get output file
-			if( outFile == "" )
-            {
-				string fileName = new System.IO.DirectoryInfo( txtRoot.Text + @"\" ).Name;
-				char[] invalid = System.IO.Path.GetInvalidFileNameChars();
-				for (int i = 0; i < invalid.Length; i++)
-				{
-					fileName = fileName.Replace(invalid[i].ToString(), "");
-				}
-
-                saveFileDialog1.DefaultExt = "html";
-				if( !fileName.ToLower().EndsWith( ".html" ) ) fileName += ".html";
-				saveFileDialog1.FileName = fileName;
-				saveFileDialog1.Filter = "HTML files (*.html)|*.html|All files (*.*)|*.*";
-                saveFileDialog1.InitialDirectory = System.IO.Path.GetDirectoryName(txtRoot.Text);
-                if (saveFileDialog1.ShowDialog() != DialogResult.OK) return;
-            }
-            else // command line
-            {
-                saveFileDialog1.FileName = outFile;
-            }
+            saveFileDialog1.DefaultExt = "html";
+			if( !fileName.ToLower().EndsWith( ".html" ) ) fileName += ".html";
+			saveFileDialog1.FileName = fileName;
+			saveFileDialog1.Filter = "HTML files (*.html)|*.html|All files (*.*)|*.*";
+            saveFileDialog1.InitialDirectory = System.IO.Path.GetDirectoryName(txtRoot.Text);
+			saveFileDialog1.CheckPathExists = true;
+            if (saveFileDialog1.ShowDialog() != DialogResult.OK) return;
 
 			if( !saveFileDialog1.FileName.ToLower().EndsWith( ".html" ) ) saveFileDialog1.FileName += ".html";
 
-			// make sure output path exists
-			if( !System.IO.Directory.Exists( System.IO.Path.GetDirectoryName( saveFileDialog1.FileName ) ) )
-			{
-				MessageBox.Show( "The output folder does not exists...\n\n" + System.IO.Path.GetDirectoryName( saveFileDialog1.FileName ), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
-				return;
-			}
-
 			// begin generating html
-			Cursor.Current = Cursors.WaitCursor;
-			this.Text = "Snap2HTML (Working... Press Escape to Cancel)";
-			tabControl1.Enabled = false;
-
 			var settings = new SnapSettings()
 			{
 				rootFolder = txtRoot.Text,
@@ -214,8 +198,33 @@ namespace Snap2HTML
 				linkFiles = chkLinkFiles.Checked,
 				linkRoot = txtLinkRoot.Text,
 			};
-			backgroundWorker.RunWorkerAsync(argument: settings);
+			StartProcessing(settings);
+		}
 
+		private void StartProcessing(SnapSettings settings)
+		{
+			// ensure source path format
+			settings.rootFolder = System.IO.Path.GetFullPath( settings.rootFolder );
+			if( settings.rootFolder.EndsWith( @"\" ) ) settings.rootFolder = settings.rootFolder.Substring( 0, settings.rootFolder.Length - 1 );
+			if( Utils.IsWildcardMatch( "?:", settings.rootFolder, false ) ) settings.rootFolder += @"\";	// add backslash to path if only letter and colon eg "c:"
+
+			// add slash or backslash to end of link (in cases where it is clear that we we can)
+			if( settings.linkFiles )
+			{
+				if( !settings.linkRoot.EndsWith( @"/" ) && settings.linkRoot.ToLower().StartsWith( @"http" ) )	// web site
+				{
+					settings.linkRoot += @"/";
+				}
+				if( !settings.linkRoot.EndsWith( @"\" ) && Utils.IsWildcardMatch( "?:*", settings.linkRoot, false ) )	// local disk
+				{
+					settings.linkRoot += @"\";
+				}
+			}
+
+			Cursor.Current = Cursors.WaitCursor;
+			this.Text = "Snap2HTML (Working... Press Escape to Cancel)";
+			tabControl1.Enabled = false;
+			backgroundWorker.RunWorkerAsync( argument: settings );
 		}
 
 		private void backgroundWorker_ProgressChanged( object sender, ProgressChangedEventArgs e )
@@ -233,7 +242,7 @@ namespace Snap2HTML
 			this.Text = "Snap2HTML";
 
 			// Quit when finished if automated via command line
-			if( outFile != "" )
+			if( this.runningAutomated )
 			{
 				Application.Exit();
 			}
