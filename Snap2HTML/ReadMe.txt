@@ -232,7 +232,11 @@
   v2.11 (2020-04-18)
     Fixed a threading issue that caused the program to hang on some systems
 
-  v2.12 (2020-04-)
+  v2.12 (2020-04-29)
+    Reduced memory consumsion when generating HTML
+	Parent folder link [..] is now sticky
+	Reworked command line code to fix issues in 2.11
+	A few small tweaks too
 
 
  --- End User License Agreement -----------------------------------------------
