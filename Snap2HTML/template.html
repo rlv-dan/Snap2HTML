@@ -188,6 +188,7 @@
 			font-family:arial;
 			background-color: #cdcdcd;
 			font-size: 8pt;
+			line-height: 1.25em;
 			width: 100%;
 			text-align: left;
 			border-spacing: 0px;
@@ -216,7 +217,11 @@
 			border-top: 1px solid #e0e0e0;
 			padding: 3px 4px 3px 4px;
 		}
-		#files.tablesorter tbody tr:nth-child(even) td {
+
+		#files.tablesorter:not(.has-parent-folder) tbody tr:nth-child(even) td {
+			background-color: #f8f8f8;
+		}
+		#files.tablesorter.has-parent-folder tbody tr:nth-child(odd) td {
 			background-color: #f8f8f8;
 		}
 		
@@ -273,6 +278,28 @@
 		
 		td.date {
 			white-space: nowrap;
+		}
+
+
+		/* make room for [..] */
+		#files.tablesorter.has-parent-folder th {
+			border-bottom: 1px solid #ccc;
+		}
+
+		#files.tablesorter.has-parent-folder tbody tr:first-child td {
+			border-top: 20px solid white;
+		}
+		#parent_folder {
+			position: absolute;
+			top: 43px;
+			left: 4px;
+		}
+		#parent_folder_border {
+			background-color: #e0e0e0;
+			height: 1px;
+			position: absolute;
+			width: 100%;
+			top: 61px;
 		}
 
 
@@ -369,7 +396,7 @@
 		}
 		.export_text {
 			width: 100%;
-			height: calc(100% - 5em);	/* two .export_options => 4em + save link*/
+			height: calc(100% - 5.25em);	/* two .export_options => 4em + save link*/
 		}
 		.export_close:link, .export_close:visited {
 			float: right;
@@ -1197,14 +1224,20 @@
 				$("#list_header").html( breadcrumbs );
 
 				var table_html = "";
-				table_html += "<table id='files' class='tablesorter'><thead><th>Name</th><th>Size</th><th>Modified</th></tr></thead><tbody>\n";
+				var showParentFolderClass = "";
+				if( FolderID != 0 ) {
+					showParentFolderClass = " has-parent-folder"
+					table_html += "<span id='parent_folder' class='file_folder'><a href=\"#\" class=\"folder_link\" id=\"" + parent_folders[FolderID] + "\"> [..]</a></span>\n";
+					table_html += "<div id='parent_folder_border'></div>";
+				}
+				table_html += "<table id='files' class='tablesorter" + showParentFolderClass + "'><thead><th>Name</th><th>Size</th><th>Modified</th></tr></thead><tbody>\n";
+
 				currentView = [];
 				var countFiles = 0;
 				var countDirs = 0;
 				var subdirTotSizes = 0;
 
 				// folders
-				if( FolderID != 0 ) table_html += "<tr><td><span class='file_folder'><a href=\"#\" class=\"folder_link\" id=\"" + parent_folders[FolderID] + "\"> [..]</a></span></td><td></td><td></td></tr>\n";
 				var subdirs = getSubdirs( SelectedFolderID );
 				if( subdirs != "" )
 				{
