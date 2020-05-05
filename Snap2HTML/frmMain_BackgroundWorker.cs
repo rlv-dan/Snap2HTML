@@ -53,7 +53,7 @@ namespace Snap2HTML
 			var sbTemplate = new StringBuilder();
 			try
 			{
-				using( System.IO.StreamReader reader = new System.IO.StreamReader( System.IO.Path.GetDirectoryName( Application.ExecutablePath ) + System.IO.Path.DirectorySeparatorChar + "template.html" ) )
+				using( System.IO.StreamReader reader = new System.IO.StreamReader( System.IO.Path.GetDirectoryName( Application.ExecutablePath ) + System.IO.Path.DirectorySeparatorChar + "template.html", Encoding.UTF8 ) )
 				{
 					sbTemplate.Append(reader.ReadToEnd());
 				}
@@ -102,8 +102,10 @@ namespace Snap2HTML
 			// Write output file
 			try
 			{
-				using( System.IO.StreamWriter writer = new System.IO.StreamWriter( settings.outputFile ) )
+				using( System.IO.StreamWriter writer = new System.IO.StreamWriter( settings.outputFile, false, Encoding.UTF8 ) )
 				{
+					writer.AutoFlush = true;
+
 					var template = sbTemplate.ToString();
 					var startOfData = template.IndexOf( "[DIR DATA]" );
 
