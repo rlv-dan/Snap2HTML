@@ -263,11 +263,11 @@ namespace Snap2HTML
 		}
 		private void linkLabel3_LinkClicked( object sender, LinkLabelLinkClickedEventArgs e )
 		{
-			System.Diagnostics.Process.Start( @"http://www.rlvision.com/snap2img/about.asp" );
+			System.Diagnostics.Process.Start( @"https://rlvision.com/exif/about.php" );
 		}
 		private void linkLabel2_LinkClicked( object sender, LinkLabelLinkClickedEventArgs e )
 		{
-			System.Diagnostics.Process.Start( @"http://www.rlvision.com/flashren/about.asp" );
+			System.Diagnostics.Process.Start( @"http://www.rlvision.com/flashren/about.php" );
 		}
 		private void linkLabel4_LinkClicked( object sender, LinkLabelLinkClickedEventArgs e )
 		{
@@ -275,7 +275,11 @@ namespace Snap2HTML
 		}
 		private void linkLabel5_LinkClicked( object sender, LinkLabelLinkClickedEventArgs e )
 		{
-			System.Diagnostics.Process.Start( @"http://www.rlvision.com/contact.asp" );
+			System.Diagnostics.Process.Start( @"http://www.rlvision.com/contact.php" );
+		}
+		private void pictureBoxDonate_Click( object sender, EventArgs e )
+		{
+			System.Diagnostics.Process.Start( @"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=U3E4HE8HMY9Q4&item_name=Snap2HTML&currency_code=USD&source=url" );
 		}
 
 		// Drag & Drop handlers

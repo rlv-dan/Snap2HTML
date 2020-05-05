@@ -238,6 +238,9 @@
 	Reworked command line code to fix issues in 2.11
 	A few small tweaks too
 
+  v2.13 (2020-05-05)
+    Fixed an encoding issue causing EncoderFallbackException while saving
+
 
  --- End User License Agreement -----------------------------------------------
   

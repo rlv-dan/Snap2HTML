@@ -54,6 +54,7 @@
 			this.pictureBox4 = new System.Windows.Forms.PictureBox();
 			this.label4 = new System.Windows.Forms.Label();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.pictureBoxDonate = new System.Windows.Forms.PictureBox();
 			this.groupBoxMoreApps = new System.Windows.Forms.GroupBox();
 			this.label33 = new System.Windows.Forms.Label();
 			this.label32 = new System.Windows.Forms.Label();
@@ -78,6 +79,7 @@
 			this.tabPage3.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
 			this.tabPage2.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBoxDonate)).BeginInit();
 			this.groupBoxMoreApps.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -354,6 +356,7 @@
 			// 
 			// tabPage2
 			// 
+			this.tabPage2.Controls.Add(this.pictureBoxDonate);
 			this.tabPage2.Controls.Add(this.groupBoxMoreApps);
 			this.tabPage2.Controls.Add(this.pictureBox1);
 			this.tabPage2.Controls.Add(this.linkLabel1);
@@ -368,6 +371,18 @@
 			this.tabPage2.Text = "About";
 			this.tabPage2.UseVisualStyleBackColor = true;
 			// 
+			// pictureBoxDonate
+			// 
+			this.pictureBoxDonate.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.pictureBoxDonate.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxDonate.Image")));
+			this.pictureBoxDonate.Location = new System.Drawing.Point(193, 132);
+			this.pictureBoxDonate.Name = "pictureBoxDonate";
+			this.pictureBoxDonate.Size = new System.Drawing.Size(74, 21);
+			this.pictureBoxDonate.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+			this.pictureBoxDonate.TabIndex = 6;
+			this.pictureBoxDonate.TabStop = false;
+			this.pictureBoxDonate.Click += new System.EventHandler(this.pictureBoxDonate_Click);
+			// 
 			// groupBoxMoreApps
 			// 
 			this.groupBoxMoreApps.Controls.Add(this.label33);
@@ -378,9 +393,9 @@
 			this.groupBoxMoreApps.Controls.Add(this.label11);
 			this.groupBoxMoreApps.Controls.Add(this.pictureBox3);
 			this.groupBoxMoreApps.Controls.Add(this.pictureBox2);
-			this.groupBoxMoreApps.Location = new System.Drawing.Point(6, 174);
+			this.groupBoxMoreApps.Location = new System.Drawing.Point(6, 176);
 			this.groupBoxMoreApps.Name = "groupBoxMoreApps";
-			this.groupBoxMoreApps.Size = new System.Drawing.Size(318, 130);
+			this.groupBoxMoreApps.Size = new System.Drawing.Size(318, 128);
 			this.groupBoxMoreApps.TabIndex = 5;
 			this.groupBoxMoreApps.TabStop = false;
 			this.groupBoxMoreApps.Text = "More utilities by me";
@@ -389,7 +404,7 @@
 			// 
 			this.label33.AutoSize = true;
 			this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label33.Location = new System.Drawing.Point(210, 29);
+			this.label33.Location = new System.Drawing.Point(209, 27);
 			this.label33.Name = "label33";
 			this.label33.Size = new System.Drawing.Size(91, 13);
 			this.label33.TabIndex = 13;
@@ -399,18 +414,18 @@
 			// 
 			this.label32.AutoSize = true;
 			this.label32.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label32.Location = new System.Drawing.Point(66, 29);
+			this.label32.Location = new System.Drawing.Point(58, 27);
 			this.label32.Name = "label32";
-			this.label32.Size = new System.Drawing.Size(66, 13);
+			this.label32.Size = new System.Drawing.Size(108, 13);
 			this.label32.TabIndex = 10;
-			this.label32.Text = "Snap2IMG";
+			this.label32.Text = "Exif Tag Remover";
 			// 
 			// linkLabel3
 			// 
 			this.linkLabel3.AutoSize = true;
 			this.linkLabel3.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
 			this.linkLabel3.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-			this.linkLabel3.Location = new System.Drawing.Point(66, 100);
+			this.linkLabel3.Location = new System.Drawing.Point(58, 100);
 			this.linkLabel3.Name = "linkLabel3";
 			this.linkLabel3.Size = new System.Drawing.Size(51, 13);
 			this.linkLabel3.TabIndex = 12;
@@ -421,18 +436,18 @@
 			// 
 			// label17
 			// 
-			this.label17.Location = new System.Drawing.Point(66, 42);
+			this.label17.Location = new System.Drawing.Point(58, 40);
 			this.label17.Name = "label17";
-			this.label17.Size = new System.Drawing.Size(100, 74);
+			this.label17.Size = new System.Drawing.Size(108, 74);
 			this.label17.TabIndex = 11;
-			this.label17.Text = "Generate contact sheets (thumbnail index) for folders on your hard drive.";
+			this.label17.Text = "Delete all metadata before publishing images to protect your privacy.";
 			// 
 			// linkLabel2
 			// 
 			this.linkLabel2.AutoSize = true;
 			this.linkLabel2.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
 			this.linkLabel2.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-			this.linkLabel2.Location = new System.Drawing.Point(210, 100);
+			this.linkLabel2.Location = new System.Drawing.Point(209, 100);
 			this.linkLabel2.Name = "linkLabel2";
 			this.linkLabel2.Size = new System.Drawing.Size(51, 13);
 			this.linkLabel2.TabIndex = 10;
@@ -443,16 +458,16 @@
 			// 
 			// label11
 			// 
-			this.label11.Location = new System.Drawing.Point(210, 42);
+			this.label11.Location = new System.Drawing.Point(209, 40);
 			this.label11.Name = "label11";
 			this.label11.Size = new System.Drawing.Size(102, 71);
 			this.label11.TabIndex = 9;
-			this.label11.Text = "File renaming utility with lots of time saving automation features.";
+			this.label11.Text = "Advanced file renaming utility that will save you lots of time.";
 			// 
 			// pictureBox3
 			// 
 			this.pictureBox3.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox3.Image")));
-			this.pictureBox3.Location = new System.Drawing.Point(169, 29);
+			this.pictureBox3.Location = new System.Drawing.Point(169, 27);
 			this.pictureBox3.Name = "pictureBox3";
 			this.pictureBox3.Size = new System.Drawing.Size(39, 48);
 			this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -462,9 +477,9 @@
 			// pictureBox2
 			// 
 			this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-			this.pictureBox2.Location = new System.Drawing.Point(12, 29);
+			this.pictureBox2.Location = new System.Drawing.Point(10, 27);
 			this.pictureBox2.Name = "pictureBox2";
-			this.pictureBox2.Size = new System.Drawing.Size(48, 48);
+			this.pictureBox2.Size = new System.Drawing.Size(46, 39);
 			this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
 			this.pictureBox2.TabIndex = 0;
 			this.pictureBox2.TabStop = false;
@@ -484,7 +499,7 @@
 			this.linkLabel1.AutoSize = true;
 			this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
 			this.linkLabel1.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-			this.linkLabel1.Location = new System.Drawing.Point(163, 104);
+			this.linkLabel1.Location = new System.Drawing.Point(163, 101);
 			this.linkLabel1.Name = "linkLabel1";
 			this.linkLabel1.Size = new System.Drawing.Size(120, 13);
 			this.linkLabel1.TabIndex = 3;
@@ -495,7 +510,7 @@
 			// labelAboutSoftware
 			// 
 			this.labelAboutSoftware.AutoSize = true;
-			this.labelAboutSoftware.Location = new System.Drawing.Point(163, 87);
+			this.labelAboutSoftware.Location = new System.Drawing.Point(163, 84);
 			this.labelAboutSoftware.Name = "labelAboutSoftware";
 			this.labelAboutSoftware.Size = new System.Drawing.Size(135, 13);
 			this.labelAboutSoftware.TabIndex = 2;
@@ -564,6 +579,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
 			this.tabPage2.ResumeLayout(false);
 			this.tabPage2.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBoxDonate)).EndInit();
 			this.groupBoxMoreApps.ResumeLayout(false);
 			this.groupBoxMoreApps.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
@@ -618,6 +634,7 @@
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.LinkLabel linkLabel5;
 		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.PictureBox pictureBoxDonate;
     }
 }
 
