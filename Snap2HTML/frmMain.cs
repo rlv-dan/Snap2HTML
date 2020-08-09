@@ -61,6 +61,7 @@ namespace Snap2HTML
         {
             // parse command line
             var commandLine = Environment.CommandLine;
+			commandLine = commandLine.Replace( "-output:", "-outfile:" );	// correct wrong parameter to avoid confusion
             var splitCommandLine = Arguments.SplitCommandLine(commandLine);
             var arguments = new Arguments(splitCommandLine);
 
@@ -160,7 +161,7 @@ namespace Snap2HTML
 				}
 				catch( System.Exception ex )
 				{
-					MessageBox.Show( "Could not select folder: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+					MessageBox.Show( "Could not select folder:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
 					SetRootPath( "", false );
 				}
             }
@@ -214,13 +215,13 @@ namespace Snap2HTML
 				if( !settings.linkRoot.EndsWith( @"/" ) )
 				{
 					if( settings.linkRoot.ToLower().StartsWith( @"http" ) )	// web site
-				{
-					settings.linkRoot += @"/";
-				}
+					{
+						settings.linkRoot += @"/";
+					}
 					if( Utils.IsWildcardMatch( "?:*", settings.linkRoot, false ) )	// local disk
-				{
-					settings.linkRoot += @"\";
-				}
+					{
+						settings.linkRoot += @"\";
+					}
 					if( settings.linkRoot.StartsWith( @"\\" ) )    // unc path
 					{
 						settings.linkRoot += @"\";

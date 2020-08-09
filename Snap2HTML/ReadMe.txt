@@ -241,6 +241,11 @@
   v2.13 (2020-05-05)
     Fixed an encoding issue causing EncoderFallbackException while saving
 
+  v2.14 (2020-08-09)
+	UNC paths work again (including linking)
+	Searches returning lots of items should be a bit faster now
+    And a few smaller fixes as usual
+
 
  --- End User License Agreement -----------------------------------------------
   

@@ -60,7 +60,7 @@ namespace Snap2HTML
 			}
 			catch( System.Exception ex )
 			{
-				MessageBox.Show( "Failed to open 'Template.html' for reading...", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+				MessageBox.Show( "Failed to open 'Template.html' for reading:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
 				backgroundWorker.ReportProgress( 0, "An error occurred..." );
 				return;
 			}
@@ -136,7 +136,7 @@ namespace Snap2HTML
 			}
 			catch( Exception ex )
 			{
-				MessageBox.Show( "Failed to open file for writing:\n\n" + ex, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+				MessageBox.Show( "Failed to open file for writing:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
 				backgroundWorker.ReportProgress( 0, "An error occurred..." );
 				return;
 			}
