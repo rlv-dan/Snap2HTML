@@ -172,6 +172,22 @@
 
 		.list_files {
 			overflow: auto;
+			position: relative;
+		}
+
+		.search_indicator {
+			position: absolute;
+			left: 0px;
+			right: 0px;
+			top: 0px;
+			bottom: 0px;
+			background-color: white;
+			opacity: 0.7;
+			text-align: center;
+			padding-top: 100px;
+			font-size: 18px;
+			display: none;
+			z-index: 99;
 		}
 
 		/* --- Splitter --- */
@@ -291,7 +307,7 @@
 		}
 		#parent_folder {
 			position: absolute;
-			top: 43px;
+			top: 24px;
 			left: 4px;
 		}
 		#parent_folder_border {
@@ -299,7 +315,7 @@
 			height: 1px;
 			position: absolute;
 			width: 100%;
-			top: 61px;
+			top: 42px;
 		}
 
 
@@ -970,13 +986,17 @@
 					return;
 				}
 
+				var showLocationColumn = true;
+
 				if( numberOfFiles > 5000 ) {
-					$("#list_header").html( "Searching..." );
+					$("#search_indicator").show();
+                    //$("#list_header").html( "Searching..." );
+					showLocationColumn = false;
 				}
 				
 				location.hash = "";
 				
-				setTimeout(function(){ // timeout allows redrawing screen before possible timeconsuming search
+				setTimeout(function(){ // timeout allows redrawing screen before possible time consuming search
 
 					if( SelectedFolderID != -1 )
 					{
@@ -1033,9 +1053,15 @@
 						}
 					}
 
+					var locationHtml = "";
+
+					if(showLocationColumn) locationHtml = "<th>Folder</th>";
+
 					currentView = [];
 					var table_html = "";
-					table_html += "<table id='files' class='tablesorter'><thead><tr><th>Name</th><th>Folder</th><th>Size</th><th>Modified</th></tr></thead><tbody>\n";
+					table_html += "<table id='files' class='tablesorter'><thead><tr><th>Name</th>" + 
+									locationHtml + 
+									"<th>Size</th><th>Modified</th></tr></thead><tbody>";
 
 					var countFiles = 0;
 					var countDirs = 0;
@@ -1079,18 +1105,23 @@
 							sizeDirs += SearchFilenames[index][1];
 							var subdir_id = parent_folders[ SearchLocationsID[index] ];
 							
-							var located_in = SearchLocations[index];
-							if( located_in === "" ) located_in = "[.]"
-							located_in = located_in.substring( 0, located_in.lastIndexOf("\\") );
 							var timestamp = timestampToDate(SearchFilenames[index][2]);
+
+							locationHtml = "";
+							if(showLocationColumn) {
+								var located_in = SearchLocations[index];
+								if( located_in === "" ) located_in = "[.]"
+								located_in = located_in.substring( 0, located_in.lastIndexOf("\\") );
+								locationHtml = "<td><span class='file_folder'><a href=\"#\" class=\"folder_link\" id=\"" + subdir_id + "\"> " + located_in + "</a></span></td>";
+							}
 
 							table_html += 
 								"<tr>" + 
 									"<td><span class='file_folder'><a href=\"#\" class=\"folder_link\" id=\"" + SearchLocationsID[index] + "\"> " + SearchFilenames[index][3] + "</a></span></td>" + 
-									"<td><span class='file_folder'><a href=\"#\" class=\"folder_link\" id=\"" + subdir_id + "\"> " + located_in + "</a></span></td>" + 
+									locationHtml + 
 									"<td class='size' data-sort='" + SearchFilenames[index][1] + "'>" + bytesToSize( SearchFilenames[index][1] ) + "</td>" + 
 									"<td class='date' data-sort='" + SearchFilenames[index][2] + "'>" + timestamp + "</td>" + 
-								"</tr>\n";
+								"</tr>";
 							currentView.push( { "name": SearchFilenames[index][3], "path": SearchLocationsRaw[index].replace(/\//g,"\\"), "type": "dir", "size": SearchFilenames[index][1], "date": SearchFilenames[index][2] } );
 						}
 						else	// files
@@ -1131,16 +1162,22 @@
 								}
 							}
 
-							var located_in = SearchLocations[index];
-							if( located_in === "" ) located_in = "[.]"
+							locationHtml = "";
+							if(showLocationColumn) {
+								var located_in = SearchLocations[index];
+								if( located_in === "" ) located_in = "[.]"
+								locationHtml = "<td><span class='file_folder'><a href=\"#\" class=\"folder_link\" id=\"" + SearchLocationsID[index] + "\"> " + located_in + "</a></span></td>";
+							}
+
+
 							var timestamp = timestampToDate(SearchFilenames[index][2]);
 							table_html += 
 								"<tr>" + 
 									"<td><span class='file'>" + file_tmp + "</span></td>" + 
-									"<td><span class='file_folder'><a href=\"#\" class=\"folder_link\" id=\"" + SearchLocationsID[index] + "\"> " + located_in + "</a></span></td>" + 
+									locationHtml + 
 									"<td class='size' data-sort='" + SearchFilenames[index][1] + "'>" + bytesToSize( SearchFilenames[index][1] ) + "</td>" + 
 									"<td class='date' data-sort='" + SearchFilenames[index][2] + "'>" + timestamp + "</td>" + 
-								"</tr>\n";
+								"</tr>";
 
 							currentView.push( { "name": SearchFilenames[index][3], "path": SearchLocationsRaw[index].replace(/\//g,"\\"), "type": "file", "size": SearchFilenames[index][1], "date": SearchFilenames[index][2] } );
 
@@ -1170,24 +1207,28 @@
 						}
 					}
 
-					table_html += "</tbody></table>\n";
+					table_html += "</tbody></table>";
 					
 					$("#list_header").html( "Search Results <span class='path_divider'></span>" );
 					document.getElementById("list_files").innerHTML = table_html;
+					$("#search_indicator").hide();
 					addFolderClickEventHandlers();
+
+					var tablesorterHeaders = { 1 : { sorter: 'datasort' }, 2 : { sorter: 'datasort' } }
+					if(showLocationColumn) {
+						tablesorterHeaders = { 2 : { sorter: 'datasort' }, 3 : { sorter: 'datasort' } }
+					}
+
 					$("#files").tablesorter({
 						sortInitialOrder: "desc",
-						headers: {
-							2 : { sorter: 'datasort' },
-							3 : { sorter: 'datasort' }
-						}
+						headers: tablesorterHeaders
 					});
 
 					var sFiles = " files"; if(countFiles===1) sFiles = " file";
 					var sDirs = " folders"; if(countDirs===1) sDirs = " folder";
 					$("#list_footer_info_label").html( countDirs + sDirs + " (" + bytesToSize( sizeDirs , 0 ) + "), " + countFiles + sFiles + " (" + bytesToSize( sizeFiles , 0 ) + ")" );
 				
-				}, 1); // end setTimeout before search
+				}, 50); // end setTimeout before search
 			}; // end doSearch()
 
 
@@ -1689,10 +1730,12 @@
 		<div id="loading" class="loading"><b>Loading...</b><p class="loading_info">(if nothing happens, make sure javascript is enabled and allowed to execute, or try another browser)</p></div>
 		
 		<div id="content" class="content">
-
 			<div id="treeview" class="treeview"></div>
 
 			<div id="list_container" class="list_container">
+				<div id="search_indicator" class="search_indicator">
+					Searching...
+				</div>
 				<div id="list_header" class="list_header"></div>
 				<div id="list_files" class="list_files"></div>
 				<div id="list_footer" class='list_footer'>
@@ -1700,7 +1743,6 @@
 					<span id="list_footer_info_label"></span>
 				</div>
 			</div>
-	 
 		</div>
  
 	</div>
