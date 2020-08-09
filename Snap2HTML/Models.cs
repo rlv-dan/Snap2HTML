@@ -65,7 +65,23 @@ namespace Snap2HTML
 
 		public string GetFullPath()
 		{
-			return ( this.Path + "\\" + this.Name ).Replace( "\\\\", "\\" );
+			string path;
+
+			if( this.Path.EndsWith( @"\" ) )
+				path = this.Path + this.Name;
+			else
+				path = this.Path + @"\" + this.Name;
+
+			if( path.EndsWith( @"\" ) ) // remove trailing backslash
+			{	
+				if(!Utils.IsWildcardMatch( @"?:\", path, false )) // except for drive letters
+				{
+					path = path.Remove( path.Length - 1 );
+				}
+					
+			}
+
+			return path;
 		}
 
 		public string GetProp( string key )

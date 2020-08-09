@@ -86,10 +86,15 @@ namespace Snap2HTML
 				{
 					sbTemplate.Replace( "[LINK PROTOCOL]", @"file://" );
 				}
+				else if( link_root.StartsWith( "//" ) )  // for UNC paths e.g. \\server\path
+				{
+					sbTemplate.Replace( "[LINK PROTOCOL]", @"file://///" );
+				}
 				else
 				{
 					sbTemplate.Replace( "[LINK PROTOCOL]", "" );
 				}
+
 			}
 			else
 			{
@@ -355,10 +360,12 @@ namespace Snap2HTML
 			var subdirs = new Dictionary<string, List<string>>();
 			foreach( var dir in content )
 			{
+				// add all folders as keys
 				subdirs.Add( dir.GetFullPath(), new List<string>() );
 			}
 			if( !subdirs.ContainsKey( content[0].Path ) && content[0].Name != "" )
 			{
+				// ensure that root folder is not missed missed
 				subdirs.Add( content[0].Path, new List<string>() );
 			}
 			foreach( var dir in content )
@@ -367,6 +374,7 @@ namespace Snap2HTML
 				{
 					try
 					{
+						// for each folder, add its index to its parent folder list of subdirs
 						subdirs[dir.Path].Add( dirIndexes[dir.GetFullPath()] );
 					}
 					catch( Exception ex )
@@ -397,7 +405,7 @@ namespace Snap2HTML
 				result.Append( "" ).Append( dirSize ).Append( "," + lineBreakSymbol );
 
 				// Add reference to subdirs
-				result.Append( "\"" ).Append( String.Join( "*", subdirs[currentDir.GetFullPath()].ToArray() ) ).Append( "\"" + lineBreakSymbol );	// subdirs
+				result.Append( "\"" ).Append( String.Join( "*", subdirs[currentDir.GetFullPath()].ToArray() ) ).Append( "\"" + lineBreakSymbol );
 
 				// Finalize
 				result.Append( "])" );

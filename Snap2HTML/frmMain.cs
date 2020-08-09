@@ -211,13 +211,20 @@ namespace Snap2HTML
 			// add slash or backslash to end of link (in cases where it is clear that we we can)
 			if( settings.linkFiles )
 			{
-				if( !settings.linkRoot.EndsWith( @"/" ) && settings.linkRoot.ToLower().StartsWith( @"http" ) )	// web site
+				if( !settings.linkRoot.EndsWith( @"/" ) )
+				{
+					if( settings.linkRoot.ToLower().StartsWith( @"http" ) )	// web site
 				{
 					settings.linkRoot += @"/";
 				}
-				if( !settings.linkRoot.EndsWith( @"\" ) && Utils.IsWildcardMatch( "?:*", settings.linkRoot, false ) )	// local disk
+					if( Utils.IsWildcardMatch( "?:*", settings.linkRoot, false ) )	// local disk
 				{
 					settings.linkRoot += @"\";
+				}
+					if( settings.linkRoot.StartsWith( @"\\" ) )    // unc path
+					{
+						settings.linkRoot += @"\";
+					}
 				}
 			}
 
