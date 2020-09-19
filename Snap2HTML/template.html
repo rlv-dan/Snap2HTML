@@ -1368,6 +1368,21 @@
 				$("#list_footer_info_label").html( countDirs + sDirs + " (" + bytesToSize( subdirTotSizes )+ "), " + countFiles + sFiles + " (" + bytesToSize( dirs[ SelectedFolderID ][ dirs[ SelectedFolderID ].length-2 ] )+ ")" );
 
 				$("#treeview #" + SelectedFolderID ).addClass("treeview_bold");
+				
+				
+				<!--  My_append02  --------------------------------------------------------------------------------------------------------------------------->
+				var All_files = $("span.file");
+				var All_files_length = All_files.length;
+				
+				for (var index = 0 ; index < All_files_length ; ++index)
+				{
+					var each = All_files[index];
+					changeIconForEachFile(each);
+				}
+				
+				<!--  My_append02  end  --------------------------------------------------------------------------------------------------------------------------->
+					
+					
 
 				return false;
 			}
@@ -1705,7 +1720,88 @@
 			  }
 			}
 			
+			
+			//---------------------------------- My_append04 -------------------------------------------------------------
+			RemovePathInfo("h1");
+			RemovePathInfo("title");
+			//---------------------------------- My_append04 end -------------------------------------------------------------
+			
 		}); // end $(document).ready
+		
+		
+		<!----------------------------------------------------- My_append01 ------------------------------------------------------>
+		function changeIconForEachFile(each)
+		{
+			var text = each.innerHTML;
+			var splited_array = text.split(".");
+			var count = splited_array.length;
+			
+			each.style["padding-left"] = "20px" ;		// There need more width to divede icon and fileName 。
+			
+			// if not found dot in text(filename), count of splited_array is 1 , orignal.
+			if (count == 1)
+				return 0;
+			
+			var last_index = count - 1 ;
+			
+			// for debug print:
+			//var displayText = "count is " + count + "  ext name is " + splited_array[last_index];
+			//alert(displayText);
+			
+			var extend_name = splited_array[last_index] ;
+			
+			switch (extend_name)
+			{
+			case "txt":
+				each.style.background = "no-repeat left center " + "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAWCAYAAADNX8xBAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAEXRFWHRTb2Z0d2FyZQBTbmlwYXN0ZV0Xzt0AAAJPSURBVDiNzZRBSNNxFMc/v7lm6koi1AIJzOrklJBAJ5EdhEGHEuvSDuG9a+RhwobXQKOJHTwEIYFWdo3oMkMqCWWzUtBIU1mZDN38r+V+v9fBVNb+o4sHHzwe/N77fX/f930/nhIRYR/MsR8gAM5QKARAQ0MD0WgUj8dDLBbbjQB+v5/a2tq9W8bQd6SUJSvDvb8NObXWeL1efD4fZWVltLW14Xa7d+P4+DhDQ0O0t7fj8XgAiI69Y7O8CmUt7rWmtcbn8/FwYABvy0X6w2GamlvoD4dpvNAEQCAQYHR0lFgshvVri7HvLt63XufO6toey66uLhERyWot/9rvrawEg0HRWovWWkKhkOjIURnuvSa9/Y9yap1aawCWfyZIpjN5Iiql6OnpAeBKfYytlEXllxd09I3kim2MAeBU5XGMzU8IdHdva6AUEilmMqIprq7D4XDmAm0zEuKJJGsbqYLjPZu6i7EMG6vCpb6pvLzTGIOIUOTIUHI4WBDo0NdhJt5o1mv8KFWUD6S1BiUs/ljA5TxvC3IuMchGwrCZFCLpKq7a1OxqNLcyx7Gap3kF7qKTuJLTTL7VnLlxn+zIvO1jDq01IjC7NEs8m8nzxqVXrMUNlpRS3XKbnSnbMhKEmW8zpOrSOcnmkstMz58gE33OxOmbtCJks9nCjHZam1q2cjw9v0734Gdc9R08+ziJwH8YCSz+WODDg9Wc5GtmoBhePv5ERXkFoAoycmqtMcaw8iQOgELZFiq1fV6QEUDnrU7bpJ05HPYrTB24DXnwgP4ATnVQPHfCJkcAAAAASUVORK5CYII=)" ;
+				break ;
+				
+			case "jpg":
+				each.style.background = "no-repeat left center " + "url(data:image/ico;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAAAAMQOAADEDgAAAAAAAAAAAACZmZn/mZmZ/5mZmf+ZmZn/mZmZ/5mZmf+ZmZn/mZmZ/5mZmf+ZmZn/mZmZ/5mZmf+ZmZn/mZmZ/5mZmf+ZmZn/mpqa/+vr6//r6+v/6+vr/+vr6//r6+v/6+vr/+vr6//r6+v/6+vr/+vr6//r6+v/6+vr/+vr6//r6+v/mpqa/5ycnP/t7e3/lm4t/512N/+ge0H/on9J/6KAS/+lhFT/o4FT/6KDVP+rkWz/tJx//7WcfP+slXT/7e3t/5ycnP+fn5//7+/v/5pkKP/Bgzn/wolC/9GWWP/WnGP/2qRw/96pdv/msn//7LuM//XOsP//3MX/2MS7/+/v7/+fn5//oaGh//Hx8f9PQRz/Z1Yo/2NQKP9tZTH/cW0x/21uLv91gEL/ZHk7/3CLTP91kUf/kqZV/42icv/x8fH/oaGh/6SkpP/z8/P/MVUl/y5ZIP8wZCb/VoBA/2KITP+DrGn/hKVW/66wcf/Mr23/vb+C/+zo0//Z3+D/8/Pz/6SkpP+np6f/9vb2/2RsQv9agEr/gqRq/8W9kf//+eT/////////7////+v////s////////////3NnS//b29v+np6f/qqqq//j4+P+Nh1z/lKJ1////3f///+r////X////1P/////////u////2v///9r////Z/9bYwf/4+Pj/qqqq/6ysrP/6+vr/5eXK////0v///+7////////70///9Mz///HC///2xP///dX///zX/////P/X2MH/+vr6/6ysrP+vr6///Pz8/9jIpP///+H////h///gsf//37T//86c///Qj///77n///zh///41v//8sT/17mB//z8/P+vr6//sbGx//7+/v/ZkU3//8B0//+0Yv//rVv//71y//+1ZP//1pf///vD////7////+j//9d3/9nBiP/+/v7/sbGx/7Kysv//////0YY3/9iGNP/Xhzf/14k5/9eMPf/XhTP/14c9/9ewc//Xyp3/18CI/9jMm//Pxpz//////7Kysv+ysrL///////////////////////////////////////////////////////////////////////////+ysrL/srKy/7Kysv+ysrL/srKy/7Kysv+ysrL/srKy/7Kysv+ysrL/srKy/7Kysv+ysrL/srKy/7Kysv+ysrL/srKy////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==)" ;
+				break ;
+			
+			case "mp3":
+			each.style.background = "no-repeat left center " + "url(data:image/ico;base64,AAABAAEADRAAAAEAIACoAwAAFgAAACgAAAANAAAAIAAAAAEAIAAAAAAAQAMAAEZcAABGXAAAAAAAAAAAAABjHukAYx7pAGMe6Q1jHuk9Yx7pTWMe6SljHukBYx7pAGMe6QAAAAAAAAAAAAAAAAAAAAAAYx7pAGMe6StjHumxYx7p72Me6fZjHunfYx7peGMe6QhjHukAYx7pAAAAAAAAAAAAAAAAAGMe6RNjHum6Yx7p/2Me6f9jHun/Yx7p/2Me6ftjHulnYx7pAGMe6QAAAAAAAAAAAAAAAABjHulSYx7p9mMe6f9jHun/Yx7p/2Me6f9jHun/Yx7pwWMe6QtjHukAAAAAAAAAAAAAAAAAYx7pa2Me6f1jHun/Yx7p/2Me6f9jHun/Yx7p/2Me6dljHukYYx7pAAAAAAAAAAAAAAAAAGMe6UVjHunwYx7p/2Me6f9jHun/Yx7p/2Me6f9jHunaYx7pGWMe6QAAAAAAAAAAAAAAAABjHukJYx7pnGMe6f9jHun/Yx7p/2Me6f9jHun/Yx7p2mMe6RljHukAAAAAAAAAAAAAAAAAYx7pAGMe6RRjHumFYx7p02Me6eBjHum9Yx7p32Me6dxjHukZYx7pAAAAAAAAAAAAAAAAAGMe6QBjHukAYx7pAGMe6RVjHukeYx7pD2Me6bNjHuneYx7pGWMe6QAAAAAAAAAAAAAAAABjHukAYx7pAGMe6QBjHukAYx7pAGMe6QNjHumzYx7p3mMe6RljHukAYx7pAGMe6QBjHukAAAAAAAAAAAAAAAAAAAAAAGMe6QBjHukEYx7ps2Me6d5jHukWYx7pAGMe6QRjHukdYx7pGQAAAAAAAAAAAAAAAAAAAABjHukAYx7pBGMe6bNjHunjYx7pUGMe6W9jHumsYx7p22Me6W4AAAAAAAAAAAAAAAAAAAAAYx7pAGMe6QRjHumxYx7p/2Me6fRjHun/Yx7p/2Me6f9jHul3AAAAAAAAAAAAAAAAAAAAAGMe6QBjHukEYx7psmMe6f9jHun/Yx7p/2Me6e9jHunKYx7pTwAAAAAAAAAAAAAAAAAAAABjHukAYx7pBGMe6aZjHunYYx7po2Me6WpjHuk1Yx7pEWMe6QEAAAAAAAAAAAAAAAAAAAAAYx7pAGMe6QJjHukrYx7pHWMe6QNjHukAYx7pAGMe6QBjHukAAHgAAAA4AAAAOAAAADgAAAA4AAAAOAAAADgAAAA4AAAAOAAAAAAAAPAAAADwAAAA8AAAAPAAAADwAAAA8AAAAA==)" ;
+				break ;
+				
+			case "mp4":
+				each.style.background = "no-repeat left center " + "url(data:image/ico;base64,AAABAAEAEBAgAAAAAABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAD3mDi395g4//eYOP/3mDj/95g4//eYOP/3mDj/95g4//eYOP/3mDj/95g4//eYOP8AAAAAAAAAAAAAAAAAAAAA95g4//eYOP/3mDj/95g4//eYOP/3mDj/95g4//eYOP/3mDj/95g4//eYOP/3mDj/AAAAAAAAAAAAAAAAAAAAAPeYOP/3mDj/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD3mDj/95g4/wAAAAAAAAAAAAAAAAAAAAD3mDgJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA95g4//eYOP8AAAAAAAAAAAAAAAAAAAAA95g41feYOCoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD3mDj/95g4//eYOP/3mDj/AAAAAAAAAAAAAAAAAAAAAPeYOP/3mDj295g4bAAAAAAAAAAAAAAAAAAAAAAAAAAA95g4//eYOP/3mDj/95g4/wAAAAAAAAAAAAAAAAAAAAD3mDj/95g4//eYOP/3mDix95g4FQAAAAAAAAAAAAAAAPeYOP/3mDj/95g4//eYOP8AAAAAAAAAAAAAAAAAAAAA95g4//eYOP/3mDj/95g4//eYOOT3mDhCAAAAAAAAAAD3mDj/95g4//eYOP/3mDj/AAAAAAAAAAAAAAAAAAAAAPeYOP/3mDj/95g4//eYOP/3mDjk95g4QgAAAAAAAAAA95g4//eYOP/3mDj/95g4/wAAAAAAAAAAAAAAAAAAAAD3mDj/95g4//eYOP/3mDix95g4EgAAAAAAAAAAAAAAAPeYOP/3mDj/95g4//eYOP8AAAAAAAAAAAAAAAAAAAAA95g4//eYOPb3mDhsAAAAAAAAAAAAAAAAAAAAAAAAAAD3mDj/95g4//eYOP/3mDj/AAAAAAAAAAAAAAAAAAAAAPeYONj3mDgtAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA95g4//eYOP/3mDj/95g4/wAAAAAAAAAAAAAAAAAAAAD3mDgJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPeYOP/3mDj/95g4//eYOP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD3mDj/95g4//eYOP/3mDj/95g4//eYOP/3mDj/95g4//eYOP/3mDj/95g4//eYOP/3mDj/95g4//eYOP/3mDj/95g4//eYOP/3mDi995g4//eYOP/3mDj/95g4//eYOP/3mDj/95g4//eYOP/3mDj/95g4//eYOP/3mDj/95g4//eYOP/3mDi9AA8AAAAPAAA//wAAPf8AADz8AAA8fAAAPBwAADwMAAA8DAAAPBwAADx8AAA8/AAAPfwAAD/8AAAAAAAAAAAAAA==)" ;
+				break ;
+			
+			case "rar":
+				each.style.background = "no-repeat left center " + "url(data:image/ico;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAAAAMQOAADEDgAAAAAAAAAAAAD///////////////9AQED/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP////////////////8rKyv/4NvZ/0JnAP8AgID/AE4Z/wBOGf8AThn/AE4Z/wBOGf8AThn/AE4Z/wBOGf8AThn/ADYR//////8rKyv/4NvZ//////9IcAD/ALm5/1qKAP9YiAD/WIgA/1iIAP9YiAD/WIgA/1iIAP9XhwD/U4MB/wAAAP8mJib/0s/O///9/P/Mx8X/U4MB///////h9bv/ze+M/8Lrcv+66V7/uOhZ/67lQv+l4iz/m98W/5LcAP8ANhH/sa6t///7+P/Vz8v/Kysr/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD////////////Mx8X/AAAA/+Db2f+ITQD/AICA/2c8AP9nPAD/ZzwA/2c8AP9nPAD/ZzwA/2c8AP9nPAD/ZzwA/1AyAP+mo6L/AAAA/+Db2f//////p1gA/x7Fxf+nWAD/p1gA/6JXAP+fVgD/n1YA/5xWAP+WVAD/llQA/5RUAP8AAAD/JiYm/9LPzv///fz/zMfF/7VjBv///////+Sw///dpP//15j//9GN///Lgf//xXb//79q//+5X///s1P/UDIA/7Gurf//+/j/1c/L/ysrK/8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA////////////zMfF/wAAAP/g29n/GxRd/wCAgP8AAFD/AABQ/wAAUP8AAFD/AABQ/wAAUP8AAFD/AABQ/wAAUP8AAFD/pqOi/wAAAP/g29n//////yAab/8excX/WgKS/1oCkv9aApL/WgKS/1oCkv9aApL/WgKS/1oCkv9TAo3/AABQ/yYmJv/Sz87///38/8zHxf9TAob///////C+///lo///3pX//9eH///Sff//0Hn//8ps///AY/T/tVro/xsUXf+xrq3///v4/9XPy/8YElT/Ygqa/2gQoP9iCpr/aBCg/2IKmv9oEKD/Ygqa/2gQoP9iCpr/XwiV/1MChv8ZFGP//////8zHxf8YElT/SwJ6/wCRkf8A0dH/AJaW/0YFf/9PA4T/SwJ6/08DhP9LAnr/UAKB/zkKd/8YElT//////6ajov8YElT/IBpv/wCWlv8A0dH/AJGR/yAab/8sFHT/JxBr/ywUdP8nEGv/LBR0/ycQa/8YElT///////////8hD1T/GxRd/xkUY/8ZFGP/GRRj/xkUY/8ZFGP/GRRj/xkUY/8ZFGP/GRRj/xsUXf8AHVj/////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==)" ;
+				break ;
+			
+			case "zip":
+				each.style.background = "no-repeat left center " + "url(data:image/ico;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAAAAMQOAADEDgAAAAAAAAAAAAD///////////////9AQED/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP////////////////8rKyv/4NvZ/0JnAP8AgID/AE4Z/wBOGf8AThn/AE4Z/wBOGf8AThn/AE4Z/wBOGf8AThn/ADYR//////8rKyv/4NvZ//////9IcAD/ALm5/1qKAP9YiAD/WIgA/1iIAP9YiAD/WIgA/1iIAP9XhwD/U4MB/wAAAP8mJib/0s/O///9/P/Mx8X/U4MB///////h9bv/ze+M/8Lrcv+66V7/uOhZ/67lQv+l4iz/m98W/5LcAP8ANhH/sa6t///7+P/Vz8v/Kysr/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD////////////Mx8X/AAAA/+Db2f+ITQD/AICA/2c8AP9nPAD/ZzwA/2c8AP9nPAD/ZzwA/2c8AP9nPAD/ZzwA/1AyAP+mo6L/AAAA/+Db2f//////p1gA/x7Fxf+nWAD/p1gA/6JXAP+fVgD/n1YA/5xWAP+WVAD/llQA/5RUAP8AAAD/JiYm/9LPzv///fz/zMfF/7VjBv///////+Sw///dpP//15j//9GN///Lgf//xXb//79q//+5X///s1P/UDIA/7Gurf//+/j/1c/L/ysrK/8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA////////////zMfF/wAAAP/g29n/GxRd/wCAgP8AAFD/AABQ/wAAUP8AAFD/AABQ/wAAUP8AAFD/AABQ/wAAUP8AAFD/pqOi/wAAAP/g29n//////yAab/8excX/WgKS/1oCkv9aApL/WgKS/1oCkv9aApL/WgKS/1oCkv9TAo3/AABQ/yYmJv/Sz87///38/8zHxf9TAob///////C+///lo///3pX//9eH///Sff//0Hn//8ps///AY/T/tVro/xsUXf+xrq3///v4/9XPy/8YElT/Ygqa/2gQoP9iCpr/aBCg/2IKmv9oEKD/Ygqa/2gQoP9iCpr/XwiV/1MChv8ZFGP//////8zHxf8YElT/SwJ6/wCRkf8A0dH/AJaW/0YFf/9PA4T/SwJ6/08DhP9LAnr/UAKB/zkKd/8YElT//////6ajov8YElT/IBpv/wCWlv8A0dH/AJGR/yAab/8sFHT/JxBr/ywUdP8nEGv/LBR0/ycQa/8YElT///////////8hD1T/GxRd/xkUY/8ZFGP/GRRj/xkUY/8ZFGP/GRRj/xkUY/8ZFGP/GRRj/xsUXf8AHVj/////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==)" ;
+				break ;
+			
+			case "exe":
+				each.style.background = "no-repeat left center " + "url(data:image/ico;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAAAAMQOAADEDgAAAAAAAAAAAAD/////AAAA/wAAAP8AAAD///////////8AAAD/AAAA/wAAAP8AAAD/AAAA/////////////////////////////////4aGhv/AwMD/AAAA/wAAAP+Ghob////////////AwMD/AP///wD/AP8AAAD///////////////////////////+Ghob/wMDA/wAAAP+Ghob/wMDA/8DAwP//////wMDA/wD/AP/AwMD/wMDA/wAAAP//////////////////////hoaG/8DAwP8AAAD/hoaG/8DAwP/AwMD/wMDA/wAAAP8A/wD///8A////AP8AAAD//////////////////////4aGhv/AwMD/AAAA/4aGhv/AwMD/wMDA////AP8AAAD/AAAA/8DAwP/AwMD/AAAA//////////////////////+Ghob//////wAAAP+Ghob///8A/8DAwP///wD/AP/////////AwMD/wMDA/wAAAP8AAAD/AAAA////////////hoaG//////8AAAD/wMDA/4aGhv///wD///8A/wD//////////////wAAAP/AwMD/wMDA/8DAwP8AAAD//////4aGhv//////AAAA/8DAwP/AwMD/AAAA/wAAAP8AAAD/AAAA/wAAAP+Ghob/hoaG/4aGhv/AwMD/AAAA//////+Ghob/hoaG/wAAAP/AwMD/wMDA/4aGhv+Ghob/hoaG/4aGhv+Ghob/hoaG/4aGhv+Ghob/wMDA/wAAAP+Ghob///////////+Ghob/wMDA/8DAwP+Ghob/wMDA/8DAwP/AwMD/wMDA/8DAwP/AwMD/wMDA/4aGhv8AAAD//////4aGhv+Ghob/hoaG/4aGhv/AwMD/hoaG/8xmZv//zGb/zJkz/8yZAP//ZjP/zGYz//////+Ghob/AAAA/////////////////4aGhv///////////4aGhv/MZmb///9m///MZv/MmTP/zJkA//9mM///////hoaG/wAAAP//////////////////////hoaG/4aGhv+Ghob/zGZm////Zv///2b//8xm/8yZM//MmQD//////4aGhv8AAAD/////////////////////////////////hoaG/8xmZv//zGb///9m////Zv//zGb/zJkz//////+Ghob/AAAA/////////////////////////////////4aGhv/MZmb/zGYz/8xmM//MZjP/zGYz/8xmM///////hoaG/wAAAP////////////////////////////////+Ghob/19fX/9fX1//X19f/19fX/9fX1//X19f/19fX/4aGhv8AAAD/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==)" ;
+				break ;
+			
+				}
+			
+			return 0;	
+		} // end changeIconForEachFile()
+		<!----------------------------------------------------- My_append01  end ------------------------------------------------------>
+		
+		
+		
+		<!----------------------------------------------------- My_append03 ------------------------------------------------------>
+		// change the h1 and title to protect the private folder path.
+		
+		function RemovePathInfo(tag)
+		{
+			var titles = document.getElementsByTagName(tag);
+			//var titles = $(tag);
+			for (var index = 0 ; index < titles.length ; ++index)
+				titles[index].innerHTML = "SnapShot";
+				
+			return 0;
+		}
+		<!----------------------------------------------------- My_append03 end ----------------------------------------------------->
+			
 	</script>
 	
 	</head>
