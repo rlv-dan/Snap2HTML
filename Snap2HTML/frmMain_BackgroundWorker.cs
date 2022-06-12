@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using CommandLine.Utility;
 using System.IO;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Snap2HTML
 {
@@ -33,7 +31,7 @@ namespace Snap2HTML
 
 			// Calculate some stats
 			int totDirs = 0;
-			int totFiles = 0;
+			long totFiles = 0;
 			long totSize = 0;
 			foreach( var folder in content )
 			{
@@ -181,11 +179,7 @@ namespace Snap2HTML
 				{
 					// Get folder properties
 					var dirName = dirs[d];
-					var currentDir = new SnappedFolder( Path.GetFileName( dirName ), Path.GetDirectoryName( dirName ) );
-					if( dirName == Path.GetPathRoot( dirName ) )
-					{
-						currentDir = new SnappedFolder( "", dirName );
-					}
+					var currentDir = new SnappedFolder( Path.GetFileName( dirName ), Path.GetDirectoryName( dirName ) ?? dirName );
 
 					modified_date = "";
 					created_date = "";
@@ -349,38 +343,28 @@ namespace Snap2HTML
 
 			var lineBreakSymbol = "";	// Could be set to \n to make the html output more readable, at the expense of increased size
 
-			// Assign an ID to each folder. This is equal to the index in the JS data array
-			var dirIndexes = new Dictionary<string, string>();
-			for( var i = 0; i < content.Count; i++ )
-			{
-				dirIndexes.Add( content[i].GetFullPath(), ( i + startIndex ).ToString() );
-			}
-
 			// Build a lookup table with subfolder IDs for each folder
 			var subdirs = new Dictionary<string, List<string>>();
-			foreach( var dir in content )
+
+			foreach( var dirInfo in content.Select((value, index) => new { value.Name, value.Path, FullPath = value.GetFullPath(), Index = index + startIndex } ))
 			{
-				// add all folders as keys
-				subdirs.Add( dir.GetFullPath(), new List<string>() );
-			}
-			if( !subdirs.ContainsKey( content[0].Path ) && content[0].Name != "" )
-			{
-				// ensure that root folder is not missed missed
-				subdirs.Add( content[0].Path, new List<string>() );
-			}
-			foreach( var dir in content )
-			{
-				if( dir.Name != "" )
+				// for each folder, add its index to its parent folder list of subdirs
+				// The ID for each folder is equal to the index in the JS data array
+				if( subdirs.TryGetValue( dirInfo.Path, out var subfolderIds ) )
 				{
-					try
-					{
-						// for each folder, add its index to its parent folder list of subdirs
-						subdirs[dir.Path].Add( dirIndexes[dir.GetFullPath()] );
-					}
-					catch( Exception ex )
-					{
-						// orphan file or folder?
-					}
+					subfolderIds.Add( dirInfo.Index.ToString() );
+				}
+				else
+				{
+					// the root may not reference itself in the JS output
+					bool isDiskRoot = dirInfo.Name == string.Empty;
+					subdirs.Add( dirInfo.Path, isDiskRoot ? new List<string>() : new List<string>() { dirInfo.Index.ToString() } );
+				}
+
+				// all folders must exist as key, also those without children
+				if( !subdirs.ContainsKey( dirInfo.FullPath ) )
+				{
+					subdirs.Add( dirInfo.FullPath, new List<string>() );
 				}
 			}
 
