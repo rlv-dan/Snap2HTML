@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using CommandLine.Utility;
 using System.IO;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Snap2HTML
 {
-	public partial class frmMain : Form
+    public partial class frmMain : Form
 	{
 		// This runs on a separate thread from the GUI
 		private void backgroundWorker_DoWork( object sender, DoWorkEventArgs e )
@@ -349,13 +347,6 @@ namespace Snap2HTML
 
 			var lineBreakSymbol = "";	// Could be set to \n to make the html output more readable, at the expense of increased size
 
-			// Assign an ID to each folder. This is equal to the index in the JS data array
-			var dirIndexes = new Dictionary<string, string>();
-			for( var i = 0; i < content.Count; i++ )
-			{
-				dirIndexes.Add( content[i].GetFullPath(), ( i + startIndex ).ToString() );
-			}
-
 			// Build a lookup table with subfolder IDs for each folder
 			var subdirs = new Dictionary<string, List<string>>();
 			foreach( var dir in content )
@@ -368,14 +359,15 @@ namespace Snap2HTML
 				// ensure that root folder is not missed missed
 				subdirs.Add( content[0].Path, new List<string>() );
 			}
-			foreach( var dir in content )
+			foreach( var dirInfo in content.Select((value, index) => new { value.Name, value.Path, Index = index + startIndex } ))
 			{
-				if( dir.Name != "" )
+				if( dirInfo.Name != "" )
 				{
 					try
 					{
 						// for each folder, add its index to its parent folder list of subdirs
-						subdirs[dir.Path].Add( dirIndexes[dir.GetFullPath()] );
+                        // The ID for each folder is equal to the index in the JS data array
+						subdirs[dirInfo.Path].Add( dirInfo.Index.ToString() );
 					}
 					catch( Exception ex )
 					{
