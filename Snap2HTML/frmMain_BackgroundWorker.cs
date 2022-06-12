@@ -179,11 +179,7 @@ namespace Snap2HTML
 				{
 					// Get folder properties
 					var dirName = dirs[d];
-					var currentDir = new SnappedFolder( Path.GetFileName( dirName ), Path.GetDirectoryName( dirName ) );
-					if( dirName == Path.GetPathRoot( dirName ) )
-					{
-						currentDir = new SnappedFolder( "", dirName );
-					}
+					var currentDir = new SnappedFolder( Path.GetFileName( dirName ), Path.GetDirectoryName( dirName ) ?? dirName );
 
 					modified_date = "";
 					created_date = "";
