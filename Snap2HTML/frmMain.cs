@@ -151,7 +151,15 @@ namespace Snap2HTML
 
 		private void cmdBrowse_Click(object sender, EventArgs e)
         {
-			folderBrowserDialog1.RootFolder = Environment.SpecialFolder.Desktop;	// this makes it possible to select network paths too
+			folderBrowserDialog1.RootFolder = Environment.SpecialFolder.Desktop;    // this makes it possible to select network paths too
+
+			// Use the following registry key when some network shares do not show up in the dialog
+			// and reboot the system to apply the change.
+            //Windows Registry Editor Version 5.00
+
+            //[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
+            //         "EnableLinkedConnections" = dword:00000001
+
 			folderBrowserDialog1.SelectedPath = txtRoot.Text;
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
 			{
