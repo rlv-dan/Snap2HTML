@@ -31,7 +31,7 @@ namespace Snap2HTML
 
 			// Calculate some stats
 			int totDirs = 0;
-			int totFiles = 0;
+			long totFiles = 0;
 			long totSize = 0;
 			foreach( var folder in content )
 			{
