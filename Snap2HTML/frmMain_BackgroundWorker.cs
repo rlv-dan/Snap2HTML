@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Snap2HTML
 {
-    public partial class frmMain : Form
+	public partial class frmMain : Form
 	{
 		// This runs on a separate thread from the GUI
 		private void backgroundWorker_DoWork( object sender, DoWorkEventArgs e )

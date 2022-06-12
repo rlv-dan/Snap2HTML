@@ -118,9 +118,9 @@ namespace CommandLine.Utility
                         //Because of the split index 0 will be a empty string
                         string valuesWithoutQuotes = RemoveMatchingQuotes(parts[2]);
 
-						// MOD: Don't split on commas
+                        // MOD: Don't split on commas
                         //AddListValues(parts[1], valuesWithoutQuotes.Split(','));
-						Add( parts[1], valuesWithoutQuotes );
+                        Add( parts[1], valuesWithoutQuotes );
                         break;
                 }
             }

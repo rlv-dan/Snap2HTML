@@ -9,15 +9,15 @@ using CommandLine.Utility;
 
 namespace Snap2HTML
 {
-    public partial class frmMain : Form
-    {
+	public partial class frmMain : Form
+	{
 		private bool initDone = false;
 		private bool runningAutomated = false;
 
-        public frmMain()
-        {
-            InitializeComponent();
-        }
+		public frmMain()
+		{
+			InitializeComponent();
+		}
 
 		private void frmMain_Load( object sender, EventArgs e )
 		{
@@ -58,14 +58,14 @@ namespace Snap2HTML
 		}
 
 		private void frmMain_Shown( object sender, EventArgs e )
-        {
-            // parse command line
-            var commandLine = Environment.CommandLine;
+		{
+			// parse command line
+			var commandLine = Environment.CommandLine;
 			commandLine = commandLine.Replace( "-output:", "-outfile:" );	// correct wrong parameter to avoid confusion
-            var splitCommandLine = Arguments.SplitCommandLine(commandLine);
-            var arguments = new Arguments(splitCommandLine);
+			var splitCommandLine = Arguments.SplitCommandLine(commandLine);
+			var arguments = new Arguments(splitCommandLine);
 
-            // first test for single argument (ie path only)
+			// first test for single argument (ie path only)
 			if( splitCommandLine.Length == 2 && !arguments.Exists( "path" ) )
 			{
 				if( System.IO.Directory.Exists( splitCommandLine[1] ) )
@@ -76,7 +76,7 @@ namespace Snap2HTML
 
 			var settings = new SnapSettings();
 			if( arguments.Exists( "path" ) && arguments.Exists( "outfile" ) )
-            {
+			{
 				this.runningAutomated = true;
 
 				settings.rootFolder = arguments.Single( "path" );
@@ -119,7 +119,7 @@ namespace Snap2HTML
 					settings.title = arguments.Single( "title" );
 				}
 
-            }
+			}
 
 			// keep window hidden in silent mode
 			if( arguments.IsTrue( "silent" ) && this.runningAutomated )
@@ -135,7 +135,7 @@ namespace Snap2HTML
 			{
 				StartProcessing( settings );
 			}
-        }
+		}
 
 		private void frmMain_FormClosing( object sender, FormClosingEventArgs e )
 		{
@@ -150,18 +150,18 @@ namespace Snap2HTML
 		}
 
 		private void cmdBrowse_Click(object sender, EventArgs e)
-        {
+		{
 			folderBrowserDialog1.RootFolder = Environment.SpecialFolder.Desktop;    // this makes it possible to select network paths too
 
 			// Use the following registry key when some network shares do not show up in the dialog
 			// and reboot the system to apply the change.
-            //Windows Registry Editor Version 5.00
+			//Windows Registry Editor Version 5.00
 
-            //[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
-            //         "EnableLinkedConnections" = dword:00000001
+			//[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
+			//         "EnableLinkedConnections" = dword:00000001
 
 			folderBrowserDialog1.SelectedPath = txtRoot.Text;
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+			if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
 			{
 				try
 				{
@@ -172,10 +172,10 @@ namespace Snap2HTML
 					MessageBox.Show( "Could not select folder:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
 					SetRootPath( "", false );
 				}
-            }
-        }
+			}
+		}
 
-        private void cmdCreate_Click(object sender, EventArgs e)
+		private void cmdCreate_Click(object sender, EventArgs e)
 		{
 			// ask for output file
 			string fileName = new System.IO.DirectoryInfo( txtRoot.Text + @"\" ).Name;
@@ -185,13 +185,13 @@ namespace Snap2HTML
 				fileName = fileName.Replace(invalid[i].ToString(), "");
 			}
 
-            saveFileDialog1.DefaultExt = "html";
+			saveFileDialog1.DefaultExt = "html";
 			if( !fileName.ToLower().EndsWith( ".html" ) ) fileName += ".html";
 			saveFileDialog1.FileName = fileName;
 			saveFileDialog1.Filter = "HTML files (*.html)|*.html|All files (*.*)|*.*";
-            saveFileDialog1.InitialDirectory = System.IO.Path.GetDirectoryName(txtRoot.Text);
+			saveFileDialog1.InitialDirectory = System.IO.Path.GetDirectoryName(txtRoot.Text);
 			saveFileDialog1.CheckPathExists = true;
-            if (saveFileDialog1.ShowDialog() != DialogResult.OK) return;
+			if (saveFileDialog1.ShowDialog() != DialogResult.OK) return;
 
 			if( !saveFileDialog1.FileName.ToLower().EndsWith( ".html" ) ) saveFileDialog1.FileName += ".html";
 
@@ -264,13 +264,13 @@ namespace Snap2HTML
 			}
 		}
 
-        private void chkLinkFiles_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkLinkFiles.Checked == true)
-                txtLinkRoot.Enabled = true;
-            else
-                txtLinkRoot.Enabled = false;
-        }
+		private void chkLinkFiles_CheckedChanged(object sender, EventArgs e)
+		{
+			if (chkLinkFiles.Checked == true)
+				txtLinkRoot.Enabled = true;
+			else
+				txtLinkRoot.Enabled = false;
+		}
 
 		// Link Label handlers
 		private void linkLabel1_LinkClicked( object sender, LinkLabelLinkClickedEventArgs e )
@@ -368,5 +368,5 @@ namespace Snap2HTML
 			}
 		}
 
-    }
+	}
 }
