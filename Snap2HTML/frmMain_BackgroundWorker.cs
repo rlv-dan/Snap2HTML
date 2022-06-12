@@ -346,32 +346,25 @@ namespace Snap2HTML
 			// Build a lookup table with subfolder IDs for each folder
 			var subdirs = new Dictionary<string, List<string>>();
 
-			if( !subdirs.ContainsKey( content[0].Path ) && content[0].Name != "" )
-			{
-				// ensure that root folder is not missed missed
-				subdirs.Add( content[0].Path, new List<string>() );
-			}
-
 			foreach( var dirInfo in content.Select((value, index) => new { value.Name, value.Path, FullPath = value.GetFullPath(), Index = index + startIndex } ))
 			{
-				if( dirInfo.Name != "" )
+				// for each folder, add its index to its parent folder list of subdirs
+				// The ID for each folder is equal to the index in the JS data array
+				if( subdirs.TryGetValue( dirInfo.Path, out var subfolderIds ) )
 				{
-                    // for each folder, add its index to its parent folder list of subdirs
-                    // The ID for each folder is equal to the index in the JS data array
-                    if( subdirs.TryGetValue( dirInfo.Path, out var subfolderIds ) )
-                    {
-                        subfolderIds.Add( dirInfo.Index.ToString() );
-                    }
-                    else
-                    {
-                        subdirs.Add( dirInfo.Path, new List<string>() { dirInfo.Index.ToString() } );
-                    }
+					subfolderIds.Add( dirInfo.Index.ToString() );
+				}
+				else
+				{
+					// the root may not reference itself in the JS output
+					bool isDiskRoot = dirInfo.Name == string.Empty;
+					subdirs.Add( dirInfo.Path, isDiskRoot ? new List<string>() : new List<string>() { dirInfo.Index.ToString() } );
+				}
 
-					// all folders must exist as key, also those without children
-                    if( !subdirs.ContainsKey( dirInfo.FullPath ) )
-                    {
-                        subdirs.Add( dirInfo.FullPath, new List<string>() );
-                    }
+				// all folders must exist as key, also those without children
+				if( !subdirs.ContainsKey( dirInfo.FullPath ) )
+				{
+					subdirs.Add( dirInfo.FullPath, new List<string>() );
 				}
 			}
 
