@@ -365,7 +365,7 @@ namespace Snap2HTML
 			}
 			if( !subdirs.ContainsKey( content[0].Path ) && content[0].Name != "" )
 			{
-				// ensure that root folder is not missed missed
+				// ensure that root folder is not missed
 				subdirs.Add( content[0].Path, new List<string>() );
 			}
 			foreach( var dir in content )
