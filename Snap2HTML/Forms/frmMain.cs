@@ -305,26 +305,31 @@ namespace Snap2HTML
 		#region Drag & Drop
 		private void DragEnterHandler(object sender, DragEventArgs e)
 		{
-			if (e.Data.GetDataPresent(DataFormats.FileDrop))
-			{
-				e.Effect = DragDropEffects.Copy;
-			}
-			else
-			{
-				e.Effect = DragDropEffects.None;
-			}
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
 		}
 		private void DragDropHandler(object sender, DragEventArgs e)
 		{
-			if (e.Data.GetDataPresent(DataFormats.FileDrop))
-			{
-				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-				if (files.Length == 1 && Directory.Exists(files[0]))
-				{
-					SetRootPath(files[0]);
-				}
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+				var path = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
+
+				if(Directory.Exists(path))
+                {
+					txtRoot.Text = path;
+					toolStripStatusLabel1.Text = $"Set Root Path to {path}";
+                } else
+                {
+					toolStripStatusLabel1.Text = "Path does not exist or is invalid.";
+                }
 			}
-		}
+        }
 		#endregion
 
 		// Escape to cancel
