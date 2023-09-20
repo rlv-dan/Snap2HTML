@@ -22,3 +22,4 @@ This is some of the changes so far.
 
 - Search Pattern filtering on Scan
 - Writable Directory Path Textbox
+- Project upgraded to .NET Framework 4.8
