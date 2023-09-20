@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Snap2HTML
 {
+    [Obsolete("This class is obsolete, see Models.SnapSettings.cs", true)]
     public class SnapSettings
     {
         public string rootFolder { get; set; }
@@ -29,7 +28,7 @@ namespace Snap2HTML
         }
     }
 
-
+    [Obsolete("This class is obsolete, see Models.SnappedFile.cs", true)]
     public class SnappedFile
     {
         public SnappedFile(string name)
@@ -51,6 +50,7 @@ namespace Snap2HTML
 
     }
 
+    [Obsolete("This class is obsolete, see Models.SnappedFolder.cs", true)]
     public class SnappedFolder
     {
         public SnappedFolder(string name, string path)

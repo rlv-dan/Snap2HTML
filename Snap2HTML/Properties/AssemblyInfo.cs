@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Laim McKenzie")]
 [assembly: AssemblyProduct("Snap2HTML-NG")]
-[assembly: AssemblyCopyright("Copyright © RL Vision 2011-2020, Copyright © Laim McKenzie 2023")]
+[assembly: AssemblyCopyright("Copyright © RL Vision 2011-2020, Laim McKenzie 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

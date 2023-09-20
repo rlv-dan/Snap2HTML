@@ -72,7 +72,7 @@ namespace Snap2HTML
 				}
 			}
 
-			var settings = new SnapSettings();
+			var settings = new Model.SnapSettings();
 			if( arguments.Exists( "path" ) && arguments.Exists( "outfile" ) )
             {
 				this.runningAutomated = true;
@@ -189,7 +189,7 @@ namespace Snap2HTML
 				if (!saveFileDialog1.FileName.ToLower().EndsWith(".html")) saveFileDialog1.FileName += ".html";
 
 				// begin generating html
-				var settings = new SnapSettings()
+				var settings = new Model.SnapSettings()
 				{
 					rootFolder = txtRoot.Text,
 					title = txtTitle.Text,
@@ -206,7 +206,7 @@ namespace Snap2HTML
 			}
 		}
 
-		private void StartProcessing(SnapSettings settings)
+		private void StartProcessing(Model.SnapSettings settings)
 		{
 			// ensure source path format
 			settings.rootFolder = Path.GetFullPath( settings.rootFolder );

@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using CommandLine.Utility;
 using System.IO;
 using System.Diagnostics;
 
@@ -16,7 +13,7 @@ namespace Snap2HTML
 		// This runs on a separate thread from the GUI
 		private void backgroundWorker_DoWork( object sender, DoWorkEventArgs e )
 		{
-			var settings = (SnapSettings)e.Argument;
+			var settings = (Model.SnapSettings)e.Argument;
 
 			// Get files & folders
 			var content = GetContent( settings, backgroundWorker );
@@ -151,12 +148,12 @@ namespace Snap2HTML
 
 		// --- Helper functions (must be static to avoid thread problems) ---
 
-		private static List<SnappedFolder> GetContent( SnapSettings settings, BackgroundWorker bgWorker )
+		private static List<Model.SnappedFolder> GetContent(Model.SnapSettings settings, BackgroundWorker bgWorker )
 		{
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
 
-			var result = new List<SnappedFolder>();
+			var result = new List<Model.SnappedFolder>();
 
 			// Get all folders
 			var dirs = new List<string>();
@@ -183,10 +180,10 @@ namespace Snap2HTML
 				{
 					// Get folder properties
 					var dirName = dirs[d];
-					var currentDir = new SnappedFolder( Path.GetFileName( dirName ), Path.GetDirectoryName( dirName ) );
+					var currentDir = new Model.SnappedFolder( Path.GetFileName( dirName ), Path.GetDirectoryName( dirName ) );
 					if( dirName == Path.GetPathRoot( dirName ) )
 					{
-						currentDir = new SnappedFolder( "", dirName );
+						currentDir = new Model.SnappedFolder( "", dirName );
 					}
 
 					modified_date = "";
@@ -232,7 +229,7 @@ namespace Snap2HTML
 							return null;
 						}
 
-						var currentFile = new SnappedFile( Path.GetFileName( sFile ) );
+						var currentFile = new Model.SnappedFile( Path.GetFileName( sFile ) );
 						try
 						{
 							System.IO.FileInfo fi = new System.IO.FileInfo( sFile );
@@ -337,7 +334,7 @@ namespace Snap2HTML
 			}
 		}
 
-		private static void BuildJavascriptContentArray( List<SnappedFolder> content, int startIndex, StreamWriter writer, BackgroundWorker bgWorker )
+		private static void BuildJavascriptContentArray( List<Model.SnappedFolder> content, int startIndex, StreamWriter writer, BackgroundWorker bgWorker )
 		{
 			//  Data format:
 			//    Each index in "dirs" array is an array representing a directory:
