@@ -67,7 +67,7 @@ namespace Snap2HTML
 
 			// Build HTML
 			sbTemplate.Replace( "[TITLE]", settings.title );
-			sbTemplate.Replace( "[APP LINK]", "http://www.rlvision.com" );
+			sbTemplate.Replace( "[APP LINK]", "https://github.com/laim/Snap2HTML-NG");
 			sbTemplate.Replace( "[APP NAME]", Application.ProductName );
 			sbTemplate.Replace( "[APP VER]", Application.ProductVersion.Split( '.' )[0] + "." + Application.ProductVersion.Split( '.' )[1] );
 			sbTemplate.Replace( "[GEN TIME]", DateTime.Now.ToString( "t" ) );
@@ -75,6 +75,8 @@ namespace Snap2HTML
 			sbTemplate.Replace( "[NUM FILES]", totFiles.ToString() );
 			sbTemplate.Replace( "[NUM DIRS]", totDirs.ToString() );
 			sbTemplate.Replace( "[TOT SIZE]", totSize.ToString() );
+			sbTemplate.Replace("[SEARCH_PATTERN]", settings.searchPattern);
+
 			if( settings.linkFiles )
 			{
 				sbTemplate.Replace( "[LINK FILES]", "true" );
@@ -205,7 +207,7 @@ namespace Snap2HTML
 					List<string> files;
 					try
 					{
-						files = new List<string>( System.IO.Directory.GetFiles( dirName, "*.*", System.IO.SearchOption.TopDirectoryOnly ) );
+						files = new List<string>(Directory.GetFiles(dirName, settings.searchPattern, SearchOption.TopDirectoryOnly));
 					}
 					catch( Exception ex )
 					{

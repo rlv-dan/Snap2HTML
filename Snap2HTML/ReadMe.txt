@@ -1,3 +1,18 @@
+ --- Snap2HTML-NG 
+
+ Freeware by Laim McKenzie (c) 2023
+ Homepage: https://github.com/laim/snap2html-ng
+
+ Everything else below applies.
+
+ --- Snap2HTML-NG Version History
+ 	v2.15 (2023-09-20) 
+	(Snap2HTML-NG Version 1)
+		- Added Search Pattern to allow only certain file types to be returned
+		- Made Directory textbox Writable
+		- General Code Cleanup
+		- Added https into website check in StartProcessing(...)
+		- Updated Template to include SearchPattern
 
  --- Snap2HTML ----------------------------------------------------------------
  

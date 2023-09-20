@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
+using System.IO;
 using System.Windows.Forms;
 using CommandLine.Utility;
 
@@ -25,18 +22,18 @@ namespace Snap2HTML
 			labelAboutVersion.Text = "version " + Application.ProductVersion.Split( '.' )[0] + "." + Application.ProductVersion.Split( '.' )[1];
 
 			// initialize some settings
-			int left = Snap2HTML.Properties.Settings.Default.WindowLeft;
-			int top = Snap2HTML.Properties.Settings.Default.WindowTop;			
+			int left = Properties.Settings.Default.WindowLeft;
+			int top = Properties.Settings.Default.WindowTop;			
 			if( left >= 0 ) this.Left = left;
 			if( top >= 0 ) this.Top = top;
 
-			if( System.IO.Directory.Exists( txtRoot.Text ) )
+			if(Directory.Exists(txtRoot.Text))
 			{
-				SetRootPath( txtRoot.Text , true);
+				SetRootPath(txtRoot.Text);
 			}
 			else
 			{
-				SetRootPath( "" , false );
+				SetRootPath("");
 			}
 
 			txtLinkRoot.Enabled = chkLinkFiles.Checked;
@@ -45,6 +42,7 @@ namespace Snap2HTML
 			tabPage1.DragDrop += DragDropHandler;
 			tabPage1.DragEnter += DragEnterHandler;
 			tabPage1.AllowDrop = true;
+
 			foreach( Control cnt in tabPage1.Controls )
 			{
 				cnt.DragDrop += DragDropHandler;
@@ -68,7 +66,7 @@ namespace Snap2HTML
             // first test for single argument (ie path only)
 			if( splitCommandLine.Length == 2 && !arguments.Exists( "path" ) )
 			{
-				if( System.IO.Directory.Exists( splitCommandLine[1] ) )
+				if( Directory.Exists( splitCommandLine[1] ) )
 				{
 					SetRootPath( splitCommandLine[1] );
 				}
@@ -83,7 +81,7 @@ namespace Snap2HTML
 				settings.outputFile = arguments.Single( "outfile" );
 
 				// First validate paths
-				if( !System.IO.Directory.Exists( settings.rootFolder ) )
+				if(!Directory.Exists( settings.rootFolder ) )
 				{
 					if( !arguments.Exists( "silent" ) )
 					{
@@ -91,11 +89,11 @@ namespace Snap2HTML
 					}
 					Application.Exit();
 				}
-				if( !System.IO.Directory.Exists( System.IO.Path.GetDirectoryName(settings.outputFile) ) )
+				if(!Directory.Exists(Path.GetDirectoryName(settings.outputFile)))
 				{
 					if( !arguments.Exists( "silent" ) )
 					{
-						MessageBox.Show( "Output path does not exist: " + System.IO.Path.GetDirectoryName( settings.outputFile ), "Automation Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+						MessageBox.Show( "Output path does not exist: " + Path.GetDirectoryName( settings.outputFile ), "Automation Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
 					}
 					Application.Exit();
 				}
@@ -143,9 +141,9 @@ namespace Snap2HTML
 
 			if( !this.runningAutomated ) // don't save settings when automated through command line
 			{
-				Snap2HTML.Properties.Settings.Default.WindowLeft = this.Left;
-				Snap2HTML.Properties.Settings.Default.WindowTop = this.Top;
-				Snap2HTML.Properties.Settings.Default.Save();
+				Properties.Settings.Default.WindowLeft = this.Left;
+				Properties.Settings.Default.WindowTop = this.Top;
+				Properties.Settings.Default.Save();
 			}
 		}
 
@@ -153,59 +151,65 @@ namespace Snap2HTML
         {
 			folderBrowserDialog1.RootFolder = Environment.SpecialFolder.Desktop;	// this makes it possible to select network paths too
 			folderBrowserDialog1.SelectedPath = txtRoot.Text;
+
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
 			{
-				try
-				{
-					SetRootPath( folderBrowserDialog1.SelectedPath );
-				}
-				catch( System.Exception ex )
-				{
-					MessageBox.Show( "Could not select folder:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
-					SetRootPath( "", false );
-				}
+				txtRoot.Text = folderBrowserDialog1.SelectedPath;
             }
         }
 
         private void cmdCreate_Click(object sender, EventArgs e)
 		{
-			// ask for output file
-			string fileName = new System.IO.DirectoryInfo( txtRoot.Text + @"\" ).Name;
-			char[] invalid = System.IO.Path.GetInvalidFileNameChars();
-			for (int i = 0; i < invalid.Length; i++)
+			if (SetRootPath(txtRoot.Text))
 			{
-				fileName = fileName.Replace(invalid[i].ToString(), "");
+
+				// Check if the search pattern starts with an astrix or not
+				if(!txtSearchPattern.Text.StartsWith("*"))
+                {
+					string tmp = txtSearchPattern.Text;
+					txtSearchPattern.Text = $"*{txtSearchPattern.Text}";
+                }
+
+				// ask for output file
+				string fileName = new DirectoryInfo(txtRoot.Text + @"\").Name;
+				char[] invalid = Path.GetInvalidFileNameChars();
+				for (int i = 0; i < invalid.Length; i++)
+				{
+					fileName = fileName.Replace(invalid[i].ToString(), "");
+				}
+
+				saveFileDialog1.DefaultExt = "html";
+				if (!fileName.ToLower().EndsWith(".html")) fileName += ".html";
+				saveFileDialog1.FileName = fileName;
+				saveFileDialog1.Filter = "HTML files (*.html)|*.html|All files (*.*)|*.*";
+				saveFileDialog1.InitialDirectory = Path.GetDirectoryName(txtRoot.Text);
+				saveFileDialog1.CheckPathExists = true;
+				if (saveFileDialog1.ShowDialog() != DialogResult.OK) return;
+
+				if (!saveFileDialog1.FileName.ToLower().EndsWith(".html")) saveFileDialog1.FileName += ".html";
+
+				// begin generating html
+				var settings = new SnapSettings()
+				{
+					rootFolder = txtRoot.Text,
+					title = txtTitle.Text,
+					outputFile = saveFileDialog1.FileName,
+					skipHiddenItems = !chkHidden.Checked,
+					skipSystemItems = !chkSystem.Checked,
+					openInBrowser = chkOpenOutput.Checked,
+					linkFiles = chkLinkFiles.Checked,
+					linkRoot = txtLinkRoot.Text,
+					searchPattern = txtSearchPattern.Text,
+				};
+
+				StartProcessing(settings);
 			}
-
-            saveFileDialog1.DefaultExt = "html";
-			if( !fileName.ToLower().EndsWith( ".html" ) ) fileName += ".html";
-			saveFileDialog1.FileName = fileName;
-			saveFileDialog1.Filter = "HTML files (*.html)|*.html|All files (*.*)|*.*";
-            saveFileDialog1.InitialDirectory = System.IO.Path.GetDirectoryName(txtRoot.Text);
-			saveFileDialog1.CheckPathExists = true;
-            if (saveFileDialog1.ShowDialog() != DialogResult.OK) return;
-
-			if( !saveFileDialog1.FileName.ToLower().EndsWith( ".html" ) ) saveFileDialog1.FileName += ".html";
-
-			// begin generating html
-			var settings = new SnapSettings()
-			{
-				rootFolder = txtRoot.Text,
-				title = txtTitle.Text,
-				outputFile = saveFileDialog1.FileName,
-				skipHiddenItems = !chkHidden.Checked,
-				skipSystemItems = !chkSystem.Checked,
-				openInBrowser = chkOpenOutput.Checked,
-				linkFiles = chkLinkFiles.Checked,
-				linkRoot = txtLinkRoot.Text,
-			};
-			StartProcessing(settings);
 		}
 
 		private void StartProcessing(SnapSettings settings)
 		{
 			// ensure source path format
-			settings.rootFolder = System.IO.Path.GetFullPath( settings.rootFolder );
+			settings.rootFolder = Path.GetFullPath( settings.rootFolder );
 			if( settings.rootFolder.EndsWith( @"\" ) ) settings.rootFolder = settings.rootFolder.Substring( 0, settings.rootFolder.Length - 1 );
 			if( Utils.IsWildcardMatch( "?:", settings.rootFolder, false ) ) settings.rootFolder += @"\";	// add backslash to path if only letter and colon eg "c:"
 
@@ -214,7 +218,7 @@ namespace Snap2HTML
 			{
 				if( !settings.linkRoot.EndsWith( @"/" ) )
 				{
-					if( settings.linkRoot.ToLower().StartsWith( @"http" ) )	// web site
+					if( settings.linkRoot.ToLower().StartsWith(@"http") || settings.linkRoot.ToLower().StartsWith(@"https"))	// web site
 					{
 						settings.linkRoot += @"/";
 					}
@@ -265,35 +269,43 @@ namespace Snap2HTML
         }
 
 		// Link Label handlers
-		private void linkLabel1_LinkClicked( object sender, LinkLabelLinkClickedEventArgs e )
+		#region Link Label Handlers
+		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			System.Diagnostics.Process.Start( @"http://www.rlvision.com" );
+			System.Diagnostics.Process.Start(@"http://www.rlvision.com");
 		}
-		private void linkLabel3_LinkClicked( object sender, LinkLabelLinkClickedEventArgs e )
+		private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			System.Diagnostics.Process.Start( @"https://rlvision.com/exif/about.php" );
+			System.Diagnostics.Process.Start(@"https://rlvision.com/exif/about.php");
 		}
-		private void linkLabel2_LinkClicked( object sender, LinkLabelLinkClickedEventArgs e )
+		private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			System.Diagnostics.Process.Start( @"http://www.rlvision.com/flashren/about.php" );
+			System.Diagnostics.Process.Start(@"http://www.rlvision.com/flashren/about.php");
 		}
-		private void linkLabel4_LinkClicked( object sender, LinkLabelLinkClickedEventArgs e )
+		private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			System.Diagnostics.Process.Start( "notepad.exe", System.IO.Path.GetDirectoryName( Application.ExecutablePath ) + "\\template.html" );
+			System.Diagnostics.Process.Start("notepad.exe", Path.GetDirectoryName(Application.ExecutablePath) + "\\template.html");
 		}
-		private void linkLabel5_LinkClicked( object sender, LinkLabelLinkClickedEventArgs e )
+		private void linkLabel5_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			System.Diagnostics.Process.Start( @"http://www.rlvision.com/contact.php" );
+			System.Diagnostics.Process.Start(@"http://www.rlvision.com/contact.php");
 		}
-		private void pictureBoxDonate_Click( object sender, EventArgs e )
+		private void pictureBoxDonate_Click(object sender, EventArgs e)
 		{
-			System.Diagnostics.Process.Start( @"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=U3E4HE8HMY9Q4&item_name=Snap2HTML&currency_code=USD&source=url" );
+			System.Diagnostics.Process.Start(@"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=U3E4HE8HMY9Q4&item_name=Snap2HTML&currency_code=USD&source=url");
 		}
 
-		// Drag & Drop handlers
-		private void DragEnterHandler( object sender, DragEventArgs e )
+		private void linkLabelLaim_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			if( e.Data.GetDataPresent( DataFormats.FileDrop ) )
+			System.Diagnostics.Process.Start("https://github.com/laim");
+		}
+		#endregion
+
+		// Drag & Drop handlers
+		#region Drag & Drop
+		private void DragEnterHandler(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
 			{
 				e.Effect = DragDropEffects.Copy;
 			}
@@ -302,17 +314,18 @@ namespace Snap2HTML
 				e.Effect = DragDropEffects.None;
 			}
 		}
-		private void DragDropHandler( object sender, DragEventArgs e )
+		private void DragDropHandler(object sender, DragEventArgs e)
 		{
-			if( e.Data.GetDataPresent( DataFormats.FileDrop ) )
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
 			{
-				string[] files = (string[])e.Data.GetData( DataFormats.FileDrop );
-				if( files.Length == 1 && System.IO.Directory.Exists( files[0] ) )
+				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+				if (files.Length == 1 && Directory.Exists(files[0]))
 				{
-					SetRootPath( files[0] );
+					SetRootPath(files[0]);
 				}
 			}
 		}
+		#endregion
 
 		// Escape to cancel
 		private void frmMain_KeyUp( object sender, KeyEventArgs e )
@@ -328,37 +341,50 @@ namespace Snap2HTML
 			{
 				if( e.KeyCode == Keys.F1 )
 				{
-					System.Diagnostics.Process.Start( System.IO.Path.GetDirectoryName( Application.ExecutablePath ) + "\\ReadMe.txt" );
+					System.Diagnostics.Process.Start( Path.GetDirectoryName( Application.ExecutablePath ) + "\\ReadMe.txt" );
 				}
 			}
 		}
 
-		// Sets the root path input box and makes related gui parts ready to use
-		private void SetRootPath( string path, bool pathIsValid = true )
+		/// <summary>
+		/// Does some general UI related things and checks if the Path selected exists
+		/// </summary>
+		/// <param name="path">The path you want to scan</param>
+		/// <returns></returns>
+		private bool SetRootPath(string path)
 		{
-			if( pathIsValid )
-			{
-				txtRoot.Text = path;
-				cmdCreate.Enabled = true;
-				toolStripStatusLabel1.Text = "";
-				if( initDone )
+			try
+            {
+				if (Directory.Exists(path))
 				{
-					txtLinkRoot.Text = txtRoot.Text;
-					txtTitle.Text = "Snapshot of " + txtRoot.Text;
-				}
-			}
-			else
-			{
-				txtRoot.Text = "";
-				cmdCreate.Enabled = false;
-				toolStripStatusLabel1.Text = "";
-				if( initDone )
-				{
-					txtLinkRoot.Text = txtRoot.Text;
-					txtTitle.Text = "";
-				}
-			}
-		}
+					toolStripStatusLabel1.Text = "";
 
+					if (initDone)
+					{
+						txtLinkRoot.Text = txtRoot.Text;
+						txtTitle.Text = "Snapshot of " + txtRoot.Text;
+					}
+
+					return true;
+				}
+				else
+				{
+					toolStripStatusLabel1.Text = "Root path is invalid!";
+
+					if (initDone)
+					{
+						txtLinkRoot.Text = txtRoot.Text;
+						txtTitle.Text = "";
+					}
+
+					return false;
+				}
+			} catch (Exception ex)
+            {
+				MessageBox.Show("Could not select folder:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return false;
+			}
+
+		}
     }
 }

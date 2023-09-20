@@ -29,5 +29,8 @@
     <Setting Name="txtTitle" Provider="PortableSettingsProvider" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="txtSearchPattern" Type="System.String" Scope="User">
+      <Value Profile="(Default)">*.*</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
