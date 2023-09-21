@@ -145,9 +145,12 @@ namespace Snap2HTML
 			backgroundWorker.ReportProgress( 100, "Ready!" );
 		}
 
-
-		// --- Helper functions (must be static to avoid thread problems) ---
-
+		/// <summary>
+		/// Helper functions used by the Background Worker.  Must be STATIC to avoid Thread problems
+		/// </summary>
+		/// <param name="settings">Application Settings</param>
+		/// <param name="bgWorker">BackgroundWorker Instance</param>
+		/// <returns></returns>
 		private static List<Model.SnappedFolder> GetContent(Model.SnapSettings settings, BackgroundWorker bgWorker )
 		{
 			var stopwatch = new Stopwatch();
@@ -278,7 +281,15 @@ namespace Snap2HTML
 			return result;
 		}
 
-		// Recursive function to get all folders and subfolders of given path path
+		/// <summary>
+		/// Recursive Function to get all directories and sub directories of given path
+		/// </summary>
+		/// <param name="sDir">Master Directory</param>
+		/// <param name="lstDirs"></param>
+		/// <param name="skipHidden">true or false</param>
+		/// <param name="skipSystem">true or false</param>
+		/// <param name="stopwatch">Timer</param>
+		/// <param name="backgroundWorker">BackgroundWorker Instance</param>
 		private static void DirSearch( string sDir, List<string> lstDirs, bool skipHidden, bool skipSystem, Stopwatch stopwatch, BackgroundWorker backgroundWorker )
 		{
 			if( backgroundWorker.CancellationPending ) return;
@@ -334,6 +345,13 @@ namespace Snap2HTML
 			}
 		}
 
+		/// <summary>
+		/// Builds the data array for the template
+		/// </summary>
+		/// <param name="content">List of Directories per <see cref="Model.SnappedFolder"/>></param>
+		/// <param name="startIndex">Integer</param>
+		/// <param name="writer">StreamWriter</param>
+		/// <param name="bgWorker">BackgroundWorker Instance</param>
 		private static void BuildJavascriptContentArray( List<Model.SnappedFolder> content, int startIndex, StreamWriter writer, BackgroundWorker bgWorker )
 		{
 			//  Data format:
