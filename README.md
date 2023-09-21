@@ -19,11 +19,11 @@ It's up to you to decide what Snap2HTML-NG can be used for!
 
 WinForms application for generating the direcotry listings:
 
-[![Screenshot of Application](https://github.com/Laim/Snap2HTML-NG/assets/14845036/4d8915f7-7dbb-4994-8059-3942710f3f9b)]
+![Screenshot of Application](https://github.com/Laim/Snap2HTML-NG/assets/14845036/4d8915f7-7dbb-4994-8059-3942710f3f9b)
 
 The finished HTML app:
 
-[![Screenshot of HTML output](https://github.com/Laim/Snap2HTML-NG/assets/14845036/a7a1ed83-93e3-46e2-a40c-c9b31e2d8412)]
+![Screenshot of HTML output](https://github.com/Laim/Snap2HTML-NG/assets/14845036/a7a1ed83-93e3-46e2-a40c-c9b31e2d8412)
 
 ## Snap2HTML-NG Changes
 
