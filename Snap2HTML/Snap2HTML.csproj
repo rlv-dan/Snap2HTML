@@ -81,6 +81,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Model\Models.cs" />
+    <Compile Include="Model\SnappedFile.cs" />
+    <Compile Include="Model\SnappedFolder.cs" />
+    <Compile Include="Model\SnapSettings.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Providers\PortableSettingsProvider.cs" />
     <Compile Include="Program.cs" />
@@ -141,9 +144,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
-    <Content Include="ReadMe.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="template.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -72,7 +72,7 @@ namespace Snap2HTML
 				}
 			}
 
-			var settings = new SnapSettings();
+			var settings = new Model.SnapSettings();
 			if( arguments.Exists( "path" ) && arguments.Exists( "outfile" ) )
             {
 				this.runningAutomated = true;
@@ -189,7 +189,7 @@ namespace Snap2HTML
 				if (!saveFileDialog1.FileName.ToLower().EndsWith(".html")) saveFileDialog1.FileName += ".html";
 
 				// begin generating html
-				var settings = new SnapSettings()
+				var settings = new Model.SnapSettings()
 				{
 					rootFolder = txtRoot.Text,
 					title = txtTitle.Text,
@@ -206,7 +206,7 @@ namespace Snap2HTML
 			}
 		}
 
-		private void StartProcessing(SnapSettings settings)
+		private void StartProcessing(Model.SnapSettings settings)
 		{
 			// ensure source path format
 			settings.rootFolder = Path.GetFullPath( settings.rootFolder );
@@ -290,41 +290,47 @@ namespace Snap2HTML
 		{
 			System.Diagnostics.Process.Start(@"http://www.rlvision.com/contact.php");
 		}
-		private void pictureBoxDonate_Click(object sender, EventArgs e)
-		{
-			System.Diagnostics.Process.Start(@"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=U3E4HE8HMY9Q4&item_name=Snap2HTML&currency_code=USD&source=url");
-		}
 
 		private void linkLabelLaim_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			System.Diagnostics.Process.Start("https://github.com/laim");
+			System.Diagnostics.Process.Start("https://github.com/laim/Snap2HTML-NG");
 		}
-		#endregion
 
-		// Drag & Drop handlers
-		#region Drag & Drop
-		private void DragEnterHandler(object sender, DragEventArgs e)
+        private void linkLabelDonate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(@"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=U3E4HE8HMY9Q4&item_name=Snap2HTML&currency_code=USD&source=url");
+        }
+        #endregion
+
+        // Drag & Drop handlers
+        #region Drag & Drop
+        private void DragEnterHandler(object sender, DragEventArgs e)
 		{
-			if (e.Data.GetDataPresent(DataFormats.FileDrop))
-			{
-				e.Effect = DragDropEffects.Copy;
-			}
-			else
-			{
-				e.Effect = DragDropEffects.None;
-			}
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
 		}
 		private void DragDropHandler(object sender, DragEventArgs e)
 		{
-			if (e.Data.GetDataPresent(DataFormats.FileDrop))
-			{
-				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-				if (files.Length == 1 && Directory.Exists(files[0]))
-				{
-					SetRootPath(files[0]);
-				}
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+				var path = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
+
+				if(Directory.Exists(path))
+                {
+					txtRoot.Text = path;
+					toolStripStatusLabel1.Text = $"Set Root Path to {path}";
+                } else
+                {
+					toolStripStatusLabel1.Text = "Path does not exist or is invalid.";
+                }
 			}
-		}
+        }
 		#endregion
 
 		// Escape to cancel
@@ -341,7 +347,7 @@ namespace Snap2HTML
 			{
 				if( e.KeyCode == Keys.F1 )
 				{
-					System.Diagnostics.Process.Start( Path.GetDirectoryName( Application.ExecutablePath ) + "\\ReadMe.txt" );
+					System.Diagnostics.Process.Start("https://github.com/Laim/Snap2HTML-NG/blob/master/HELP.md");
 				}
 			}
 		}

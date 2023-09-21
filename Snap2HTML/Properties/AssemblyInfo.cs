@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Laim McKenzie")]
 [assembly: AssemblyProduct("Snap2HTML-NG")]
-[assembly: AssemblyCopyright("Copyright © RL Vision 2011-2020, Copyright © Laim McKenzie 2023")]
+[assembly: AssemblyCopyright("Copyright © RL Vision 2011-2020, Laim McKenzie 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.15.0.0")]
-[assembly: AssemblyFileVersion("2.15.0.0")]
+[assembly: AssemblyVersion("2.16.0.0")]
+[assembly: AssemblyFileVersion("2.16.0.0")]

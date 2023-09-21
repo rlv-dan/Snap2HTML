@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using CommandLine.Utility;
 using System.IO;
 using System.Diagnostics;
 
@@ -16,7 +13,7 @@ namespace Snap2HTML
 		// This runs on a separate thread from the GUI
 		private void backgroundWorker_DoWork( object sender, DoWorkEventArgs e )
 		{
-			var settings = (SnapSettings)e.Argument;
+			var settings = (Model.SnapSettings)e.Argument;
 
 			// Get files & folders
 			var content = GetContent( settings, backgroundWorker );
@@ -148,15 +145,18 @@ namespace Snap2HTML
 			backgroundWorker.ReportProgress( 100, "Ready!" );
 		}
 
-
-		// --- Helper functions (must be static to avoid thread problems) ---
-
-		private static List<SnappedFolder> GetContent( SnapSettings settings, BackgroundWorker bgWorker )
+		/// <summary>
+		/// Helper functions used by the Background Worker.  Must be STATIC to avoid Thread problems
+		/// </summary>
+		/// <param name="settings">Application Settings</param>
+		/// <param name="bgWorker">BackgroundWorker Instance</param>
+		/// <returns></returns>
+		private static List<Model.SnappedFolder> GetContent(Model.SnapSettings settings, BackgroundWorker bgWorker )
 		{
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
 
-			var result = new List<SnappedFolder>();
+			var result = new List<Model.SnappedFolder>();
 
 			// Get all folders
 			var dirs = new List<string>();
@@ -183,10 +183,10 @@ namespace Snap2HTML
 				{
 					// Get folder properties
 					var dirName = dirs[d];
-					var currentDir = new SnappedFolder( Path.GetFileName( dirName ), Path.GetDirectoryName( dirName ) );
+					var currentDir = new Model.SnappedFolder( Path.GetFileName( dirName ), Path.GetDirectoryName( dirName ) );
 					if( dirName == Path.GetPathRoot( dirName ) )
 					{
-						currentDir = new SnappedFolder( "", dirName );
+						currentDir = new Model.SnappedFolder( "", dirName );
 					}
 
 					modified_date = "";
@@ -232,7 +232,7 @@ namespace Snap2HTML
 							return null;
 						}
 
-						var currentFile = new SnappedFile( Path.GetFileName( sFile ) );
+						var currentFile = new Model.SnappedFile( Path.GetFileName( sFile ) );
 						try
 						{
 							System.IO.FileInfo fi = new System.IO.FileInfo( sFile );
@@ -281,7 +281,15 @@ namespace Snap2HTML
 			return result;
 		}
 
-		// Recursive function to get all folders and subfolders of given path path
+		/// <summary>
+		/// Recursive Function to get all directories and sub directories of given path
+		/// </summary>
+		/// <param name="sDir">Master Directory</param>
+		/// <param name="lstDirs"></param>
+		/// <param name="skipHidden">true or false</param>
+		/// <param name="skipSystem">true or false</param>
+		/// <param name="stopwatch">Timer</param>
+		/// <param name="backgroundWorker">BackgroundWorker Instance</param>
 		private static void DirSearch( string sDir, List<string> lstDirs, bool skipHidden, bool skipSystem, Stopwatch stopwatch, BackgroundWorker backgroundWorker )
 		{
 			if( backgroundWorker.CancellationPending ) return;
@@ -337,7 +345,14 @@ namespace Snap2HTML
 			}
 		}
 
-		private static void BuildJavascriptContentArray( List<SnappedFolder> content, int startIndex, StreamWriter writer, BackgroundWorker bgWorker )
+		/// <summary>
+		/// Builds the data array for the template
+		/// </summary>
+		/// <param name="content">List of Directories per <see cref="Model.SnappedFolder"/>></param>
+		/// <param name="startIndex">Integer</param>
+		/// <param name="writer">StreamWriter</param>
+		/// <param name="bgWorker">BackgroundWorker Instance</param>
+		private static void BuildJavascriptContentArray( List<Model.SnappedFolder> content, int startIndex, StreamWriter writer, BackgroundWorker bgWorker )
 		{
 			//  Data format:
 			//    Each index in "dirs" array is an array representing a directory:
