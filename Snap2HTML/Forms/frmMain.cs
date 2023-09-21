@@ -290,14 +290,10 @@ namespace Snap2HTML
 		{
 			System.Diagnostics.Process.Start(@"http://www.rlvision.com/contact.php");
 		}
-		private void pictureBoxDonate_Click(object sender, EventArgs e)
-		{
-			//System.Diagnostics.Process.Start(@"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=U3E4HE8HMY9Q4&item_name=Snap2HTML&currency_code=USD&source=url");
-		}
 
 		private void linkLabelLaim_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			System.Diagnostics.Process.Start("https://github.com/laim");
+			System.Diagnostics.Process.Start("https://github.com/laim/Snap2HTML-NG");
 		}
 
         private void linkLabelDonate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

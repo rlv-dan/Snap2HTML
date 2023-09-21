@@ -401,12 +401,14 @@
             // linkLabelDonate
             // 
             this.linkLabelDonate.AutoSize = true;
-            this.linkLabelDonate.Location = new System.Drawing.Point(3, 191);
+            this.linkLabelDonate.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.linkLabelDonate.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.linkLabelDonate.Location = new System.Drawing.Point(164, 102);
             this.linkLabelDonate.Name = "linkLabelDonate";
-            this.linkLabelDonate.Size = new System.Drawing.Size(181, 13);
+            this.linkLabelDonate.Size = new System.Drawing.Size(102, 13);
             this.linkLabelDonate.TabIndex = 9;
             this.linkLabelDonate.TabStop = true;
-            this.linkLabelDonate.Text = "Donate to RL Vision for Snap2HTML";
+            this.linkLabelDonate.Text = "Donate to RL Vision";
             this.linkLabelDonate.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelDonate_LinkClicked);
             // 
             // linkLabelLaim
@@ -414,18 +416,18 @@
             this.linkLabelLaim.AutoSize = true;
             this.linkLabelLaim.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabelLaim.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.linkLabelLaim.Location = new System.Drawing.Point(164, 123);
+            this.linkLabelLaim.Location = new System.Drawing.Point(164, 137);
             this.linkLabelLaim.Name = "linkLabelLaim";
-            this.linkLabelLaim.Size = new System.Drawing.Size(118, 13);
+            this.linkLabelLaim.Size = new System.Drawing.Size(136, 13);
             this.linkLabelLaim.TabIndex = 8;
             this.linkLabelLaim.TabStop = true;
-            this.linkLabelLaim.Text = "http://github.com/laim/";
+            this.linkLabelLaim.Text = "Snap2HTML-NG on Github";
             this.linkLabelLaim.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelLaim_LinkClicked);
             // 
             // lblLaimAbout
             // 
             this.lblLaimAbout.AutoSize = true;
-            this.lblLaimAbout.Location = new System.Drawing.Point(164, 110);
+            this.lblLaimAbout.Location = new System.Drawing.Point(164, 124);
             this.lblLaimAbout.Name = "lblLaimAbout";
             this.lblLaimAbout.Size = new System.Drawing.Size(126, 13);
             this.lblLaimAbout.TabIndex = 7;
@@ -560,9 +562,9 @@
             this.labelAboutSoftware.AutoSize = true;
             this.labelAboutSoftware.Location = new System.Drawing.Point(164, 73);
             this.labelAboutSoftware.Name = "labelAboutSoftware";
-            this.labelAboutSoftware.Size = new System.Drawing.Size(135, 13);
+            this.labelAboutSoftware.Size = new System.Drawing.Size(130, 13);
             this.labelAboutSoftware.TabIndex = 2;
-            this.labelAboutSoftware.Text = "Free Software by RL Vision";
+            this.labelAboutSoftware.Text = "Snap2HTML by RL Vision";
             // 
             // labelAboutVersion
             // 

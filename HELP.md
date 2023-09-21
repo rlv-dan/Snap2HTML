@@ -1,13 +1,22 @@
 # Search
 The built in search box accepts the following modifiers:
 
-    Wildcards * and ? can be used. * matches zero or more characters. ? matches
-    exactly one character.
+Wildcards \* and ? can be used. \* matches zero or more characters. ? matches exactly one character.
 
-    Prefix your search with > to search only the current folder. >> searches 
-    the current folder and its sub folders.
+Prefix your search with > to search only the current folder. >> searches the current folder and its sub folders.
  
-**Tip**: Search for * to list all files. This is especially useful together with the export functionality to get all data out of the html file.
+**Tip**: Search for \* to list all files. This is especially useful together with the export functionality to get all data out of the html file.
+
+# Search Pattern
+The Search Pattern in the GUI is a new feature to Snap2HTML-NG.  This allows you to only pull files that match a certain cirteria.  Similar to the Search function in the HTML file;
+
+Wildcards \* and ? can be used.  \* matches zero or more characters in that position.  ? matches exactly one character in that position.
+
+Characters other than the wildcard are literal characters.  The Search Pattern "\*w" searches for all file names in the path ending with the letter "W".  The Search Pattern "l\*" searches for all file names beginning with the letter "L".
+
+Note due to how .NET Framework is designed, if you use an aserisk wild card for specifying file types, such as "\*.mp4", this will return files with extensions that match and _begin_ with mp4.  If you use the ? wildcard somewhere within the search pattern, it will resolve this issue.
+
+For example using "\*.txt" will return "\*.txt, \*.txtt" etc.
 
 # File Linking
 
