@@ -1,0 +1,2 @@
+# EULA
+RL Vision in case of Snap2HTML, or Laim McKenzie in case of Snap2HTML-NG, can not be held responsible for any damages whatsoever, direct or indirect, caused by this software or other material from RL Vision in case of Snap2HTML, or Laim McKenzie in case of Snap2HTML-NG.

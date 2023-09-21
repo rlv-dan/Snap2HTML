@@ -346,7 +346,7 @@ namespace Snap2HTML
 			{
 				if( e.KeyCode == Keys.F1 )
 				{
-					System.Diagnostics.Process.Start( Path.GetDirectoryName( Application.ExecutablePath ) + "\\ReadMe.txt" );
+					System.Diagnostics.Process.Start("https://github.com/Laim/Snap2HTML-NG/blob/master/HELP.md");
 				}
 			}
 		}
