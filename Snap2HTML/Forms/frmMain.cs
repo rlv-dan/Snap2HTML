@@ -292,18 +292,23 @@ namespace Snap2HTML
 		}
 		private void pictureBoxDonate_Click(object sender, EventArgs e)
 		{
-			System.Diagnostics.Process.Start(@"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=U3E4HE8HMY9Q4&item_name=Snap2HTML&currency_code=USD&source=url");
+			//System.Diagnostics.Process.Start(@"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=U3E4HE8HMY9Q4&item_name=Snap2HTML&currency_code=USD&source=url");
 		}
 
 		private void linkLabelLaim_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
 			System.Diagnostics.Process.Start("https://github.com/laim");
 		}
-		#endregion
 
-		// Drag & Drop handlers
-		#region Drag & Drop
-		private void DragEnterHandler(object sender, DragEventArgs e)
+        private void linkLabelDonate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(@"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=U3E4HE8HMY9Q4&item_name=Snap2HTML&currency_code=USD&source=url");
+        }
+        #endregion
+
+        // Drag & Drop handlers
+        #region Drag & Drop
+        private void DragEnterHandler(object sender, DragEventArgs e)
 		{
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
