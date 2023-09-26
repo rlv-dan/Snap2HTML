@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
 using Snap2HTMLNG.Shared.Utils;
+using Snap2HTMLNG.Shared.Models;
 
 namespace Snap2HTMLNG
 {
@@ -152,12 +153,12 @@ namespace Snap2HTMLNG
         /// <param name="settings">Application Settings</param>
         /// <param name="bgWorker">BackgroundWorker Instance</param>
         /// <returns></returns>
-        private static List<Model.SnappedFolder> GetContent(Model.SnapSettings settings, BackgroundWorker bgWorker)
+        private static List<SnappedFolder> GetContent(Model.SnapSettings settings, BackgroundWorker bgWorker)
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            var result = new List<Model.SnappedFolder>();
+            var result = new List<SnappedFolder>();
 
             // Get all folders
             var dirs = new List<string>();
@@ -184,10 +185,10 @@ namespace Snap2HTMLNG
                 {
                     // Get folder properties
                     var dirName = dirs[d];
-                    var currentDir = new Model.SnappedFolder(Path.GetFileName(dirName), Path.GetDirectoryName(dirName));
+                    var currentDir = new SnappedFolder(Path.GetFileName(dirName), Path.GetDirectoryName(dirName));
                     if (dirName == Path.GetPathRoot(dirName))
                     {
-                        currentDir = new Model.SnappedFolder("", dirName);
+                        currentDir = new SnappedFolder("", dirName);
                     }
 
                     modified_date = "";
@@ -233,7 +234,7 @@ namespace Snap2HTMLNG
                             return null;
                         }
 
-                        var currentFile = new Model.SnappedFile(Path.GetFileName(sFile));
+                        var currentFile = new SnappedFile(Path.GetFileName(sFile));
                         try
                         {
                             System.IO.FileInfo fi = new System.IO.FileInfo(sFile);
@@ -353,7 +354,7 @@ namespace Snap2HTMLNG
         /// <param name="startIndex">Integer</param>
         /// <param name="writer">StreamWriter</param>
         /// <param name="bgWorker">BackgroundWorker Instance</param>
-        private static void BuildJavascriptContentArray(List<Model.SnappedFolder> content, int startIndex, StreamWriter writer, BackgroundWorker bgWorker)
+        private static void BuildJavascriptContentArray(List<SnappedFolder> content, int startIndex, StreamWriter writer, BackgroundWorker bgWorker)
         {
             //  Data format:
             //    Each index in "dirs" array is an array representing a directory:
