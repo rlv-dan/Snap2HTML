@@ -32,8 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabCtrl = new System.Windows.Forms.TabControl();
+            this.tabSnapshot = new System.Windows.Forms.TabPage();
             this.txtSearchPattern = new System.Windows.Forms.TextBox();
             this.lblSearchPattern = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -48,14 +48,14 @@
             this.txtRoot = new System.Windows.Forms.TextBox();
             this.labelRootFolder = new System.Windows.Forms.Label();
             this.cmdBrowse = new System.Windows.Forms.Button();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tabCustomDesign = new System.Windows.Forms.TabPage();
             this.linkLabel5 = new System.Windows.Forms.LinkLabel();
             this.linkLabel4 = new System.Windows.Forms.LinkLabel();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabAbout = new System.Windows.Forms.TabPage();
             this.linkLabelDonate = new System.Windows.Forms.LinkLabel();
             this.linkLabelLaim = new System.Windows.Forms.LinkLabel();
             this.lblLaimAbout = new System.Windows.Forms.Label();
@@ -78,11 +78,11 @@
             this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.statusStrip1.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage3.SuspendLayout();
+            this.tabCtrl.SuspendLayout();
+            this.tabSnapshot.SuspendLayout();
+            this.tabCustomDesign.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
-            this.tabPage2.SuspendLayout();
+            this.tabAbout.SuspendLayout();
             this.groupBoxMoreApps.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -106,44 +106,44 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(162, 17);
             this.toolStripStatusLabel1.Text = "Select a root folder to begin...";
             // 
-            // tabControl1
+            // tabCtrl
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.tabCtrl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(8, 8);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(338, 376);
-            this.tabControl1.TabIndex = 0;
+            this.tabCtrl.Controls.Add(this.tabSnapshot);
+            this.tabCtrl.Controls.Add(this.tabCustomDesign);
+            this.tabCtrl.Controls.Add(this.tabAbout);
+            this.tabCtrl.Location = new System.Drawing.Point(8, 8);
+            this.tabCtrl.Name = "tabCtrl";
+            this.tabCtrl.SelectedIndex = 0;
+            this.tabCtrl.Size = new System.Drawing.Size(338, 376);
+            this.tabCtrl.TabIndex = 0;
             // 
-            // tabPage1
+            // tabSnapshot
             // 
-            this.tabPage1.Controls.Add(this.txtSearchPattern);
-            this.tabPage1.Controls.Add(this.lblSearchPattern);
-            this.tabPage1.Controls.Add(this.label2);
-            this.tabPage1.Controls.Add(this.txtTitle);
-            this.tabPage1.Controls.Add(this.label6);
-            this.tabPage1.Controls.Add(this.chkOpenOutput);
-            this.tabPage1.Controls.Add(this.txtLinkRoot);
-            this.tabPage1.Controls.Add(this.chkLinkFiles);
-            this.tabPage1.Controls.Add(this.chkHidden);
-            this.tabPage1.Controls.Add(this.chkSystem);
-            this.tabPage1.Controls.Add(this.cmdCreate);
-            this.tabPage1.Controls.Add(this.txtRoot);
-            this.tabPage1.Controls.Add(this.labelRootFolder);
-            this.tabPage1.Controls.Add(this.cmdBrowse);
-            this.tabPage1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(330, 350);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Snapshot";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabSnapshot.Controls.Add(this.txtSearchPattern);
+            this.tabSnapshot.Controls.Add(this.lblSearchPattern);
+            this.tabSnapshot.Controls.Add(this.label2);
+            this.tabSnapshot.Controls.Add(this.txtTitle);
+            this.tabSnapshot.Controls.Add(this.label6);
+            this.tabSnapshot.Controls.Add(this.chkOpenOutput);
+            this.tabSnapshot.Controls.Add(this.txtLinkRoot);
+            this.tabSnapshot.Controls.Add(this.chkLinkFiles);
+            this.tabSnapshot.Controls.Add(this.chkHidden);
+            this.tabSnapshot.Controls.Add(this.chkSystem);
+            this.tabSnapshot.Controls.Add(this.cmdCreate);
+            this.tabSnapshot.Controls.Add(this.txtRoot);
+            this.tabSnapshot.Controls.Add(this.labelRootFolder);
+            this.tabSnapshot.Controls.Add(this.cmdBrowse);
+            this.tabSnapshot.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabSnapshot.Location = new System.Drawing.Point(4, 22);
+            this.tabSnapshot.Name = "tabSnapshot";
+            this.tabSnapshot.Padding = new System.Windows.Forms.Padding(3);
+            this.tabSnapshot.Size = new System.Drawing.Size(330, 350);
+            this.tabSnapshot.TabIndex = 0;
+            this.tabSnapshot.Text = "Snapshot";
+            this.tabSnapshot.UseVisualStyleBackColor = true;
             // 
             // txtSearchPattern
             // 
@@ -299,21 +299,21 @@
             this.cmdBrowse.UseVisualStyleBackColor = true;
             this.cmdBrowse.Click += new System.EventHandler(this.cmdBrowse_Click);
             // 
-            // tabPage3
+            // tabCustomDesign
             // 
-            this.tabPage3.Controls.Add(this.linkLabel5);
-            this.tabPage3.Controls.Add(this.linkLabel4);
-            this.tabPage3.Controls.Add(this.label8);
-            this.tabPage3.Controls.Add(this.label7);
-            this.tabPage3.Controls.Add(this.pictureBox4);
-            this.tabPage3.Controls.Add(this.label4);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(330, 350);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Custom Design";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.tabCustomDesign.Controls.Add(this.linkLabel5);
+            this.tabCustomDesign.Controls.Add(this.linkLabel4);
+            this.tabCustomDesign.Controls.Add(this.label8);
+            this.tabCustomDesign.Controls.Add(this.label7);
+            this.tabCustomDesign.Controls.Add(this.pictureBox4);
+            this.tabCustomDesign.Controls.Add(this.label4);
+            this.tabCustomDesign.Location = new System.Drawing.Point(4, 22);
+            this.tabCustomDesign.Name = "tabCustomDesign";
+            this.tabCustomDesign.Padding = new System.Windows.Forms.Padding(3);
+            this.tabCustomDesign.Size = new System.Drawing.Size(330, 350);
+            this.tabCustomDesign.TabIndex = 2;
+            this.tabCustomDesign.Text = "Custom Design";
+            this.tabCustomDesign.UseVisualStyleBackColor = true;
             // 
             // linkLabel5
             // 
@@ -379,24 +379,24 @@
     "ile? For example you might want to change the logo and colors to match your comp" +
     "any\'s.";
             // 
-            // tabPage2
+            // tabAbout
             // 
-            this.tabPage2.Controls.Add(this.linkLabelDonate);
-            this.tabPage2.Controls.Add(this.linkLabelLaim);
-            this.tabPage2.Controls.Add(this.lblLaimAbout);
-            this.tabPage2.Controls.Add(this.groupBoxMoreApps);
-            this.tabPage2.Controls.Add(this.pictureBox1);
-            this.tabPage2.Controls.Add(this.linkLabel1);
-            this.tabPage2.Controls.Add(this.labelAboutSoftware);
-            this.tabPage2.Controls.Add(this.labelAboutVersion);
-            this.tabPage2.Controls.Add(this.labelAboutTitle);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(330, 350);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "About";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.tabAbout.Controls.Add(this.linkLabelDonate);
+            this.tabAbout.Controls.Add(this.linkLabelLaim);
+            this.tabAbout.Controls.Add(this.lblLaimAbout);
+            this.tabAbout.Controls.Add(this.groupBoxMoreApps);
+            this.tabAbout.Controls.Add(this.pictureBox1);
+            this.tabAbout.Controls.Add(this.linkLabel1);
+            this.tabAbout.Controls.Add(this.labelAboutSoftware);
+            this.tabAbout.Controls.Add(this.labelAboutVersion);
+            this.tabAbout.Controls.Add(this.labelAboutTitle);
+            this.tabAbout.Location = new System.Drawing.Point(4, 22);
+            this.tabAbout.Name = "tabAbout";
+            this.tabAbout.Padding = new System.Windows.Forms.Padding(3);
+            this.tabAbout.Size = new System.Drawing.Size(330, 350);
+            this.tabAbout.TabIndex = 1;
+            this.tabAbout.Text = "About";
+            this.tabAbout.UseVisualStyleBackColor = true;
             // 
             // linkLabelDonate
             // 
@@ -604,7 +604,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(354, 413);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.tabCtrl);
             this.Controls.Add(this.statusStrip1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -621,14 +621,14 @@
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyUp);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
+            this.tabCtrl.ResumeLayout(false);
+            this.tabSnapshot.ResumeLayout(false);
+            this.tabSnapshot.PerformLayout();
+            this.tabCustomDesign.ResumeLayout(false);
+            this.tabCustomDesign.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
+            this.tabAbout.ResumeLayout(false);
+            this.tabAbout.PerformLayout();
             this.groupBoxMoreApps.ResumeLayout(false);
             this.groupBoxMoreApps.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
@@ -643,12 +643,12 @@
 
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabControl tabCtrl;
+        private System.Windows.Forms.TabPage tabSnapshot;
         private System.Windows.Forms.TextBox txtRoot;
         private System.Windows.Forms.Label labelRootFolder;
         private System.Windows.Forms.Button cmdBrowse;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabAbout;
         private System.Windows.Forms.Button cmdCreate;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
@@ -676,7 +676,7 @@
 		private System.Windows.Forms.Label label11;
 		private System.Windows.Forms.PictureBox pictureBox3;
 		private System.Windows.Forms.PictureBox pictureBox2;
-		private System.Windows.Forms.TabPage tabPage3;
+		private System.Windows.Forms.TabPage tabCustomDesign;
 		private System.Windows.Forms.LinkLabel linkLabel4;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.PictureBox pictureBox4;

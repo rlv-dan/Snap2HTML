@@ -18,14 +18,14 @@ namespace Snap2HTMLNG
 
 		private void frmMain_Load( object sender, EventArgs e )
 		{
-			this.Text = Application.ProductName + " (Press F1 for Help)";
+			Text = Application.ProductName + " (Press F1 for Help)";
 			labelAboutVersion.Text = "version " + Application.ProductVersion.Split( '.' )[0] + "." + Application.ProductVersion.Split( '.' )[1];
 
 			// initialize some settings
 			int left = Properties.Settings.Default.WindowLeft;
 			int top = Properties.Settings.Default.WindowTop;			
-			if( left >= 0 ) this.Left = left;
-			if( top >= 0 ) this.Top = top;
+			if( left >= 0 ) Left = left;
+			if( top >= 0 ) Top = top;
 
 			if(Directory.Exists(txtRoot.Text))
 			{
@@ -39,11 +39,11 @@ namespace Snap2HTMLNG
 			txtLinkRoot.Enabled = chkLinkFiles.Checked;
 
 			// setup drag & drop handlers
-			tabPage1.DragDrop += DragDropHandler;
-			tabPage1.DragEnter += DragEnterHandler;
-			tabPage1.AllowDrop = true;
+			tabSnapshot.DragDrop += DragDropHandler;
+			tabSnapshot.DragEnter += DragEnterHandler;
+			tabSnapshot.AllowDrop = true;
 
-			foreach( Control cnt in tabPage1.Controls )
+			foreach( Control cnt in tabSnapshot.Controls )
 			{
 				cnt.DragDrop += DragDropHandler;
 				cnt.DragEnter += DragEnterHandler;
@@ -235,7 +235,7 @@ namespace Snap2HTMLNG
 
 			Cursor.Current = Cursors.WaitCursor;
 			this.Text = "Snap2HTML (Working... Press Escape to Cancel)";
-			tabControl1.Enabled = false;
+			tabCtrl.Enabled = false;
 			backgroundWorker.RunWorkerAsync( argument: settings );
 		}
 
@@ -250,7 +250,7 @@ namespace Snap2HTMLNG
 			GC.WaitForPendingFinalizers();
 
 			Cursor.Current = Cursors.Default;
-			tabControl1.Enabled = true;
+			tabCtrl.Enabled = true;
 			this.Text = "Snap2HTML";
 
 			// Quit when finished if automated via command line
