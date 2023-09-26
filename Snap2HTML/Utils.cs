@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Snap2HTML
+namespace Snap2HTMLNG
 {
 	class Utils
 	{

@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
 
-namespace Snap2HTML
+namespace Snap2HTMLNG
 {
 	public partial class frmMain : Form
 	{

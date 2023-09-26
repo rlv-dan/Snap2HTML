@@ -8,7 +8,7 @@
     <ProjectGuid>{04CDFDC2-534E-443D-B75D-A7A0F19B4008}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Snap2HTML</RootNamespace>
+    <RootNamespace>Snap2HTMLNG</RootNamespace>
     <AssemblyName>Snap2HTML-NG</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

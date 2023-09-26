@@ -1,4 +1,4 @@
-﻿namespace Snap2HTML
+﻿namespace Snap2HTMLNG
 {
     partial class frmMain
     {
@@ -147,12 +147,12 @@
             // 
             // txtSearchPattern
             // 
-            this.txtSearchPattern.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Snap2HTML.Properties.Settings.Default, "txtSearchPattern", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.txtSearchPattern.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Snap2HTMLNG.Properties.Settings.Default, "txtSearchPattern", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.txtSearchPattern.Location = new System.Drawing.Point(23, 233);
             this.txtSearchPattern.Name = "txtSearchPattern";
             this.txtSearchPattern.Size = new System.Drawing.Size(300, 20);
             this.txtSearchPattern.TabIndex = 20;
-            this.txtSearchPattern.Text = global::Snap2HTML.Properties.Settings.Default.txtSearchPattern;
+            this.txtSearchPattern.Text = global::Snap2HTMLNG.Properties.Settings.Default.txtSearchPattern;
             this.toolTip1.SetToolTip(this.txtSearchPattern, "This is the target files will be linked to. See ReadMe.txt for examples of how to" +
         " make links");
             // 
@@ -174,12 +174,12 @@
             // 
             // txtTitle
             // 
-            this.txtTitle.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Snap2HTML.Properties.Settings.Default, "txtTitle", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.txtTitle.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Snap2HTMLNG.Properties.Settings.Default, "txtTitle", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.txtTitle.Location = new System.Drawing.Point(23, 130);
             this.txtTitle.Name = "txtTitle";
             this.txtTitle.Size = new System.Drawing.Size(300, 20);
             this.txtTitle.TabIndex = 4;
-            this.txtTitle.Text = global::Snap2HTML.Properties.Settings.Default.txtTitle;
+            this.txtTitle.Text = global::Snap2HTMLNG.Properties.Settings.Default.txtTitle;
             this.toolTip1.SetToolTip(this.txtTitle, "Set the html page title");
             // 
             // label6
@@ -194,8 +194,8 @@
             // 
             this.chkOpenOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chkOpenOutput.AutoSize = true;
-            this.chkOpenOutput.Checked = global::Snap2HTML.Properties.Settings.Default.chkOpenOutput;
-            this.chkOpenOutput.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Snap2HTML.Properties.Settings.Default, "chkOpenOutput", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.chkOpenOutput.Checked = global::Snap2HTMLNG.Properties.Settings.Default.chkOpenOutput;
+            this.chkOpenOutput.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Snap2HTMLNG.Properties.Settings.Default, "chkOpenOutput", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.chkOpenOutput.Location = new System.Drawing.Point(160, 325);
             this.chkOpenOutput.Name = "chkOpenOutput";
             this.chkOpenOutput.Size = new System.Drawing.Size(161, 17);
@@ -205,20 +205,20 @@
             // 
             // txtLinkRoot
             // 
-            this.txtLinkRoot.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Snap2HTML.Properties.Settings.Default, "txtLinkRoot", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.txtLinkRoot.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Snap2HTMLNG.Properties.Settings.Default, "txtLinkRoot", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.txtLinkRoot.Location = new System.Drawing.Point(23, 182);
             this.txtLinkRoot.Name = "txtLinkRoot";
             this.txtLinkRoot.Size = new System.Drawing.Size(300, 20);
             this.txtLinkRoot.TabIndex = 6;
-            this.txtLinkRoot.Text = global::Snap2HTML.Properties.Settings.Default.txtLinkRoot;
+            this.txtLinkRoot.Text = global::Snap2HTMLNG.Properties.Settings.Default.txtLinkRoot;
             this.toolTip1.SetToolTip(this.txtLinkRoot, "This is the target files will be linked to. See ReadMe.txt for examples of how to" +
         " make links");
             // 
             // chkLinkFiles
             // 
             this.chkLinkFiles.AutoSize = true;
-            this.chkLinkFiles.Checked = global::Snap2HTML.Properties.Settings.Default.chkLinkFiles;
-            this.chkLinkFiles.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Snap2HTML.Properties.Settings.Default, "chkLinkFiles", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.chkLinkFiles.Checked = global::Snap2HTMLNG.Properties.Settings.Default.chkLinkFiles;
+            this.chkLinkFiles.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Snap2HTMLNG.Properties.Settings.Default, "chkLinkFiles", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.chkLinkFiles.Location = new System.Drawing.Point(264, 162);
             this.chkLinkFiles.Name = "chkLinkFiles";
             this.chkLinkFiles.Size = new System.Drawing.Size(59, 17);
@@ -231,8 +231,8 @@
             // chkHidden
             // 
             this.chkHidden.AutoSize = true;
-            this.chkHidden.Checked = global::Snap2HTML.Properties.Settings.Default.chkHidden;
-            this.chkHidden.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Snap2HTML.Properties.Settings.Default, "chkHidden", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.chkHidden.Checked = global::Snap2HTMLNG.Properties.Settings.Default.chkHidden;
+            this.chkHidden.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Snap2HTMLNG.Properties.Settings.Default, "chkHidden", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.chkHidden.Location = new System.Drawing.Point(23, 62);
             this.chkHidden.Name = "chkHidden";
             this.chkHidden.Size = new System.Drawing.Size(123, 17);
@@ -244,8 +244,8 @@
             // chkSystem
             // 
             this.chkSystem.AutoSize = true;
-            this.chkSystem.Checked = global::Snap2HTML.Properties.Settings.Default.chkSystem;
-            this.chkSystem.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Snap2HTML.Properties.Settings.Default, "chkSystem", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.chkSystem.Checked = global::Snap2HTMLNG.Properties.Settings.Default.chkSystem;
+            this.chkSystem.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Snap2HTMLNG.Properties.Settings.Default, "chkSystem", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.chkSystem.Location = new System.Drawing.Point(23, 85);
             this.chkSystem.Name = "chkSystem";
             this.chkSystem.Size = new System.Drawing.Size(123, 17);
@@ -271,12 +271,12 @@
             // 
             // txtRoot
             // 
-            this.txtRoot.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Snap2HTML.Properties.Settings.Default, "txtRoot", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.txtRoot.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Snap2HTMLNG.Properties.Settings.Default, "txtRoot", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.txtRoot.Location = new System.Drawing.Point(23, 36);
             this.txtRoot.Name = "txtRoot";
             this.txtRoot.Size = new System.Drawing.Size(266, 20);
             this.txtRoot.TabIndex = 0;
-            this.txtRoot.Text = global::Snap2HTML.Properties.Settings.Default.txtRoot;
+            this.txtRoot.Text = global::Snap2HTMLNG.Properties.Settings.Default.txtRoot;
             // 
             // labelRootFolder
             // 

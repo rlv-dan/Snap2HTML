@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Snap2HTML.Model
+namespace Snap2HTMLNG.Model
 {
     public class SnappedFolder
     {

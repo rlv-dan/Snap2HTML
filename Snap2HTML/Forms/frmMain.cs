@@ -4,7 +4,7 @@ using System.IO;
 using System.Windows.Forms;
 using CommandLine.Utility;
 
-namespace Snap2HTML
+namespace Snap2HTMLNG
 {
     public partial class frmMain : Form
     {

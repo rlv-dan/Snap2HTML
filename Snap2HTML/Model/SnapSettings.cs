@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Snap2HTML.Model
+namespace Snap2HTMLNG.Model
 {
     public class SnapSettings
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Snap2HTML
+namespace Snap2HTMLNG
 {
     static class Program
     {
