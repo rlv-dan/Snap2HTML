@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Snap2HTMLNG.Model
+namespace Snap2HTLNG.Shared.Models
 {
     public class SnappedFile
     {

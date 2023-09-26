@@ -84,7 +84,6 @@
     <Compile Include="Model\SnappedFile.cs" />
     <Compile Include="Model\SnappedFolder.cs" />
     <Compile Include="Model\SnapSettings.cs" />
-    <Compile Include="Utils.cs" />
     <Compile Include="Providers\PortableSettingsProvider.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

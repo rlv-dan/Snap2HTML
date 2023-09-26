@@ -1,7 +1,8 @@
-﻿using Snap2HTMLNG.Shared.Utils;
+﻿using Snap2HTLNG.Shared.Models;
+using Snap2HTMLNG.Shared.Utils;
 using System.Collections.Generic;
 
-namespace Snap2HTMLNG.Model
+namespace Snap2HTMLNG.Shared.Models
 {
     public class SnappedFolder
     {

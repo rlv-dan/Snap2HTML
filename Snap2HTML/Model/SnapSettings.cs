@@ -2,6 +2,9 @@
 
 namespace Snap2HTMLNG.Model
 {
+    /// <summary>
+    /// Legacy Settings System
+    /// </summary>
     public class SnapSettings
     {
         public string rootFolder { get; set; }
