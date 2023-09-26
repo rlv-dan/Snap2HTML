@@ -6,11 +6,10 @@ using System.Text.RegularExpressions;
 namespace Snap2HTMLNG.Shared.Utils
 {
     /// <summary>
-    /// Legacy Utilities.  This are taken from Snap2HTML's original Source Code but may still be in used.  
-    /// 
-    /// Any that are not will be marked as Obsolete.
+    /// <para>Legacy Utilities.  This are taken from Snap2HTML's original Source Code but may still be in used.</para>
+    /// <para>They have had updated comments added and some optimizations made, but should not be used for new features in Snap2HTML-NG.</para>
     /// </summary>
-    class Legacy
+    public static class Legacy
     {
         /// <summary>
         /// Sorts Directories Correctly, even if they contain a space or period.

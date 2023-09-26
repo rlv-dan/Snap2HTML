@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Snap2HTMLNG.Shared.Utils;
+using System.Collections.Generic;
 
 namespace Snap2HTMLNG.Model
 {
@@ -6,10 +7,10 @@ namespace Snap2HTMLNG.Model
     {
         public SnappedFolder(string name, string path)
         {
-            this.Name = name;
-            this.Path = path;
-            this.Properties = new Dictionary<string, string>();
-            this.Files = new List<SnappedFile>();
+            Name = name;
+            Path = path;
+            Properties = new Dictionary<string, string>();
+            Files = new List<SnappedFile>();
         }
 
         public string Name { get; set; }
@@ -19,16 +20,11 @@ namespace Snap2HTMLNG.Model
 
         public string GetFullPath()
         {
-            string path;
-
-            if (this.Path.EndsWith(@"\"))
-                path = this.Path + this.Name;
-            else
-                path = this.Path + @"\" + this.Name;
+            string path = Path.EndsWith(@"\") ? Path + Name : Path + @"\" + Name;
 
             if (path.EndsWith(@"\")) // remove trailing backslash
             {
-                if (!Utils.IsWildcardMatch(@"?:\", path, false)) // except for drive letters
+                if (!Legacy.IsWildcardMatch(@"?:\", path, false)) // except for drive letters
                 {
                     path = path.Remove(path.Length - 1);
                 }
@@ -40,10 +36,7 @@ namespace Snap2HTMLNG.Model
 
         public string GetProp(string key)
         {
-            if (this.Properties.ContainsKey(key))
-                return this.Properties[key];
-            else
-                return "";
+            return Properties.ContainsKey(key) ? Properties[key] : "";
         }
     }
 }

@@ -3,9 +3,13 @@ using System.Collections.Generic;
 
 namespace Snap2HTMLNG
 {
+	/// <summary>
+	/// These have been migrated to <see cref="Shared.Utils.Legacy"/>
+	/// </summary>
 	class Utils
 	{
-		// Hack to sort folders correctly even if they have spaces/periods in them
+
+		[Obsolete("Migrated to <see cref=\"Shared.Utils.Legacy\"", true)]
 		public static List<string> SortDirList( List<string> lstDirs )
 		{
 			for( int n = 0; n < lstDirs.Count; n++ )
@@ -22,9 +26,8 @@ namespace Snap2HTMLNG
 			return lstDirs;
 		}
 
-		// Replaces characters that may appear in filenames/paths that have special meaning to JavaScript
-		// Info on u2028/u2029: https://en.wikipedia.org/wiki/Newline#Unicode
-		public static string MakeCleanJsString( string s )
+        [Obsolete("Migrated to <see cref=\"Shared.Utils.Legacy\"", true)]
+        public static string MakeCleanJsString( string s )
 		{
 			return s.Replace( "\\", "\\\\" )
 					.Replace( "&", "&amp;" )
@@ -33,8 +36,8 @@ namespace Snap2HTMLNG
 					.Replace( "\u0004", "" );
 		}
 
-		// Test string for matches against a wildcard pattern. Use ? and * as wildcards. (Wrapper around RegEx)
-		public static bool IsWildcardMatch( String wildcard, String text, bool casesensitive )
+        [Obsolete("Migrated to <see cref=\"Shared.Utils.Legacy\"", true)]
+        public static bool IsWildcardMatch( String wildcard, String text, bool casesensitive )
 		{
 			System.Text.StringBuilder sb = new System.Text.StringBuilder( wildcard.Length + 10 );
 			sb.Append( "^" );
@@ -64,12 +67,14 @@ namespace Snap2HTMLNG
 			return regex.IsMatch( text );
 		}
 
-		public static int ToUnixTimestamp( DateTime value )
+        [Obsolete("Migrated to <see cref=\"Shared.Utils.Legacy\"", true)]
+        public static int ToUnixTimestamp( DateTime value )
 		{
 			return (int)Math.Truncate( ( value.ToUniversalTime().Subtract( new DateTime( 1970, 1, 1 ) ) ).TotalSeconds );
 		}
 
-		public static long ParseLong(string s)
+        [Obsolete("Migrated to <see cref=\"Shared.Utils.Legacy\"", true)]
+        public static long ParseLong(string s)
 		{
 			long num;
 			if( Int64.TryParse( s, out num ) )
