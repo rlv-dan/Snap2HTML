@@ -23,6 +23,10 @@ namespace Snap2HTMLNG
             Text = Application.ProductName + " (Press F1 for Help)";
             labelAboutVersion.Text = "version " + Application.ProductVersion.Split('.')[0] + "." + Application.ProductVersion.Split('.')[1];
 
+#if DEBUG
+            Text = $"{Text} - Preview Build";
+#endif
+
             // initialize some settings
             int left = Properties.Settings.Default.WindowLeft;
             int top = Properties.Settings.Default.WindowTop;
@@ -257,7 +261,7 @@ namespace Snap2HTMLNG
             }
 
             Cursor.Current = Cursors.WaitCursor;
-            Text = "Snap2HTML (Working... Press Escape to Cancel)";
+            Text = "Snap2HTMLNG (Working... Press Escape to Cancel)";
             tabCtrl.Enabled = false;
             backgroundWorker.RunWorkerAsync();
         }
@@ -274,7 +278,11 @@ namespace Snap2HTMLNG
 
             Cursor.Current = Cursors.Default;
             tabCtrl.Enabled = true;
-            this.Text = "Snap2HTML";
+            this.Text = "Snap2HTMLNG";
+
+#if DEBUG
+            Text = $"{Text} - Preview Build";
+#endif
 
             // Quit when finished if automated via command line
             if (this.runningAutomated)
