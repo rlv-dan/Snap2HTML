@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
 using CommandLine.Utility;
+using Snap2HTMLNG.Shared.Settings;
 using Snap2HTMLNG.Shared.Utils;
 
 namespace Snap2HTMLNG
@@ -73,49 +74,48 @@ namespace Snap2HTMLNG
                 }
             }
 
-            var settings = new Model.SnapSettings();
             if (arguments.Exists("path") && arguments.Exists("outfile"))
             {
                 this.runningAutomated = true;
 
-                settings.rootFolder = arguments.Single("path");
-                settings.outputFile = arguments.Single("outfile");
+                var rootFolder = arguments.Single("path");
+                var outputFile = arguments.Single("outfile");
 
                 // First validate paths
-                if (!Directory.Exists(settings.rootFolder))
+                if (!Directory.Exists(rootFolder))
                 {
                     if (!arguments.Exists("silent"))
                     {
-                        MessageBox.Show("Input path does not exist: " + settings.rootFolder, "Automation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Input path does not exist: " + rootFolder, "Automation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     Application.Exit();
                 }
-                if (!Directory.Exists(Path.GetDirectoryName(settings.outputFile)))
+                if (!Directory.Exists(Path.GetDirectoryName(outputFile)))
                 {
                     if (!arguments.Exists("silent"))
                     {
-                        MessageBox.Show("Output path does not exist: " + Path.GetDirectoryName(settings.outputFile), "Automation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Output path does not exist: " + Path.GetDirectoryName(outputFile), "Automation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     Application.Exit();
                 }
 
                 // Rest of settings
 
-                settings.skipHiddenItems = !arguments.Exists("hidden");
-                settings.skipSystemItems = !arguments.Exists("system");
-                settings.openInBrowser = false;
+                bool skipHiddenItems = !arguments.Exists("hidden");
+                bool skipSystemItems = !arguments.Exists("system");
+                bool openInBrowser = false;
 
-                settings.linkFiles = false;
+                bool linkFiles = false;
                 if (arguments.Exists("link"))
                 {
-                    settings.linkFiles = true;
-                    settings.linkRoot = arguments.Single("link");
+                    linkFiles = true;
+                    string linkRoot = arguments.Single("link");
                 }
 
-                settings.title = "Snapshot of " + settings.rootFolder;
+                string title = "Snapshot of " + rootFolder;
                 if (arguments.Exists("title"))
                 {
-                    settings.title = arguments.Single("title");
+                    title = arguments.Single("title");
                 }
 
             }
@@ -132,7 +132,7 @@ namespace Snap2HTMLNG
 
             if (this.runningAutomated)
             {
-                StartProcessing(settings);
+                StartProcessing();
             }
         }
 
@@ -189,55 +189,77 @@ namespace Snap2HTMLNG
 
                 if (!saveFileDialog1.FileName.ToLower().EndsWith(".html")) saveFileDialog1.FileName += ".html";
 
-                // begin generating html
-                var settings = new Model.SnapSettings()
-                {
-                    rootFolder = txtRoot.Text,
-                    title = txtTitle.Text,
-                    outputFile = saveFileDialog1.FileName,
-                    skipHiddenItems = !chkHidden.Checked,
-                    skipSystemItems = !chkSystem.Checked,
-                    openInBrowser = chkOpenOutput.Checked,
-                    linkFiles = chkLinkFiles.Checked,
-                    linkRoot = txtLinkRoot.Text,
-                    searchPattern = txtSearchPattern.Text,
+                // Declare the user settings nodes that are available in UserSettings.xml (see Shared.UserSettings.xml)
+                string[] nodes = { 
+                    "RootFolder", 
+                    "Title", 
+                    "OutputFile", 
+                    "SkipHiddenItems", 
+                    "SkipSystemItems", 
+                    "OpenInBrowserAfterCapture", 
+                    "LinkFiles", 
+                    "LinkRoot", 
+                    "SearchPattern"
                 };
 
-                StartProcessing(settings);
+                // Declare our actual values to be saved to the nodes
+                string[] values =
+                {
+                    txtRoot.Text,
+                    txtTitle.Text,
+                    saveFileDialog1.FileName,
+                    chkHidden.Checked.ToString(),
+                    chkSystem.Checked.ToString(),
+                    chkOpenOutput.Checked.ToString(),
+                    chkLinkFiles.Checked.ToString(),
+                    txtLinkRoot.Text,
+                    txtSearchPattern.Text
+                };
+
+                // Write the settings to the SettingsFile // TODO: Do I need to move this so we can run from schedule multiple different times?  I think so. 
+                XmlConfigurator.Write(nodes, values);
+
+                // begin generating html
+                StartProcessing();
             }
         }
 
-        private void StartProcessing(Model.SnapSettings settings)
+        private void StartProcessing()
         {
             // ensure source path format
-            settings.rootFolder = Path.GetFullPath(settings.rootFolder);
-            if (settings.rootFolder.EndsWith(@"\")) settings.rootFolder = settings.rootFolder.Substring(0, settings.rootFolder.Length - 1);
-            if (Legacy.IsWildcardMatch("?:", settings.rootFolder, false)) settings.rootFolder += @"\"; // add backslash to path if only letter and colon eg "c:"
+            var rootFolder = Path.GetFullPath(XmlConfigurator.Read("RootFolder"));
+
+            if (rootFolder.EndsWith(@"\")) rootFolder = rootFolder.Substring(0, rootFolder.Length - 1);
+            if (Legacy.IsWildcardMatch("?:", rootFolder, false)) rootFolder += @"\"; // add backslash to path if only letter and colon eg "c:"
 
             // add slash or backslash to end of link (in cases where it is clear that we we can)
-            if (settings.linkFiles)
+
+
+            bool linkFiles = bool.Parse(XmlConfigurator.Read("LinkFiles"));
+            string linkRoot = XmlConfigurator.Read("LinkRoot");
+            if (linkFiles)
             {
-                if (!settings.linkRoot.EndsWith(@"/"))
+                if (!linkRoot.EndsWith(@"/"))
                 {
-                    if (settings.linkRoot.ToLower().StartsWith(@"http") || settings.linkRoot.ToLower().StartsWith(@"https"))    // web site
+                    if (linkRoot.ToLower().StartsWith(@"http") || linkRoot.ToLower().StartsWith(@"https"))    // web site
                     {
-                        settings.linkRoot += @"/";
+                        linkRoot += @"/";
                     }
-                    if (Legacy.IsWildcardMatch("?:*", settings.linkRoot, false)) // local disk
+                    if (Legacy.IsWildcardMatch("?:*", linkRoot, false)) // local disk
                     {
-                        settings.linkRoot += @"\";
+                        linkRoot += @"\";
                     }
-                    if (settings.linkRoot.StartsWith(@"\\"))    // unc path
+                    if (linkRoot.StartsWith(@"\\"))    // unc path
                     {
-                        settings.linkRoot += @"\";
+                        linkRoot += @"\";
                     }
                 }
             }
 
             Cursor.Current = Cursors.WaitCursor;
-            this.Text = "Snap2HTML (Working... Press Escape to Cancel)";
+            Text = "Snap2HTML (Working... Press Escape to Cancel)";
             tabCtrl.Enabled = false;
-            backgroundWorker.RunWorkerAsync(argument: settings);
+            backgroundWorker.RunWorkerAsync();
         }
 
         private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)

@@ -7,6 +7,7 @@ using System.IO;
 using System.Diagnostics;
 using Snap2HTMLNG.Shared.Utils;
 using Snap2HTMLNG.Shared.Models;
+using Snap2HTMLNG.Shared.Settings;
 
 namespace Snap2HTMLNG
 {
@@ -15,10 +16,10 @@ namespace Snap2HTMLNG
         // This runs on a separate thread from the GUI
         private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            var settings = (Model.SnapSettings)e.Argument;
+            //var settings = (Model.SnapSettings)e.Argument;
 
             // Get files & folders
-            var content = GetContent(settings, backgroundWorker);
+            var content = GetContent(backgroundWorker);
             if (backgroundWorker.CancellationPending)
             {
                 backgroundWorker.ReportProgress(0, "User cancelled");
@@ -65,7 +66,7 @@ namespace Snap2HTMLNG
             }
 
             // Build HTML
-            sbTemplate.Replace("[TITLE]", settings.title);
+            sbTemplate.Replace("[TITLE]", XmlConfigurator.Read("Title"));
             sbTemplate.Replace("[APP LINK]", "https://github.com/laim/Snap2HTML-NG");
             sbTemplate.Replace("[APP NAME]", Application.ProductName);
             sbTemplate.Replace("[APP VER]", Application.ProductVersion.Split('.')[0] + "." + Application.ProductVersion.Split('.')[1]);
@@ -74,15 +75,15 @@ namespace Snap2HTMLNG
             sbTemplate.Replace("[NUM FILES]", totFiles.ToString());
             sbTemplate.Replace("[NUM DIRS]", totDirs.ToString());
             sbTemplate.Replace("[TOT SIZE]", totSize.ToString());
-            sbTemplate.Replace("[SEARCH_PATTERN]", settings.searchPattern);
+            sbTemplate.Replace("[SEARCH_PATTERN]", XmlConfigurator.Read("SearchPattern"));
 
-            if (settings.linkFiles)
+            if (bool.Parse(XmlConfigurator.Read("LinkFiles")))
             {
                 sbTemplate.Replace("[LINK FILES]", "true");
-                sbTemplate.Replace("[LINK ROOT]", settings.linkRoot.Replace(@"\", "/"));
-                sbTemplate.Replace("[SOURCE ROOT]", settings.rootFolder.Replace(@"\", "/"));
+                sbTemplate.Replace("[LINK ROOT]", XmlConfigurator.Read("LinkRoot").Replace(@"\", "/"));
+                sbTemplate.Replace("[SOURCE ROOT]", XmlConfigurator.Read("RootFolder").Replace(@"\", "/"));
 
-                string link_root = settings.linkRoot.Replace(@"\", "/");
+                string link_root = XmlConfigurator.Read("LinkRoot").Replace(@"\", "/");
                 if (Legacy.IsWildcardMatch(@"?:/*", link_root, false))  // "file://" is needed in the browser if path begins with drive letter, else it should not be used
                 {
                     sbTemplate.Replace("[LINK PROTOCOL]", @"file://");
@@ -102,13 +103,13 @@ namespace Snap2HTMLNG
                 sbTemplate.Replace("[LINK FILES]", "false");
                 sbTemplate.Replace("[LINK PROTOCOL]", "");
                 sbTemplate.Replace("[LINK ROOT]", "");
-                sbTemplate.Replace("[SOURCE ROOT]", settings.rootFolder.Replace(@"\", "/"));
+                sbTemplate.Replace("[SOURCE ROOT]", XmlConfigurator.Read("RootFolder").Replace(@"\", "/"));
             }
 
             // Write output file
             try
             {
-                using (System.IO.StreamWriter writer = new System.IO.StreamWriter(settings.outputFile, false, Encoding.UTF8))
+                using (System.IO.StreamWriter writer = new System.IO.StreamWriter(XmlConfigurator.Read("OutputFile"), false, Encoding.UTF8))
                 {
                     writer.AutoFlush = true;
 
@@ -130,9 +131,9 @@ namespace Snap2HTMLNG
 
                 sbTemplate = null;
 
-                if (settings.openInBrowser)
+                if (bool.Parse(XmlConfigurator.Read("OpenInBrowserAfterCapture")))
                 {
-                    System.Diagnostics.Process.Start(settings.outputFile);
+                    Process.Start(XmlConfigurator.Read("OutputFile"));
                 }
             }
             catch (Exception ex)
@@ -153,7 +154,7 @@ namespace Snap2HTMLNG
         /// <param name="settings">Application Settings</param>
         /// <param name="bgWorker">BackgroundWorker Instance</param>
         /// <returns></returns>
-        private static List<SnappedFolder> GetContent(Model.SnapSettings settings, BackgroundWorker bgWorker)
+        private static List<SnappedFolder> GetContent(BackgroundWorker bgWorker)
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -162,8 +163,8 @@ namespace Snap2HTMLNG
 
             // Get all folders
             var dirs = new List<string>();
-            dirs.Insert(0, settings.rootFolder);
-            DirSearch(settings.rootFolder, dirs, settings.skipHiddenItems, settings.skipSystemItems, stopwatch, bgWorker);
+            dirs.Insert(0, XmlConfigurator.Read("RootFolder"));
+            DirSearch(XmlConfigurator.Read("RootFolder"), dirs, bool.Parse(XmlConfigurator.Read("SkipHiddenItems")), bool.Parse(XmlConfigurator.Read("SkipSystemItems")), stopwatch, bgWorker);
             dirs = Legacy.SortDirList(dirs);
 
             if (bgWorker.CancellationPending)
@@ -209,7 +210,7 @@ namespace Snap2HTMLNG
                     List<string> files;
                     try
                     {
-                        files = new List<string>(Directory.GetFiles(dirName, settings.searchPattern, SearchOption.TopDirectoryOnly));
+                        files = new List<string>(Directory.GetFiles(dirName, XmlConfigurator.Read("SearchPattern"), SearchOption.TopDirectoryOnly));
                     }
                     catch (Exception ex)
                     {
@@ -241,7 +242,7 @@ namespace Snap2HTMLNG
                             var isHidden = (fi.Attributes & System.IO.FileAttributes.Hidden) == System.IO.FileAttributes.Hidden;
                             var isSystem = (fi.Attributes & System.IO.FileAttributes.System) == System.IO.FileAttributes.System;
 
-                            if ((isHidden && settings.skipHiddenItems) || (isSystem && settings.skipSystemItems))
+                            if (isHidden && bool.Parse(XmlConfigurator.Read("SkipHiddenItems")) || (isSystem && bool.Parse(XmlConfigurator.Read("SkipSystemItems"))))
                             {
                                 continue;
                             }

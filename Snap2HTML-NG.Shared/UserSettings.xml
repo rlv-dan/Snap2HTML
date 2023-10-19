@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+	  
+<UserSettings>
+
+	<RootFolder></RootFolder>
+	<Title></Title>
+	<OutputFile></OutputFile>
+	<SkipHiddenItems>true</SkipHiddenItems>
+	<SkipSystemItems>true</SkipSystemItems>
+	<OpenInBrowserAfterCapture>false</OpenInBrowserAfterCapture>
+	<LinkFiles>false</LinkFiles>
+	<LinkRoot></LinkRoot>
+	<SearchPattern>*</SearchPattern>
+	
+</UserSettings>
