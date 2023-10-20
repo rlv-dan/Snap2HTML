@@ -24,7 +24,7 @@ namespace Snap2HTMLNG.Shared.Models
 
             if (path.EndsWith(@"\")) // remove trailing backslash
             {
-                if (!Legacy.IsWildcardMatch(@"?:\", path, false)) // except for drive letters
+                if (!Helpers.IsWildcardMatch(@"?:\", path, false)) // except for drive letters
                 {
                     path = path.Remove(path.Length - 1);
                 }

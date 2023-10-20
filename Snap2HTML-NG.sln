@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snap2HTML-NG", "Snap2HTML\Snap2HTML-NG.csproj", "{04CDFDC2-534E-443D-B75D-A7A0F19B4008}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snap2HTML-NG.GUI", "Snap2HTML\Snap2HTML-NG.GUI.csproj", "{04CDFDC2-534E-443D-B75D-A7A0F19B4008}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snap2HTML-NG.Shared", "Snap2HTML-NG.Shared\Snap2HTML-NG.Shared.csproj", "{C44099DF-D841-4D2D-BC49-912DAE33C4F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snap2HTML-NG.CommandLine", "Snap2HTML-NG.Console\Snap2HTML-NG.CommandLine.csproj", "{84648B91-E4D2-42F2-8949-2B86530AA8BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,8 +23,15 @@ Global
 		{C44099DF-D841-4D2D-BC49-912DAE33C4F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C44099DF-D841-4D2D-BC49-912DAE33C4F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C44099DF-D841-4D2D-BC49-912DAE33C4F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84648B91-E4D2-42F2-8949-2B86530AA8BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84648B91-E4D2-42F2-8949-2B86530AA8BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84648B91-E4D2-42F2-8949-2B86530AA8BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84648B91-E4D2-42F2-8949-2B86530AA8BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6EDBC76D-0EE0-4249-8E38-EBB45A638D26}
 	EndGlobalSection
 EndGlobal

@@ -20,18 +20,15 @@ namespace Snap2HTMLNG
 
         private void frmMain_Load(object sender, EventArgs e)
         {
+
+            LoadUserSettings();
+
             Text = Application.ProductName + " (Press F1 for Help)";
             labelAboutVersion.Text = "version " + Application.ProductVersion.Split('.')[0] + "." + Application.ProductVersion.Split('.')[1];
 
 #if DEBUG
             Text = $"{Text} - Preview Build";
 #endif
-
-            // initialize some settings
-            int left = Properties.Settings.Default.WindowLeft;
-            int top = Properties.Settings.Default.WindowTop;
-            if (left >= 0) Left = left;
-            if (top >= 0) Top = top;
 
             if (Directory.Exists(txtRoot.Text))
             {
@@ -56,100 +53,26 @@ namespace Snap2HTMLNG
                 cnt.AllowDrop = true;
             }
 
-            Opacity = 0;    // for silent mode
-
             initDone = true;
         }
 
-        private void frmMain_Shown(object sender, EventArgs e)
+        /// <summary>
+        /// Checks if the usser has used the application before and if so, populate the controls with the User Settings.
+        /// </summary>
+        private void LoadUserSettings()
         {
-            // parse command line
-            var commandLine = Environment.CommandLine;
-            commandLine = commandLine.Replace("-output:", "-outfile:");	// correct wrong parameter to avoid confusion
-            var splitCommandLine = Arguments.SplitCommandLine(commandLine);
-            var arguments = new Arguments(splitCommandLine);
-
-            // first test for single argument (ie path only)
-            if (splitCommandLine.Length == 2 && !arguments.Exists("path"))
-            {
-                if (Directory.Exists(splitCommandLine[1]))
-                {
-                    SetRootPath(splitCommandLine[1]);
-                }
-            }
-
-            if (arguments.Exists("path") && arguments.Exists("outfile"))
-            {
-                this.runningAutomated = true;
-
-                var rootFolder = arguments.Single("path");
-                var outputFile = arguments.Single("outfile");
-
-                // First validate paths
-                if (!Directory.Exists(rootFolder))
-                {
-                    if (!arguments.Exists("silent"))
-                    {
-                        MessageBox.Show("Input path does not exist: " + rootFolder, "Automation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    Application.Exit();
-                }
-                if (!Directory.Exists(Path.GetDirectoryName(outputFile)))
-                {
-                    if (!arguments.Exists("silent"))
-                    {
-                        MessageBox.Show("Output path does not exist: " + Path.GetDirectoryName(outputFile), "Automation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    Application.Exit();
-                }
-
-                // Rest of settings
-
-                bool skipHiddenItems = !arguments.Exists("hidden");
-                bool skipSystemItems = !arguments.Exists("system");
-                bool openInBrowser = false;
-
-                bool linkFiles = false;
-                if (arguments.Exists("link"))
-                {
-                    linkFiles = true;
-                    string linkRoot = arguments.Single("link");
-                }
-
-                string title = "Snapshot of " + rootFolder;
-                if (arguments.Exists("title"))
-                {
-                    title = arguments.Single("title");
-                }
-
-            }
-
-            // keep window hidden in silent mode
-            if (arguments.IsTrue("silent") && this.runningAutomated)
-            {
-                Visible = false;
-            }
-            else
-            {
-                Opacity = 100;
-            }
-
-            if (this.runningAutomated)
-            {
-                StartProcessing();
-            }
+            txtRoot.Text = XmlConfigurator.Read("RootFolder");
+            txtTitle.Text = XmlConfigurator.Read("Title");
+            chkHidden.Checked = bool.Parse(XmlConfigurator.Read("SkipHiddenItems"));
+            chkSystem.Checked = bool.Parse(XmlConfigurator.Read("SkipSystemItems"));
+            chkOpenOutput.Checked = bool.Parse(XmlConfigurator.Read("OpenInBrowserAfterCapture"));
+            chkLinkFiles.Checked = bool.Parse(XmlConfigurator.Read("LinkFiles"));
+            txtSearchPattern.Text = XmlConfigurator.Read("SearchPattern");
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (backgroundWorker.IsBusy) e.Cancel = true;
-
-            if (!this.runningAutomated) // don't save settings when automated through command line
-            {
-                Properties.Settings.Default.WindowLeft = this.Left;
-                Properties.Settings.Default.WindowTop = this.Top;
-                Properties.Settings.Default.Save();
-            }
         }
 
         private void cmdBrowse_Click(object sender, EventArgs e)
@@ -234,7 +157,7 @@ namespace Snap2HTMLNG
             var rootFolder = Path.GetFullPath(XmlConfigurator.Read("RootFolder"));
 
             if (rootFolder.EndsWith(@"\")) rootFolder = rootFolder.Substring(0, rootFolder.Length - 1);
-            if (Legacy.IsWildcardMatch("?:", rootFolder, false)) rootFolder += @"\"; // add backslash to path if only letter and colon eg "c:"
+            if (Helpers.IsWildcardMatch("?:", rootFolder, false)) rootFolder += @"\"; // add backslash to path if only letter and colon eg "c:"
 
             // add slash or backslash to end of link (in cases where it is clear that we we can)
 
@@ -249,7 +172,7 @@ namespace Snap2HTMLNG
                     {
                         linkRoot += @"/";
                     }
-                    if (Legacy.IsWildcardMatch("?:*", linkRoot, false)) // local disk
+                    if (Helpers.IsWildcardMatch("?:*", linkRoot, false)) // local disk
                     {
                         linkRoot += @"\";
                     }

@@ -1,40 +1,11 @@
-﻿// Source: http://jake.ginnivan.net/c-sharp-argument-parser/ (which is based on http://www.codeproject.com/Articles/3111/C-NET-Command-Line-Arguments-Parser , MIT License)
-// Removed support for array arguments since snap2html does not need it, and it throws if you try adding a path with comma
-
-/*  Examples:
-
-    Argument: –flag
-    Usage: args.IsTrue("flag");
-    Result: true
-
-    Argument: –arg:MyValue
-    //Usage: args.Single("arg");
-    Result: MyValue
-
-    Argument: –arg "My Value"
-    Usage: args.Single("arg");
-    Result: ‘My Value’
-
-    Argument: /arg=Value /arg=Value2
-    Usage: args["arg"]
-    Result: new string[] {"Value", "Value2"}
-
-    Argument: /arg="Value,Value2"
-    Usage: args["arg"]
-    Result: new string[] {"Value", "Value2"} 
-*/
-
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Collections.ObjectModel;
+using System.Text;
 using System.Text.RegularExpressions;
 
-namespace CommandLine.Utility
+namespace Snap2HTMLNG.Shared.Utils.CommandLine
 {
-
-    [Obsolete("Moved to Snap2HTML-NG.Shared.Utils.CommandLine.Arguments", true)]
     /// <summary>
     /// Arguments class
     /// </summary>
@@ -120,9 +91,9 @@ namespace CommandLine.Utility
                         //Because of the split index 0 will be a empty string
                         string valuesWithoutQuotes = RemoveMatchingQuotes(parts[2]);
 
-						// MOD: Don't split on commas
+                        // MOD: Don't split on commas
                         //AddListValues(parts[1], valuesWithoutQuotes.Split(','));
-						Add( parts[1], valuesWithoutQuotes );
+                        Add(parts[1], valuesWithoutQuotes);
                         break;
                 }
             }

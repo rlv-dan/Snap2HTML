@@ -92,8 +92,6 @@
             // statusStrip1
             // 
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 482);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
@@ -117,7 +115,7 @@
             this.tabCtrl.Controls.Add(this.tabCustomDesign);
             this.tabCtrl.Controls.Add(this.tabAbout);
             this.tabCtrl.Location = new System.Drawing.Point(11, 10);
-            this.tabCtrl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabCtrl.Margin = new System.Windows.Forms.Padding(4);
             this.tabCtrl.Name = "tabCtrl";
             this.tabCtrl.SelectedIndex = 0;
             this.tabCtrl.Size = new System.Drawing.Size(451, 463);
@@ -141,9 +139,9 @@
             this.tabSnapshot.Controls.Add(this.cmdBrowse);
             this.tabSnapshot.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabSnapshot.Location = new System.Drawing.Point(4, 25);
-            this.tabSnapshot.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabSnapshot.Margin = new System.Windows.Forms.Padding(4);
             this.tabSnapshot.Name = "tabSnapshot";
-            this.tabSnapshot.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabSnapshot.Padding = new System.Windows.Forms.Padding(4);
             this.tabSnapshot.Size = new System.Drawing.Size(443, 434);
             this.tabSnapshot.TabIndex = 0;
             this.tabSnapshot.Text = "Snapshot";
@@ -151,13 +149,11 @@
             // 
             // txtSearchPattern
             // 
-            this.txtSearchPattern.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Snap2HTMLNG.Properties.Settings.Default, "txtSearchPattern", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.txtSearchPattern.Location = new System.Drawing.Point(31, 287);
-            this.txtSearchPattern.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtSearchPattern.Margin = new System.Windows.Forms.Padding(4);
             this.txtSearchPattern.Name = "txtSearchPattern";
             this.txtSearchPattern.Size = new System.Drawing.Size(399, 23);
             this.txtSearchPattern.TabIndex = 20;
-            this.txtSearchPattern.Text = global::Snap2HTMLNG.Properties.Settings.Default.txtSearchPattern;
             this.toolTip1.SetToolTip(this.txtSearchPattern, "This is the target files will be linked to. See ReadMe.txt for examples of how to" +
         " make links");
             // 
@@ -181,13 +177,11 @@
             // 
             // txtTitle
             // 
-            this.txtTitle.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Snap2HTMLNG.Properties.Settings.Default, "txtTitle", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.txtTitle.Location = new System.Drawing.Point(31, 160);
-            this.txtTitle.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtTitle.Margin = new System.Windows.Forms.Padding(4);
             this.txtTitle.Name = "txtTitle";
             this.txtTitle.Size = new System.Drawing.Size(399, 23);
             this.txtTitle.TabIndex = 4;
-            this.txtTitle.Text = global::Snap2HTMLNG.Properties.Settings.Default.txtTitle;
             this.toolTip1.SetToolTip(this.txtTitle, "Set the html page title");
             // 
             // label6
@@ -203,10 +197,8 @@
             // 
             this.chkOpenOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chkOpenOutput.AutoSize = true;
-            this.chkOpenOutput.Checked = global::Snap2HTMLNG.Properties.Settings.Default.chkOpenOutput;
-            this.chkOpenOutput.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Snap2HTMLNG.Properties.Settings.Default, "chkOpenOutput", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.chkOpenOutput.Location = new System.Drawing.Point(213, 400);
-            this.chkOpenOutput.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkOpenOutput.Margin = new System.Windows.Forms.Padding(4);
             this.chkOpenOutput.Name = "chkOpenOutput";
             this.chkOpenOutput.Size = new System.Drawing.Size(211, 21);
             this.chkOpenOutput.TabIndex = 18;
@@ -215,23 +207,19 @@
             // 
             // txtLinkRoot
             // 
-            this.txtLinkRoot.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Snap2HTMLNG.Properties.Settings.Default, "txtLinkRoot", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.txtLinkRoot.Location = new System.Drawing.Point(31, 224);
-            this.txtLinkRoot.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtLinkRoot.Margin = new System.Windows.Forms.Padding(4);
             this.txtLinkRoot.Name = "txtLinkRoot";
             this.txtLinkRoot.Size = new System.Drawing.Size(399, 23);
             this.txtLinkRoot.TabIndex = 6;
-            this.txtLinkRoot.Text = global::Snap2HTMLNG.Properties.Settings.Default.txtLinkRoot;
             this.toolTip1.SetToolTip(this.txtLinkRoot, "This is the target files will be linked to. See ReadMe.txt for examples of how to" +
         " make links");
             // 
             // chkLinkFiles
             // 
             this.chkLinkFiles.AutoSize = true;
-            this.chkLinkFiles.Checked = global::Snap2HTMLNG.Properties.Settings.Default.chkLinkFiles;
-            this.chkLinkFiles.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Snap2HTMLNG.Properties.Settings.Default, "chkLinkFiles", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.chkLinkFiles.Location = new System.Drawing.Point(352, 199);
-            this.chkLinkFiles.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkLinkFiles.Margin = new System.Windows.Forms.Padding(4);
             this.chkLinkFiles.Name = "chkLinkFiles";
             this.chkLinkFiles.Size = new System.Drawing.Size(74, 21);
             this.chkLinkFiles.TabIndex = 5;
@@ -243,10 +231,8 @@
             // chkHidden
             // 
             this.chkHidden.AutoSize = true;
-            this.chkHidden.Checked = global::Snap2HTMLNG.Properties.Settings.Default.chkHidden;
-            this.chkHidden.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Snap2HTMLNG.Properties.Settings.Default, "chkHidden", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.chkHidden.Location = new System.Drawing.Point(31, 76);
-            this.chkHidden.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkHidden.Margin = new System.Windows.Forms.Padding(4);
             this.chkHidden.Name = "chkHidden";
             this.chkHidden.Size = new System.Drawing.Size(163, 21);
             this.chkHidden.TabIndex = 2;
@@ -257,10 +243,8 @@
             // chkSystem
             // 
             this.chkSystem.AutoSize = true;
-            this.chkSystem.Checked = global::Snap2HTMLNG.Properties.Settings.Default.chkSystem;
-            this.chkSystem.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Snap2HTMLNG.Properties.Settings.Default, "chkSystem", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.chkSystem.Location = new System.Drawing.Point(31, 105);
-            this.chkSystem.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkSystem.Margin = new System.Windows.Forms.Padding(4);
             this.chkSystem.Name = "chkSystem";
             this.chkSystem.Size = new System.Drawing.Size(164, 21);
             this.chkSystem.TabIndex = 3;
@@ -274,7 +258,7 @@
             this.cmdCreate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmdCreate.Image = ((System.Drawing.Image)(resources.GetObject("cmdCreate.Image")));
             this.cmdCreate.Location = new System.Drawing.Point(213, 343);
-            this.cmdCreate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmdCreate.Margin = new System.Windows.Forms.Padding(4);
             this.cmdCreate.Name = "cmdCreate";
             this.cmdCreate.Size = new System.Drawing.Size(213, 49);
             this.cmdCreate.TabIndex = 7;
@@ -286,13 +270,11 @@
             // 
             // txtRoot
             // 
-            this.txtRoot.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Snap2HTMLNG.Properties.Settings.Default, "txtRoot", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.txtRoot.Location = new System.Drawing.Point(31, 44);
-            this.txtRoot.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtRoot.Margin = new System.Windows.Forms.Padding(4);
             this.txtRoot.Name = "txtRoot";
             this.txtRoot.Size = new System.Drawing.Size(353, 23);
             this.txtRoot.TabIndex = 0;
-            this.txtRoot.Text = global::Snap2HTMLNG.Properties.Settings.Default.txtRoot;
             // 
             // labelRootFolder
             // 
@@ -308,7 +290,7 @@
             this.cmdBrowse.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmdBrowse.Image = ((System.Drawing.Image)(resources.GetObject("cmdBrowse.Image")));
             this.cmdBrowse.Location = new System.Drawing.Point(389, 38);
-            this.cmdBrowse.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmdBrowse.Margin = new System.Windows.Forms.Padding(4);
             this.cmdBrowse.Name = "cmdBrowse";
             this.cmdBrowse.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cmdBrowse.Size = new System.Drawing.Size(37, 34);
@@ -326,9 +308,9 @@
             this.tabCustomDesign.Controls.Add(this.pictureBox4);
             this.tabCustomDesign.Controls.Add(this.label4);
             this.tabCustomDesign.Location = new System.Drawing.Point(4, 25);
-            this.tabCustomDesign.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabCustomDesign.Margin = new System.Windows.Forms.Padding(4);
             this.tabCustomDesign.Name = "tabCustomDesign";
-            this.tabCustomDesign.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabCustomDesign.Padding = new System.Windows.Forms.Padding(4);
             this.tabCustomDesign.Size = new System.Drawing.Size(443, 434);
             this.tabCustomDesign.TabIndex = 2;
             this.tabCustomDesign.Text = "Custom Design";
@@ -386,7 +368,7 @@
             // 
             this.pictureBox4.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox4.Image")));
             this.pictureBox4.Location = new System.Drawing.Point(240, 246);
-            this.pictureBox4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox4.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(128, 128);
             this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -416,9 +398,9 @@
             this.tabAbout.Controls.Add(this.labelAboutVersion);
             this.tabAbout.Controls.Add(this.labelAboutTitle);
             this.tabAbout.Location = new System.Drawing.Point(4, 25);
-            this.tabAbout.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabAbout.Margin = new System.Windows.Forms.Padding(4);
             this.tabAbout.Name = "tabAbout";
-            this.tabAbout.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabAbout.Padding = new System.Windows.Forms.Padding(4);
             this.tabAbout.Size = new System.Drawing.Size(443, 434);
             this.tabAbout.TabIndex = 1;
             this.tabAbout.Text = "About";
@@ -473,9 +455,9 @@
             this.groupBoxMoreApps.Controls.Add(this.pictureBox3);
             this.groupBoxMoreApps.Controls.Add(this.pictureBox2);
             this.groupBoxMoreApps.Location = new System.Drawing.Point(8, 266);
-            this.groupBoxMoreApps.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBoxMoreApps.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxMoreApps.Name = "groupBoxMoreApps";
-            this.groupBoxMoreApps.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBoxMoreApps.Padding = new System.Windows.Forms.Padding(4);
             this.groupBoxMoreApps.Size = new System.Drawing.Size(424, 158);
             this.groupBoxMoreApps.TabIndex = 5;
             this.groupBoxMoreApps.TabStop = false;
@@ -555,7 +537,7 @@
             // 
             this.pictureBox3.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox3.Image")));
             this.pictureBox3.Location = new System.Drawing.Point(225, 33);
-            this.pictureBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox3.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(39, 48);
             this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -566,7 +548,7 @@
             // 
             this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
             this.pictureBox2.Location = new System.Drawing.Point(13, 33);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(46, 39);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -577,7 +559,7 @@
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(27, 25);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(128, 128);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -654,7 +636,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmMain";
@@ -662,7 +644,6 @@
             this.Text = "Snap2HTML-NG";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.Load += new System.EventHandler(this.frmMain_Load);
-            this.Shown += new System.EventHandler(this.frmMain_Shown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyUp);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();

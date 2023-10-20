@@ -41,7 +41,7 @@ namespace Snap2HTMLNG
                 foreach (var file in folder.Files)
                 {
                     totFiles++;
-                    totSize += Legacy.ParseLong(file.GetProp("Size"));
+                    totSize += Helpers.ParseLong(file.GetProp("Size"));
                 }
             }
 
@@ -84,7 +84,7 @@ namespace Snap2HTMLNG
                 sbTemplate.Replace("[SOURCE ROOT]", XmlConfigurator.Read("RootFolder").Replace(@"\", "/"));
 
                 string link_root = XmlConfigurator.Read("LinkRoot").Replace(@"\", "/");
-                if (Legacy.IsWildcardMatch(@"?:/*", link_root, false))  // "file://" is needed in the browser if path begins with drive letter, else it should not be used
+                if (Helpers.IsWildcardMatch(@"?:/*", link_root, false))  // "file://" is needed in the browser if path begins with drive letter, else it should not be used
                 {
                     sbTemplate.Replace("[LINK PROTOCOL]", @"file://");
                 }
@@ -165,7 +165,7 @@ namespace Snap2HTMLNG
             var dirs = new List<string>();
             dirs.Insert(0, XmlConfigurator.Read("RootFolder"));
             DirSearch(XmlConfigurator.Read("RootFolder"), dirs, bool.Parse(XmlConfigurator.Read("SkipHiddenItems")), bool.Parse(XmlConfigurator.Read("SkipSystemItems")), stopwatch, bgWorker);
-            dirs = Legacy.SortDirList(dirs);
+            dirs = Helpers.SortDirList(dirs);
 
             if (bgWorker.CancellationPending)
             {
@@ -196,8 +196,8 @@ namespace Snap2HTMLNG
                     created_date = "";
                     try
                     {
-                        modified_date = Legacy.ToUnixTimestamp(Directory.GetLastWriteTime(dirName).ToLocalTime()).ToString();
-                        created_date = Legacy.ToUnixTimestamp(Directory.GetCreationTime(dirName).ToLocalTime()).ToString();
+                        modified_date = Helpers.ToUnixTimestamp(Directory.GetLastWriteTime(dirName).ToLocalTime()).ToString();
+                        created_date = Helpers.ToUnixTimestamp(Directory.GetCreationTime(dirName).ToLocalTime()).ToString();
                     }
                     catch (Exception ex)
                     {
@@ -253,8 +253,8 @@ namespace Snap2HTMLNG
                             created_date = "-";
                             try
                             {
-                                modified_date = Legacy.ToUnixTimestamp(fi.LastWriteTime.ToLocalTime()).ToString();
-                                created_date = Legacy.ToUnixTimestamp(fi.CreationTime.ToLocalTime()).ToString();
+                                modified_date = Helpers.ToUnixTimestamp(fi.LastWriteTime.ToLocalTime()).ToString();
+                                created_date = Helpers.ToUnixTimestamp(fi.CreationTime.ToLocalTime()).ToString();
                             }
                             catch (Exception ex)
                             {
@@ -411,14 +411,14 @@ namespace Snap2HTMLNG
                 result.Append("D.p([" + lineBreakSymbol);
 
                 var sDirWithForwardSlash = currentDir.GetFullPath().Replace(@"\", "/");
-                result.Append("\"").Append(Legacy.MakeCleanJsString(sDirWithForwardSlash)).Append("*").Append("0").Append("*").Append(currentDir.GetProp("Modified")).Append("\"," + lineBreakSymbol);
+                result.Append("\"").Append(Helpers.MakeCleanJsString(sDirWithForwardSlash)).Append("*").Append("0").Append("*").Append(currentDir.GetProp("Modified")).Append("\"," + lineBreakSymbol);
 
                 long dirSize = 0;
 
                 foreach (var currentFile in currentDir.Files)
                 {
-                    result.Append("\"").Append(Legacy.MakeCleanJsString(currentFile.Name)).Append("*").Append(currentFile.GetProp("Size")).Append("*").Append(currentFile.GetProp("Modified")).Append("\"," + lineBreakSymbol);
-                    dirSize += Legacy.ParseLong(currentFile.GetProp("Size"));
+                    result.Append("\"").Append(Helpers.MakeCleanJsString(currentFile.Name)).Append("*").Append(currentFile.GetProp("Size")).Append("*").Append(currentFile.GetProp("Modified")).Append("\"," + lineBreakSymbol);
+                    dirSize += Helpers.ParseLong(currentFile.GetProp("Size"));
                 }
 
                 // Add total dir size

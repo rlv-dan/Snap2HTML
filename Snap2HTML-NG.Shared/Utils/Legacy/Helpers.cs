@@ -9,7 +9,7 @@ namespace Snap2HTMLNG.Shared.Utils
     /// <para>Legacy Utilities.  This are taken from Snap2HTML's original Source Code but may still be in used.</para>
     /// <para>They have had updated comments added and some optimizations made, but should not be used for new features in Snap2HTML-NG.</para>
     /// </summary>
-    public static class Legacy
+    public static class Helpers
     {
         /// <summary>
         /// Sorts Directories Correctly, even if they contain a space or period.
