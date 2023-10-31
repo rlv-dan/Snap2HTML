@@ -1,7 +1,12 @@
-﻿using Snap2HTMLNG.Shared.Models;
+﻿using Snap2HTMLNG.Shared.Builder;
+using Snap2HTMLNG.Shared.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
+using System.Reflection;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Snap2HTMLNG.CommandLine
 {
@@ -48,13 +53,23 @@ namespace Snap2HTMLNG.CommandLine
                 title = normalizedArgs.Find(x => x.Name == "title").Value;
             }
 
-            // TODO: Migrate the running code in GUI so that we can run this here without
-            // having to open or have any requirement on having the GUI on the machine
+#if DEBUG
+            foreach (var normalizedArg in normalizedArgs)
+            {
+                Console.WriteLine($"Name: {normalizedArg.Name}, Value: {normalizedArg.Value}");
+            }
+#endif
 
-            //foreach (var normalizedArg in normalizedArgs)
-            //{
-            //    Console.WriteLine($"Name: {normalizedArg.Name}, Value: {normalizedArg.Value}");
-            //}
+            // Get product name etc.
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            var productName = fvi.ProductName;
+            var productVersion = fvi.ProductVersion;
+
+            // TODO: Need to change DataBuilder.cs in Shared to not read from the settings file and to accept
+            // data passed through from the commandLine.
+            DataBuilder.Build(productName, productVersion);
+
 
             Console.ReadKey();
         }

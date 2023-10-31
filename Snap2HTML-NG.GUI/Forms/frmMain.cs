@@ -2,9 +2,7 @@
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
-using CommandLine.Utility;
 using Snap2HTMLNG.Shared.Settings;
-using Snap2HTMLNG.Shared.Utils;
 
 namespace Snap2HTMLNG
 {
@@ -36,7 +34,9 @@ namespace Snap2HTMLNG
             }
             else
             {
-                SetRootPath("");
+                // If the root path isn't valid, just set it to the current directory
+                // instead of making it null
+                SetRootPath(Directory.GetCurrentDirectory());
             }
 
             txtLinkRoot.Enabled = chkLinkFiles.Checked;
@@ -70,6 +70,9 @@ namespace Snap2HTMLNG
             txtSearchPattern.Text = XmlConfigurator.Read("SearchPattern");
         }
 
+        /// <summary>
+        /// If the user closes the GUI, ensure that we kill the background worker
+        /// </summary>
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (backgroundWorker.IsBusy) e.Cancel = true;
@@ -77,12 +80,12 @@ namespace Snap2HTMLNG
 
         private void cmdBrowse_Click(object sender, EventArgs e)
         {
-            folderBrowserDialog1.RootFolder = Environment.SpecialFolder.Desktop;    // this makes it possible to select network paths too
-            folderBrowserDialog1.SelectedPath = txtRoot.Text;
+            fbdScanDirectory.RootFolder = Environment.SpecialFolder.Desktop;    // this makes it possible to select network paths too
+            fbdScanDirectory.SelectedPath = txtRoot.Text;
 
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            if (fbdScanDirectory.ShowDialog() == DialogResult.OK)
             {
-                txtRoot.Text = folderBrowserDialog1.SelectedPath;
+                txtRoot.Text = fbdScanDirectory.SelectedPath;
             }
         }
 
@@ -90,11 +93,10 @@ namespace Snap2HTMLNG
         {
             if (SetRootPath(txtRoot.Text))
             {
-
                 // Check if the search pattern starts with an astrix or not
                 if (!txtSearchPattern.Text.StartsWith("*"))
                 {
-                    string tmp = txtSearchPattern.Text;
+                    // We need to have an astrix at the start, so amend the pattern if it doesn't have it
                     txtSearchPattern.Text = $"*{txtSearchPattern.Text}";
                 }
 
@@ -106,10 +108,11 @@ namespace Snap2HTMLNG
                     fileName = fileName.Replace(invalid[i].ToString(), "");
                 }
 
+                // Ask the user where they want to save the file to.
                 saveFileDialog1.DefaultExt = "html";
                 if (!fileName.ToLower().EndsWith(".html")) fileName += ".html";
                 saveFileDialog1.FileName = fileName;
-                saveFileDialog1.Filter = "HTML files (*.html)|*.html|All files (*.*)|*.*";
+                saveFileDialog1.Filter = "HTML files (*.html)|*.html";
                 saveFileDialog1.InitialDirectory = Path.GetDirectoryName(txtRoot.Text);
                 saveFileDialog1.CheckPathExists = true;
                 if (saveFileDialog1.ShowDialog() != DialogResult.OK) return;
@@ -157,10 +160,9 @@ namespace Snap2HTMLNG
             var rootFolder = Path.GetFullPath(XmlConfigurator.Read("RootFolder"));
 
             if (rootFolder.EndsWith(@"\")) rootFolder = rootFolder.Substring(0, rootFolder.Length - 1);
-            if (Helpers.IsWildcardMatch("?:", rootFolder, false)) rootFolder += @"\"; // add backslash to path if only letter and colon eg "c:"
+            if (Shared.Utils.Legacy.Helpers.IsWildcardMatch("?:", rootFolder, false)) rootFolder += @"\"; // add backslash to path if only letter and colon eg "c:"
 
             // add slash or backslash to end of link (in cases where it is clear that we we can)
-
 
             bool linkFiles = bool.Parse(XmlConfigurator.Read("LinkFiles"));
             string linkRoot = XmlConfigurator.Read("LinkRoot");
@@ -172,7 +174,7 @@ namespace Snap2HTMLNG
                     {
                         linkRoot += @"/";
                     }
-                    if (Helpers.IsWildcardMatch("?:*", linkRoot, false)) // local disk
+                    if (Shared.Utils.Legacy.Helpers.IsWildcardMatch("?:*", linkRoot, false)) // local disk
                     {
                         linkRoot += @"\";
                     }
@@ -191,7 +193,7 @@ namespace Snap2HTMLNG
 
         private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            toolStripStatusLabel1.Text = e.UserState.ToString();
+            lblStatus.Text = e.UserState.ToString();
         }
 
         private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -278,11 +280,11 @@ namespace Snap2HTMLNG
                 if (Directory.Exists(path))
                 {
                     txtRoot.Text = path;
-                    toolStripStatusLabel1.Text = $"Set Root Path to {path}";
+                    lblStatus.Text = $"Set Root Path to {path}";
                 }
                 else
                 {
-                    toolStripStatusLabel1.Text = "Path does not exist or is invalid.";
+                    lblStatus.Text = "Path does not exist or is invalid.";
                 }
             }
         }
@@ -318,7 +320,7 @@ namespace Snap2HTMLNG
             {
                 if (Directory.Exists(path))
                 {
-                    toolStripStatusLabel1.Text = "";
+                    lblStatus.Text = "";
 
                     if (initDone)
                     {
@@ -330,7 +332,7 @@ namespace Snap2HTMLNG
                 }
                 else
                 {
-                    toolStripStatusLabel1.Text = "Root path is invalid!";
+                    lblStatus.Text = "Root path is invalid!";
 
                     if (initDone)
                     {

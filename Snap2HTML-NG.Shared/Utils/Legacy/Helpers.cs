@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Snap2HTMLNG.Shared.Utils
+namespace Snap2HTMLNG.Shared.Utils.Legacy
 {
     /// <summary>
     /// <para>Legacy Utilities.  This are taken from Snap2HTML's original Source Code but may still be in used.</para>
