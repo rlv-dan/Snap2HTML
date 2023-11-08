@@ -171,14 +171,14 @@ namespace Snap2HTMLNG.CommandLine
 
             // Description
             Console.WriteLine(" Description:");
-            Console.WriteLine("     Help information for Snap2HTML-NG.CommandLine");
+            Console.WriteLine("     Help information for Snap2HTML-NG.Console");
 
             // New Lines
             Console.WriteLine("");
 
             // Usage
             Console.WriteLine(" Usage:");
-            Console.WriteLine("     Snap2HTML-NG.CommandLine [options]");
+            Console.WriteLine("     Snap2HTML-NG.Console [options]");
 
             // New Lines
             Console.WriteLine("");
@@ -200,11 +200,11 @@ namespace Snap2HTMLNG.CommandLine
 
             // Examples
             Console.WriteLine(" Examples:");
-            Console.WriteLine("     Snap2HTML-NG.CommandLine -path:\"C:\\John.Doe\\Downloads\" -output:\"C:\\John.Doe\\Desktop\\Downloads.html\" ");
-            Console.WriteLine("     Snap2HTML-NG.CommandLine -path:\"C:\\John.Doe\\Downloads\" -output:\"C:\\John.Doe\\Desktop\" -randomize ");
-            Console.WriteLine("     Snap2HTML-NG.CommandLine -path:\"C:\\John.Doe\\Downloads\" -output:\"C:\\John.Doe\\Desktop\" -link:\"C:\\John.Doe\\Downloads\" -randomize ");
-            Console.WriteLine("     Snap2HTML-NG.CommandLine -path:\"C:\\John.Doe\\Downloads\" -output:\"C:\\John.Doe\\Desktop\" -link:\"C:\\John.Doe\\Downloads\" -randomize -pattern:\"*.mp4\"");
-            Console.WriteLine("     Snap2HTML-NG.CommandLine -path:\"C:\\John.Doe\\Videos\" -output:\"C:\\John.Doe\\Desktop\\videos.html\" -link:\"C:\\John.Doe\\Videos\" -pattern:\"*.mp4\" -title:\"Home Videos\"");
+            Console.WriteLine("     Snap2HTML-NG.Console -path:\"C:\\John.Doe\\Downloads\" -output:\"C:\\John.Doe\\Desktop\\Downloads.html\" ");
+            Console.WriteLine("     Snap2HTML-NG.Console -path:\"C:\\John.Doe\\Downloads\" -output:\"C:\\John.Doe\\Desktop\" -randomize ");
+            Console.WriteLine("     Snap2HTML-NG.Console -path:\"C:\\John.Doe\\Downloads\" -output:\"C:\\John.Doe\\Desktop\" -link:\"C:\\John.Doe\\Downloads\" -randomize ");
+            Console.WriteLine("     Snap2HTML-NG.Console -path:\"C:\\John.Doe\\Downloads\" -output:\"C:\\John.Doe\\Desktop\" -link:\"C:\\John.Doe\\Downloads\" -randomize -pattern:\"*.mp4\"");
+            Console.WriteLine("     Snap2HTML-NG.Console -path:\"C:\\John.Doe\\Videos\" -output:\"C:\\John.Doe\\Desktop\\videos.html\" -link:\"C:\\John.Doe\\Videos\" -pattern:\"*.mp4\" -title:\"Home Videos\"");
 
         }
 
