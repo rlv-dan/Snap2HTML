@@ -200,11 +200,11 @@ namespace Snap2HTMLNG.CommandLine
 
             // Examples
             Console.WriteLine(" Examples:");
-            Console.WriteLine("     Snap2HTML-NG.Console -path:\"C:\\John.Doe\\Downloads\" -output:\"C:\\John.Doe\\Desktop\\Downloads.html\" ");
-            Console.WriteLine("     Snap2HTML-NG.Console -path:\"C:\\John.Doe\\Downloads\" -output:\"C:\\John.Doe\\Desktop\" -randomize ");
-            Console.WriteLine("     Snap2HTML-NG.Console -path:\"C:\\John.Doe\\Downloads\" -output:\"C:\\John.Doe\\Desktop\" -link:\"C:\\John.Doe\\Downloads\" -randomize ");
-            Console.WriteLine("     Snap2HTML-NG.Console -path:\"C:\\John.Doe\\Downloads\" -output:\"C:\\John.Doe\\Desktop\" -link:\"C:\\John.Doe\\Downloads\" -randomize -pattern:\"*.mp4\"");
-            Console.WriteLine("     Snap2HTML-NG.Console -path:\"C:\\John.Doe\\Videos\" -output:\"C:\\John.Doe\\Desktop\\videos.html\" -link:\"C:\\John.Doe\\Videos\" -pattern:\"*.mp4\" -title:\"Home Videos\"");
+            Console.WriteLine($"     Snap2HTML-NG.Console -path:\"C:\\Users\\{Environment.UserName}\\Downloads\" -output:\"C:\\Users\\{Environment.UserName}\\Desktop\\Downloads.html\" ");
+            Console.WriteLine($"     Snap2HTML-NG.Console -path:\"C:\\Users\\{Environment.UserName}\\Pictures\" -output:\"C:\\Users\\{Environment.UserName}\\Desktop\" -randomize ");
+            Console.WriteLine($"     Snap2HTML-NG.Console -path:\"C:\\Users\\{Environment.UserName}\\Downloads\" -output:\"C:\\Users\\{Environment.UserName}\\Desktop\" -link:\"C:\\Users\\{Environment.UserName}\\Downloads\" -randomize ");
+            Console.WriteLine($"     Snap2HTML-NG.Console -path:\"C:\\Users\\{Environment.UserName}\\Downloads\" -output:\"C:\\Users\\{Environment.UserName}\\Desktop\" -link:\"C:\\Users\\{Environment.UserName}\\Downloads\" -randomize -pattern:\"*.mp4\"");
+            Console.WriteLine($"     Snap2HTML-NG.Console -path:\"C:\\Users\\{Environment.UserName}\\Videos\" -output:\"C:\\Users\\{Environment.UserName}\\Desktop\\videos.html\" -link:\"C:\\Users\\{Environment.UserName}\\Videos\" -pattern:\"*.mp4\" -title:\"Home Videos\"");
 
         }
 
