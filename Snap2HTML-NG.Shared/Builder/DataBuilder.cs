@@ -5,11 +5,8 @@ using System.IO;
 using System.Text;
 using System;
 using Snap2HTMLNG.Shared.Utils.Legacy;
-using Snap2HTMLNG.Shared.Settings;
 using System.Diagnostics;
-using static System.Net.Mime.MediaTypeNames;
 using System.Windows.Forms;
-using System.Drawing;
 
 namespace Snap2HTMLNG.Shared.Builder
 {
@@ -73,7 +70,8 @@ namespace Snap2HTMLNG.Shared.Builder
                     }
                     catch (Exception ex)
                     {
-                        // orphan file or folder?
+                        Utils.CommandLine.Helpers.WriteError("POTENTIAL ERROR");
+                        Utils.CommandLine.Helpers.WriteInformation($"{ex.Message} - {ex}");
                     }
                 }
             }
@@ -133,7 +131,7 @@ namespace Snap2HTMLNG.Shared.Builder
         /// <param name="settings">Application Settings</param>
         /// <param name="bgWorker">[Optional] BackgroundWorker Instance, only used by the GUI.</param>
         /// <returns></returns>
-        public static List<SnappedFolder> GetContent(BackgroundWorker bgWorker = null)
+        public static List<SnappedFolder> GetContent(UserSettingsModel settings, BackgroundWorker bgWorker = null)
         {
             // Prevents background worker calls if we're using the Command Line
             bool commandLine = false;
@@ -149,8 +147,8 @@ namespace Snap2HTMLNG.Shared.Builder
 
             // Get all folders
             var dirs = new List<string>();
-            dirs.Insert(0, XmlConfigurator.Read("RootFolder"));
-            DirSearch(XmlConfigurator.Read("RootFolder"), dirs, bool.Parse(XmlConfigurator.Read("SkipHiddenItems")), bool.Parse(XmlConfigurator.Read("SkipSystemItems")), stopwatch, bgWorker);
+            dirs.Insert(0, settings.RootDirectory);
+            DirSearch(settings.RootDirectory, dirs, settings.SkipHiddenItems, settings.SkipSystemItems, stopwatch, bgWorker);
             dirs = Helpers.SortDirList(dirs);
 
             // If we're using the GUI, account for BGworker cancellation
@@ -192,7 +190,7 @@ namespace Snap2HTMLNG.Shared.Builder
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine("{0} Exception caught.", ex);
+                        Utils.CommandLine.Helpers.WriteError($"{ex.Message} - {ex}");
                     }
                     currentDir.Properties.Add("Modified", modified_date);
                     currentDir.Properties.Add("Created", created_date);
@@ -201,11 +199,11 @@ namespace Snap2HTMLNG.Shared.Builder
                     List<string> files;
                     try
                     {
-                        files = new List<string>(Directory.GetFiles(dirName, XmlConfigurator.Read("SearchPattern"), SearchOption.TopDirectoryOnly));
+                        files = new List<string>(Directory.GetFiles(dirName, settings.SearchPattern, SearchOption.TopDirectoryOnly));
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine("{0} Exception caught.", ex);
+                        Utils.CommandLine.Helpers.WriteError($"{ex.Message} - {ex}");
                         result.Add(currentDir);
                         continue;
                     }
@@ -236,11 +234,11 @@ namespace Snap2HTMLNG.Shared.Builder
                         var currentFile = new SnappedFile(Path.GetFileName(sFile));
                         try
                         {
-                            System.IO.FileInfo fi = new System.IO.FileInfo(sFile);
-                            var isHidden = (fi.Attributes & System.IO.FileAttributes.Hidden) == System.IO.FileAttributes.Hidden;
-                            var isSystem = (fi.Attributes & System.IO.FileAttributes.System) == System.IO.FileAttributes.System;
+                            FileInfo fi = new FileInfo(sFile);
+                            var isHidden = (fi.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden;
+                            var isSystem = (fi.Attributes & FileAttributes.System) == FileAttributes.System;
 
-                            if (isHidden && bool.Parse(XmlConfigurator.Read("SkipHiddenItems")) || (isSystem && bool.Parse(XmlConfigurator.Read("SkipSystemItems"))))
+                            if (isHidden && settings.SkipHiddenItems || (isSystem && settings.SkipSystemItems))
                             {
                                 continue;
                             }
@@ -256,7 +254,7 @@ namespace Snap2HTMLNG.Shared.Builder
                             }
                             catch (Exception ex)
                             {
-                                Console.WriteLine("{0} Exception caught.", ex);
+                                Utils.CommandLine.Helpers.WriteError($"{ex.Message} ");
                             }
 
                             currentFile.Properties.Add("Modified", modified_date);
@@ -265,7 +263,7 @@ namespace Snap2HTMLNG.Shared.Builder
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine("{0} Exception caught.", ex);
+                            Utils.CommandLine.Helpers.WriteError($"{ex.Message} - {ex}");
                         }
 
                         currentDir.Files.Add(currentFile);
@@ -274,9 +272,9 @@ namespace Snap2HTMLNG.Shared.Builder
                     result.Add(currentDir);
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                Console.WriteLine("{0} exception caught: {1}", ex, ex.Message);
+                Utils.CommandLine.Helpers.WriteError($"{ex.Message} - {ex}");
             }
 
             return result;
@@ -302,13 +300,20 @@ namespace Snap2HTMLNG.Shared.Builder
 
             // If we're using the GUI, account for bgWorker cancellation
             if (!commandLine && bgWorker.CancellationPending)
+            {
                 return;
+            }
 
-            Console.WriteLine(sDir);
+#if DEBUG
+            if(commandLine)
+            {
+                Utils.CommandLine.Helpers.WriteDebug($">> {sDir}");
+            }
+#endif
 
             try
             {
-                foreach (string d in System.IO.Directory.GetDirectories(sDir))
+                foreach (string d in Directory.GetDirectories(sDir))
                 { 
                     bool includeThisFolder = true;
 
@@ -341,25 +346,22 @@ namespace Snap2HTMLNG.Shared.Builder
                     {
                         lstDirs.Add(d);
 
-                        if (stopwatch.ElapsedMilliseconds >= 50)
+                        if (!commandLine)
                         {
-                            if(!commandLine)
-                            {
-                                bgWorker.ReportProgress(0, $"Getting directories {lstDirs.Count} ({d})");
-                            } else
-                            {
-                                Console.WriteLine($"Getting directories {lstDirs.Count} ({d})");
-                            }
-                            stopwatch.Restart();
+                            bgWorker.ReportProgress(0, $"Getting directory # {lstDirs.Count}, Path: ({d})");
+                        }
+                        else
+                        {
+                            Utils.CommandLine.Helpers.WriteInformation($"Getting directory # {lstDirs.Count}, Path: ({d})");
                         }
 
                         DirSearch(d, lstDirs, skipHidden, skipSystem, stopwatch, bgWorker);
                     }
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                Console.WriteLine("ERROR in DirSearch(): " + ex.Message);
+                Utils.CommandLine.Helpers.WriteError("ERROR in DirSearch(): " + ex.Message);
             }
         }
 
@@ -375,10 +377,10 @@ namespace Snap2HTMLNG.Shared.Builder
         /// <param name="totalDirectories">Integer of Total Directories found</param>
         /// <param name="totalSize">Long of total size of all files</param>
         /// <returns></returns>
-        public static StringBuilder BuildHtml(StringBuilder template, string productName, string version, int totalFiles, int totalDirectories, long totalSize)
+        public static StringBuilder BuildHtml(UserSettingsModel settings, StringBuilder template, string productName, string version, int totalFiles, int totalDirectories, long totalSize)
         {
             // Build HTML
-            template.Replace("[TITLE]", XmlConfigurator.Read("Title"));
+            template.Replace("[TITLE]", settings.Title);
             template.Replace("[APP LINK]", "https://github.com/laim/Snap2HTML-NG");
             template.Replace("[APP NAME]", productName);
             template.Replace("[APP VER]", version.Split('.')[0] + "." + version.Split('.')[1]);
@@ -387,15 +389,15 @@ namespace Snap2HTMLNG.Shared.Builder
             template.Replace("[NUM FILES]", totalFiles.ToString());
             template.Replace("[NUM DIRS]", totalDirectories.ToString());
             template.Replace("[TOT SIZE]", totalSize.ToString());
-            template.Replace("[SEARCH_PATTERN]", XmlConfigurator.Read("SearchPattern"));
+            template.Replace("[SEARCH_PATTERN]", settings.SearchPattern);
 
-            if (bool.Parse(XmlConfigurator.Read("LinkFiles")))
+            if (settings.LinkFiles)
             {
                 template.Replace("[LINK FILES]", "true");
-                template.Replace("[LINK ROOT]", XmlConfigurator.Read("LinkRoot").Replace(@"\", "/"));
-                template.Replace("[SOURCE ROOT]", XmlConfigurator.Read("RootFolder").Replace(@"\", "/"));
+                template.Replace("[LINK ROOT]", settings.LinkRoot.Replace(@"\", "/"));
+                template.Replace("[SOURCE ROOT]", settings.RootDirectory.Replace(@"\", "/"));
 
-                string link_root = XmlConfigurator.Read("LinkRoot").Replace(@"\", "/");
+                string link_root = settings.LinkRoot.Replace(@"\", "/");
                 if (Helpers.IsWildcardMatch(@"?:/*", link_root, false))  // "file://" is needed in the browser if path begins with drive letter, else it should not be used
                 {
                     template.Replace("[LINK PROTOCOL]", @"file://");
@@ -415,18 +417,58 @@ namespace Snap2HTMLNG.Shared.Builder
                 template.Replace("[LINK FILES]", "false");
                 template.Replace("[LINK PROTOCOL]", "");
                 template.Replace("[LINK ROOT]", "");
-                template.Replace("[SOURCE ROOT]", XmlConfigurator.Read("RootFolder").Replace(@"\", "/"));
+                template.Replace("[SOURCE ROOT]", settings.RootDirectory.Replace(@"\", "/"));
             }
 
             return template;
         }
-    
-        public static void Build(string applicationName, string applicationVersion, BackgroundWorker bgWorker = null)
+
+        /// <summary>
+        /// Builds the output and saves it to the system
+        /// </summary>
+        /// <param name="settings">
+        /// Settings information to be used as a <see cref="UserSettingsModel"/>
+        /// </param>
+        /// <param name="applicationName">
+        /// The application name as a <see cref="string"/>
+        /// </param>
+        /// <param name="applicationVersion">
+        /// The application name as a <see cref="string"/>
+        /// </param>
+        /// <param name="bgWorker">
+        /// [Optional] BackgroundWorker Instance, only used by the GUI.
+        /// </param>
+        public static void Build(UserSettingsModel settings, string applicationName, string applicationVersion, BackgroundWorker bgWorker = null)
         {
+
+            // make some changes the settings information that has been passed through
+            // ensure source path format
+            if (settings.RootDirectory.EndsWith(@"\")) settings.RootDirectory = settings.RootDirectory.Substring(0, settings.RootDirectory.Length - 1);
+            if (Helpers.IsWildcardMatch("?:", settings.RootDirectory, false)) settings.RootDirectory += @"\"; // add backslash to path if only letter and colon eg "c:"
+
+            // add slash or backslash to end of link (in cases where it is clear that we we can)
+            if (settings.LinkFiles)
+            {
+                if (!settings.LinkRoot.EndsWith(@"/"))
+                {
+                    if (settings.LinkRoot.ToLower().StartsWith(@"http") || settings.LinkRoot.ToLower().StartsWith(@"https"))    // web site
+                    {
+                        settings.LinkRoot += @"/";
+                    }
+                    if (Helpers.IsWildcardMatch("?:*", settings.LinkRoot, false)) // local disk
+                    {
+                        settings.LinkRoot += @"\";
+                    }
+                    if (settings.LinkRoot.StartsWith(@"\\"))    // unc path
+                    {
+                        settings.LinkRoot += @"\";
+                    }
+                }
+            }
+
+
             // Get the directories and files
-            // TODO: Does this need switched to only include bgWorker if its passed?
-            // might need to do a null reference check
-            var content = GetContent(bgWorker);
+            var content = GetContent(settings, bgWorker);
 
             // Prevents background worker calls if we're using the Command Line
             bool commandLine = false;
@@ -451,7 +493,7 @@ namespace Snap2HTMLNG.Shared.Builder
                     return;
                 } else
                 {
-                    Console.WriteLine("Error reading source");
+                    Utils.CommandLine.Helpers.WriteError("Error reading source");
                     return;
                 }
             }
@@ -479,7 +521,7 @@ namespace Snap2HTMLNG.Shared.Builder
                 bgWorker.ReportProgress(0, "Generating HTML File");
             } else
             {
-                Console.WriteLine("Generating HTML file");
+                Utils.CommandLine.Helpers.WriteInformation("Generating HTML file");
             }
 
             // Read the template into memory
@@ -500,18 +542,18 @@ namespace Snap2HTMLNG.Shared.Builder
                 } else
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"Failed to open Template.html, error {ex.Message}");
+                    Utils.CommandLine.Helpers.WriteError($"Failed to open Template.html, error {ex.Message}");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
             }
 
             // Build the intial section of the template
-            var builtHtml = BuildHtml(template, applicationName, applicationVersion, totalFiles, totalDirs, totalSize);
+            var builtHtml = BuildHtml(settings, template, applicationName, applicationVersion, totalFiles, totalDirs, totalSize);
 
             // Write the file / directory content to the file
             try
             {
-                using (StreamWriter writer = new StreamWriter(XmlConfigurator.Read("OutputFile"), false, Encoding.UTF8))
+                using (StreamWriter writer = new StreamWriter(settings.OutputFile, false, Encoding.UTF8))
                 {
                     writer.AutoFlush = true;
 
@@ -529,19 +571,31 @@ namespace Snap2HTMLNG.Shared.Builder
                             bgWorker.ReportProgress(0, "Cancelled via User Request");
                             return;
                         }
-
-                        writer.Write(builtTemplate.Substring(dataStart + 10));
                     }
+
+                    writer.Write(builtTemplate.Substring(dataStart + 10));
 
                     builtHtml = null;
                     template = null;
 
                     // Check if we're using the GUI and if we want to open in the browser after the data capture.
                     // This does not work in command line mode as we assume that you'd be running it via a task or something.
-                    if(!commandLine && bool.Parse(XmlConfigurator.Read("OpenInBrowserAfterCapture")))
+                    if(!commandLine && settings.OpenInBrowserAfterCapture)
                     {
-                        Process.Start(XmlConfigurator.Read("OutputFile"));
+                        Process.Start(settings.OutputFile);
                     }
+                }
+
+                // if we get this far, everything should be complete.
+                // Generate the actual output
+                if (!commandLine)
+                {
+                    bgWorker.ReportProgress(100, $"File generated to {settings.OutputFile}");
+                }
+                else
+                {
+                    Utils.CommandLine.Helpers.WriteInformation($"File generated to {settings.OutputFile}");
+                    Environment.Exit(0);
                 }
             } catch (Exception ex)
             {
@@ -554,7 +608,7 @@ namespace Snap2HTMLNG.Shared.Builder
                 else
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"Failed to open file for writing, error {ex.Message}");
+                    Utils.CommandLine.Helpers.WriteError($"Failed to open file for writing, error {ex.Message}");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
             }

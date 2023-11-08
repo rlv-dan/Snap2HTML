@@ -70,6 +70,24 @@ namespace Snap2HTMLNG.Shared.Utils.CommandLine
                     list.Add(new CommandLineModel { Name = "system", Value = "" });
                 }
 
+                // Return Help information
+                if(arg.StartsWith("-help") || arg.StartsWith("-h"))
+                {
+                    list.Add(new CommandLineModel { Name = "help", Value = "" });
+                }
+
+                // Search Pattern, default is *
+                if(arg.StartsWith("-pattern:"))
+                {
+                    list.Add(new CommandLineModel { Name = "pattern", Value = arg.Split(new char[] {':'}, 2).Last() });
+                }
+
+                // Randomize the file name
+                if(arg.StartsWith("-randomize"))
+                {
+                    list.Add(new CommandLineModel { Name = "randomize", Value = "" });
+                }
+
 
             }
 
@@ -86,6 +104,32 @@ namespace Snap2HTMLNG.Shared.Utils.CommandLine
         public static void WriteError(string message)
         {
             Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"{message}");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        /// <summary>
+        /// Changes the foreground color of the console to cyan, writes the message, then changes it back to white
+        /// </summary>
+        /// <param name="message">
+        /// Desired informational message to show the user as a <see cref="string"/>
+        /// </param>
+        public static void WriteInformation(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"{message}");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        /// <summary>
+        /// Changes the foreground color of the console to Magenta, writes the message, then changes it back to white
+        /// </summary>
+        /// <param name="message">
+        /// Desired informational message to show the user as a <see cref="string"/>
+        /// </param>
+        public static void WriteDebug(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
             Console.WriteLine($"{message}");
             Console.ForegroundColor = ConsoleColor.White;
         }

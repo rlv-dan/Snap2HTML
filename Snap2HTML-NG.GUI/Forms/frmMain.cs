@@ -19,6 +19,9 @@ namespace Snap2HTMLNG
         private void frmMain_Load(object sender, EventArgs e)
         {
 
+            Shared.Updater.Updater updater = new Shared.Updater.Updater();
+            updater.CheckForUpdate();
+
             LoadUserSettings();
 
             Text = Application.ProductName + " (Press F1 for Help)";
@@ -156,35 +159,6 @@ namespace Snap2HTMLNG
 
         private void StartProcessing()
         {
-            // ensure source path format
-            var rootFolder = Path.GetFullPath(XmlConfigurator.Read("RootFolder"));
-
-            if (rootFolder.EndsWith(@"\")) rootFolder = rootFolder.Substring(0, rootFolder.Length - 1);
-            if (Shared.Utils.Legacy.Helpers.IsWildcardMatch("?:", rootFolder, false)) rootFolder += @"\"; // add backslash to path if only letter and colon eg "c:"
-
-            // add slash or backslash to end of link (in cases where it is clear that we we can)
-
-            bool linkFiles = bool.Parse(XmlConfigurator.Read("LinkFiles"));
-            string linkRoot = XmlConfigurator.Read("LinkRoot");
-            if (linkFiles)
-            {
-                if (!linkRoot.EndsWith(@"/"))
-                {
-                    if (linkRoot.ToLower().StartsWith(@"http") || linkRoot.ToLower().StartsWith(@"https"))    // web site
-                    {
-                        linkRoot += @"/";
-                    }
-                    if (Shared.Utils.Legacy.Helpers.IsWildcardMatch("?:*", linkRoot, false)) // local disk
-                    {
-                        linkRoot += @"\";
-                    }
-                    if (linkRoot.StartsWith(@"\\"))    // unc path
-                    {
-                        linkRoot += @"\";
-                    }
-                }
-            }
-
             Cursor.Current = Cursors.WaitCursor;
             Text = "Snap2HTMLNG (Working... Press Escape to Cancel)";
             tabCtrl.Enabled = false;

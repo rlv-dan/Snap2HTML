@@ -11,5 +11,7 @@
 	<LinkFiles>false</LinkFiles>
 	<LinkRoot></LinkRoot>
 	<SearchPattern>*</SearchPattern>
+	<!-- this is not implemented yet, do not set to true -->
+	<CheckForUpdates>false</CheckForUpdates>
 	
 </UserSettings>
