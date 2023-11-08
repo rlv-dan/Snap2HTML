@@ -56,7 +56,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\XmlConfigurator.cs" />
     <Compile Include="Updater\Updater.cs" />
-    <Compile Include="Utils\CommandLine\Helpers.cs" />
+    <Compile Include="CLI\CommandLine.cs" />
     <Compile Include="Utils\Legacy\CommandLine\Arguments.cs" />
     <Compile Include="Utils\Legacy\Helpers.cs" />
   </ItemGroup>

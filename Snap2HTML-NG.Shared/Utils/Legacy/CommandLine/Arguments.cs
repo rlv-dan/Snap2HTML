@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Snap2HTMLNG.Shared.Utils.CommandLine
+namespace Snap2HTMLNG.Shared.Utils.CLI
 {
     /// <summary>
     /// Arguments class

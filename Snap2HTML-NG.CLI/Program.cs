@@ -5,8 +5,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using Snap2HTMLNG.Shared.CLI;
 
-namespace Snap2HTMLNG.CommandLine
+namespace Snap2HTMLNG.CLI
 {
     internal class Program
     {
@@ -17,12 +18,12 @@ namespace Snap2HTMLNG.CommandLine
 
 #if DEBUG
             // Information
-            Shared.Utils.CommandLine.Helpers.WriteDebug($"  THIS IS A PREVIEW BUILD.");
+            CommandLine.WriteDebug($"  THIS IS A PREVIEW BUILD.");
             // New Lines
             Console.WriteLine("");
 #endif
 
-            List<CommandLineModel> normalizedArgs = Shared.Utils.CommandLine.Helpers.CommandLineSplit(args);
+            List<CommandLineModel> normalizedArgs = CommandLine.CommandLineSplit(args);
 
             if(normalizedArgs.Exists(x => x.Name == "help"))
             {
@@ -41,29 +42,29 @@ namespace Snap2HTMLNG.CommandLine
                 // Check if the user has requested a randomized file name and set if they have
                 if(normalizedArgs.Exists(x =>x.Name == "randomize"))
                 {
-                    Shared.Utils.CommandLine.Helpers.WriteInformation($"Randomized file name requested...");
+                    CommandLine.WriteInformation($"Randomized file name requested...");
 
                     string randomFileName = $"{Guid.NewGuid()}.html";
 
                     saveDirectory = $@"{saveDirectory}\{randomFileName}";
 
-                    Shared.Utils.CommandLine.Helpers.WriteInformation($"Randomized file set to {randomFileName}");
+                    CommandLine.WriteInformation($"Randomized file set to {randomFileName}");
 
-                    Shared.Utils.CommandLine.Helpers.WriteInformation($"Output path is now: {saveDirectory}");
+                    CommandLine.WriteInformation($"Output path is now: {saveDirectory}");
 
                 }
 
                 // Validate that the Scan Path actually exists
                 if (!Directory.Exists(rootDirectory))
                 {
-                    Shared.Utils.CommandLine.Helpers.WriteError($"Your scan path {rootDirectory} does not exist or Snap2HTML-NG does not have access.");
+                    CommandLine.WriteError($"Your scan path {rootDirectory} does not exist or Snap2HTML-NG does not have access.");
                     return;
                 }
 
                 // Check if the Save location actually exists
                 if (!Directory.Exists(Path.GetDirectoryName(saveDirectory)))
                 {
-                    Shared.Utils.CommandLine.Helpers.WriteError($"Your save path {saveDirectory} does not exist or Snap2HTML-NG does not have access.");
+                    CommandLine.WriteError($"Your save path {saveDirectory} does not exist or Snap2HTML-NG does not have access.");
                     return;
                 }
 
@@ -95,7 +96,7 @@ namespace Snap2HTMLNG.CommandLine
 #if DEBUG
                 foreach (var normalizedArg in normalizedArgs)
                 {
-                    Shared.Utils.CommandLine.Helpers.WriteDebug($"Name: {normalizedArg.Name}, Value: {normalizedArg.Value}");
+                    CommandLine.WriteDebug($"Name: {normalizedArg.Name}, Value: {normalizedArg.Value}");
                 }
 #endif
                 // Create the settings model and assign the relevant information to each property
@@ -131,7 +132,7 @@ namespace Snap2HTMLNG.CommandLine
             // Check if we have included any arguments at all, otherwise exit out.
             if (normalizedArgs.Count == 0)
             {
-                Shared.Utils.CommandLine.Helpers.WriteError("No arguments have been supplied that are recognized.  Use -h for help.");
+                CommandLine.WriteError("No arguments have been supplied that are recognized.  Use -h for help.");
                 _validationCheck = false;
                 return;
             }
@@ -139,7 +140,7 @@ namespace Snap2HTMLNG.CommandLine
             // Check if we have included the REQUIRED argument -path:, otherwise exit out.
             if (!normalizedArgs.Exists(x => x.Name == "path"))
             {
-                Shared.Utils.CommandLine.Helpers.WriteError("You are missing the required argument '-path:'. Use -h for help.");
+                CommandLine.WriteError("You are missing the required argument '-path:'. Use -h for help.");
                 _validationCheck = false;
                 return;
             }
@@ -147,7 +148,7 @@ namespace Snap2HTMLNG.CommandLine
             // Check if we have included the REQUIRED argument -output:, otherwise exit out.
             if (!normalizedArgs.Exists(x => x.Name == "output"))
             {
-                Shared.Utils.CommandLine.Helpers.WriteError("You are missing the required argument '-output:'. Use -h for help.");
+                CommandLine.WriteError("You are missing the required argument '-output:'. Use -h for help.");
                 _validationCheck = false;
                 return;
             }
@@ -171,14 +172,14 @@ namespace Snap2HTMLNG.CommandLine
 
             // Description
             Console.WriteLine(" Description:");
-            Console.WriteLine("     Help information for Snap2HTML-NG.Console");
+            Console.WriteLine("     Help information for Snap2HTML-NG.CLI");
 
             // New Lines
             Console.WriteLine("");
 
             // Usage
             Console.WriteLine(" Usage:");
-            Console.WriteLine("     Snap2HTML-NG.Console [options]");
+            Console.WriteLine("     Snap2HTML-NG.CLI [options]");
 
             // New Lines
             Console.WriteLine("");
@@ -200,11 +201,11 @@ namespace Snap2HTMLNG.CommandLine
 
             // Examples
             Console.WriteLine(" Examples:");
-            Console.WriteLine($"     Snap2HTML-NG.Console -path:\"C:\\Users\\{Environment.UserName}\\Downloads\" -output:\"C:\\Users\\{Environment.UserName}\\Desktop\\Downloads.html\" ");
-            Console.WriteLine($"     Snap2HTML-NG.Console -path:\"C:\\Users\\{Environment.UserName}\\Pictures\" -output:\"C:\\Users\\{Environment.UserName}\\Desktop\" -randomize ");
-            Console.WriteLine($"     Snap2HTML-NG.Console -path:\"C:\\Users\\{Environment.UserName}\\Downloads\" -output:\"C:\\Users\\{Environment.UserName}\\Desktop\" -link:\"C:\\Users\\{Environment.UserName}\\Downloads\" -randomize ");
-            Console.WriteLine($"     Snap2HTML-NG.Console -path:\"C:\\Users\\{Environment.UserName}\\Downloads\" -output:\"C:\\Users\\{Environment.UserName}\\Desktop\" -link:\"C:\\Users\\{Environment.UserName}\\Downloads\" -randomize -pattern:\"*.mp4\"");
-            Console.WriteLine($"     Snap2HTML-NG.Console -path:\"C:\\Users\\{Environment.UserName}\\Videos\" -output:\"C:\\Users\\{Environment.UserName}\\Desktop\\videos.html\" -link:\"C:\\Users\\{Environment.UserName}\\Videos\" -pattern:\"*.mp4\" -title:\"Home Videos\"");
+            Console.WriteLine($"     Snap2HTML-NG.CLI -path:\"C:\\Users\\{Environment.UserName}\\Downloads\" -output:\"C:\\Users\\{Environment.UserName}\\Desktop\\Downloads.html\" ");
+            Console.WriteLine($"     Snap2HTML-NG.CLI -path:\"C:\\Users\\{Environment.UserName}\\Pictures\" -output:\"C:\\Users\\{Environment.UserName}\\Desktop\" -randomize ");
+            Console.WriteLine($"     Snap2HTML-NG.CLI -path:\"C:\\Users\\{Environment.UserName}\\Downloads\" -output:\"C:\\Users\\{Environment.UserName}\\Desktop\" -link:\"C:\\Users\\{Environment.UserName}\\Downloads\" -randomize ");
+            Console.WriteLine($"     Snap2HTML-NG.CLI -path:\"C:\\Users\\{Environment.UserName}\\Downloads\" -output:\"C:\\Users\\{Environment.UserName}\\Desktop\" -link:\"C:\\Users\\{Environment.UserName}\\Downloads\" -randomize -pattern:\"*.mp4\"");
+            Console.WriteLine($"     Snap2HTML-NG.CLI -path:\"C:\\Users\\{Environment.UserName}\\Videos\" -output:\"C:\\Users\\{Environment.UserName}\\Desktop\\videos.html\" -link:\"C:\\Users\\{Environment.UserName}\\Videos\" -pattern:\"*.mp4\" -title:\"Home Videos\"");
 
         }
 

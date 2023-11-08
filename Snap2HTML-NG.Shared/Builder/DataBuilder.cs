@@ -7,6 +7,7 @@ using System;
 using Snap2HTMLNG.Shared.Utils.Legacy;
 using System.Diagnostics;
 using System.Windows.Forms;
+using Snap2HTMLNG.Shared.CLI;
 
 namespace Snap2HTMLNG.Shared.Builder
 {
@@ -70,8 +71,8 @@ namespace Snap2HTMLNG.Shared.Builder
                     }
                     catch (Exception ex)
                     {
-                        Utils.CommandLine.Helpers.WriteError("POTENTIAL ERROR");
-                        Utils.CommandLine.Helpers.WriteInformation($"{ex.Message} - {ex}");
+                        CommandLine.WriteError("POTENTIAL ERROR");
+                        CommandLine.WriteInformation($"{ex.Message} - {ex}");
                     }
                 }
             }
@@ -190,7 +191,7 @@ namespace Snap2HTMLNG.Shared.Builder
                     }
                     catch (Exception ex)
                     {
-                        Utils.CommandLine.Helpers.WriteError($"{ex.Message} - {ex}");
+                        CommandLine.WriteError($"{ex.Message} - {ex}");
                     }
                     currentDir.Properties.Add("Modified", modified_date);
                     currentDir.Properties.Add("Created", created_date);
@@ -203,7 +204,7 @@ namespace Snap2HTMLNG.Shared.Builder
                     }
                     catch (Exception ex)
                     {
-                        Utils.CommandLine.Helpers.WriteError($"{ex.Message} - {ex}");
+                        CommandLine.WriteError($"{ex.Message} - {ex}");
                         result.Add(currentDir);
                         continue;
                     }
@@ -254,7 +255,7 @@ namespace Snap2HTMLNG.Shared.Builder
                             }
                             catch (Exception ex)
                             {
-                                Utils.CommandLine.Helpers.WriteError($"{ex.Message} ");
+                                CommandLine.WriteError($"{ex.Message} ");
                             }
 
                             currentFile.Properties.Add("Modified", modified_date);
@@ -263,7 +264,7 @@ namespace Snap2HTMLNG.Shared.Builder
                         }
                         catch (Exception ex)
                         {
-                            Utils.CommandLine.Helpers.WriteError($"{ex.Message} - {ex}");
+                            CommandLine.WriteError($"{ex.Message} - {ex}");
                         }
 
                         currentDir.Files.Add(currentFile);
@@ -274,7 +275,7 @@ namespace Snap2HTMLNG.Shared.Builder
             }
             catch (Exception ex)
             {
-                Utils.CommandLine.Helpers.WriteError($"{ex.Message} - {ex}");
+                CommandLine.WriteError($"{ex.Message} - {ex}");
             }
 
             return result;
@@ -307,7 +308,7 @@ namespace Snap2HTMLNG.Shared.Builder
 #if DEBUG
             if(commandLine)
             {
-                Utils.CommandLine.Helpers.WriteDebug($">> {sDir}");
+                CommandLine.WriteDebug($">> {sDir}");
             }
 #endif
 
@@ -352,7 +353,7 @@ namespace Snap2HTMLNG.Shared.Builder
                         }
                         else
                         {
-                            Utils.CommandLine.Helpers.WriteInformation($"Getting directory # {lstDirs.Count}, Path: ({d})");
+                            CommandLine.WriteInformation($"Getting directory # {lstDirs.Count}, Path: ({d})");
                         }
 
                         DirSearch(d, lstDirs, skipHidden, skipSystem, stopwatch, bgWorker);
@@ -361,7 +362,7 @@ namespace Snap2HTMLNG.Shared.Builder
             }
             catch (Exception ex)
             {
-                Utils.CommandLine.Helpers.WriteError("ERROR in DirSearch(): " + ex.Message);
+                CommandLine.WriteError("ERROR in DirSearch(): " + ex.Message);
             }
         }
 
@@ -493,7 +494,7 @@ namespace Snap2HTMLNG.Shared.Builder
                     return;
                 } else
                 {
-                    Utils.CommandLine.Helpers.WriteError("Error reading source");
+                    CommandLine.WriteError("Error reading source");
                     return;
                 }
             }
@@ -521,7 +522,7 @@ namespace Snap2HTMLNG.Shared.Builder
                 bgWorker.ReportProgress(0, "Generating HTML File");
             } else
             {
-                Utils.CommandLine.Helpers.WriteInformation("Generating HTML file");
+                CommandLine.WriteInformation("Generating HTML file");
             }
 
             // Read the template into memory
@@ -542,7 +543,7 @@ namespace Snap2HTMLNG.Shared.Builder
                 } else
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Utils.CommandLine.Helpers.WriteError($"Failed to open Template.html, error {ex.Message}");
+                    CommandLine.WriteError($"Failed to open Template.html, error {ex.Message}");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
             }
@@ -594,7 +595,7 @@ namespace Snap2HTMLNG.Shared.Builder
                 }
                 else
                 {
-                    Utils.CommandLine.Helpers.WriteInformation($"File generated to {settings.OutputFile}");
+                    CommandLine.WriteInformation($"File generated to {settings.OutputFile}");
                     Environment.Exit(0);
                 }
             } catch (Exception ex)
@@ -608,7 +609,7 @@ namespace Snap2HTMLNG.Shared.Builder
                 else
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Utils.CommandLine.Helpers.WriteError($"Failed to open file for writing, error {ex.Message}");
+                    CommandLine.WriteError($"Failed to open file for writing, error {ex.Message}");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
             }

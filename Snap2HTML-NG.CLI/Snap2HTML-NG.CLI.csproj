@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{84648B91-E4D2-42F2-8949-2B86530AA8BB}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Snap2HTMLNG.Console</RootNamespace>
-    <AssemblyName>Snap2HTML-NG.Console</AssemblyName>
+    <RootNamespace>Snap2HTMLNG.CLI</RootNamespace>
+    <AssemblyName>Snap2HTML-NG.CLI</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

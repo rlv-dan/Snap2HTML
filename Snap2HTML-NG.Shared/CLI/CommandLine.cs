@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Snap2HTMLNG.Shared.Utils.CommandLine
+namespace Snap2HTMLNG.Shared.CLI
 {
-    public class Helpers
+    public class CommandLine
     {
 
         /// <summary>

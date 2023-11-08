@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snap2HTML-NG.GUI", "Snap2HT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snap2HTML-NG.Shared", "Snap2HTML-NG.Shared\Snap2HTML-NG.Shared.csproj", "{C44099DF-D841-4D2D-BC49-912DAE33C4F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snap2HTML-NG.CommandLine", "Snap2HTML-NG.CommandLine\Snap2HTML-NG.CommandLine.csproj", "{84648B91-E4D2-42F2-8949-2B86530AA8BB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snap2HTML-NG.CLI", "Snap2HTML-NG.CLI\Snap2HTML-NG.CLI.csproj", "{84648B91-E4D2-42F2-8949-2B86530AA8BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Snap2HTML-NG.Console")]
+[assembly: AssemblyTitle("Snap2HTML-NG.CLI")]
 [assembly: AssemblyDescription("Console App for Snap2HTML-NG")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Laim McKenzie")]
-[assembly: AssemblyProduct("Snap2HTML-NG.Console")]
+[assembly: AssemblyProduct("Snap2HTML-NG.CLI")]
 [assembly: AssemblyCopyright("Copyright © Laim McKenzie 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
