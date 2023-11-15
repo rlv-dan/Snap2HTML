@@ -2,7 +2,10 @@
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
+using System.Xml;
+using Snap2HTMLNG.Forms;
 using Snap2HTMLNG.Shared.Settings;
+using Snap2HTMLNG.Shared.Updater;
 
 namespace Snap2HTMLNG
 {
@@ -19,8 +22,12 @@ namespace Snap2HTMLNG
         private void frmMain_Load(object sender, EventArgs e)
         {
 
-            Shared.Updater.Updater updater = new Shared.Updater.Updater();
-            updater.CheckForUpdate();
+            Updater updater = new Updater();
+            if(updater.CheckForUpdate(Application.ProductVersion))
+            {
+                frmUpdateNotice frm = new frmUpdateNotice();
+                frm.ShowDialog();
+            }
 
             LoadUserSettings();
 
@@ -122,6 +129,7 @@ namespace Snap2HTMLNG
 
                 if (!saveFileDialog1.FileName.ToLower().EndsWith(".html")) saveFileDialog1.FileName += ".html";
 
+                // TODO: Change this in Version 3.1 to use the new XML loading system
                 // Declare the user settings nodes that are available in UserSettings.xml (see Shared.UserSettings.xml)
                 string[] nodes = { 
                     "RootFolder", 
@@ -149,7 +157,7 @@ namespace Snap2HTMLNG
                     txtSearchPattern.Text
                 };
 
-                // Write the settings to the SettingsFile // TODO: Do I need to move this so we can run from schedule multiple different times?  I think so. 
+                // Write the settings to the SettingsFile
                 XmlConfigurator.Write(nodes, values);
 
                 // begin generating html
@@ -323,6 +331,27 @@ namespace Snap2HTMLNG
                 return false;
             }
 
+        }
+
+        private void cbCheckForUpdates_CheckedChanged(object sender, EventArgs e)
+        {
+            // TODO: Change this in Version 3.1 to use the new XML loading system
+            XmlDocument doc = new XmlDocument();
+            doc.Load("UserSettings.xml");
+
+            XmlNodeList nodeList = doc.GetElementsByTagName("CheckForUpdates");
+            foreach(XmlNode node in nodeList)
+            {
+                if(cbCheckForUpdates.Checked)
+                {
+                    node.InnerText = "true";
+                }
+                else
+                {
+                    node.InnerText = "false";
+                }
+            }
+            doc.Save("UserSettings.xml");
         }
     }
 }

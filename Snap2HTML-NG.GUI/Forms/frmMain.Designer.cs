@@ -54,18 +54,12 @@
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.label4 = new System.Windows.Forms.Label();
             this.tabAbout = new System.Windows.Forms.TabPage();
+            this.gbPreferences = new System.Windows.Forms.GroupBox();
+            this.lblCheckForUpdatesNotice = new System.Windows.Forms.Label();
+            this.cbCheckForUpdates = new System.Windows.Forms.CheckBox();
             this.linkLabelDonate = new System.Windows.Forms.LinkLabel();
             this.linkLabelLaim = new System.Windows.Forms.LinkLabel();
             this.lblLaimAbout = new System.Windows.Forms.Label();
-            this.groupBoxMoreApps = new System.Windows.Forms.GroupBox();
-            this.label33 = new System.Windows.Forms.Label();
-            this.label32 = new System.Windows.Forms.Label();
-            this.linkLabel3 = new System.Windows.Forms.LinkLabel();
-            this.label17 = new System.Windows.Forms.Label();
-            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
-            this.label11 = new System.Windows.Forms.Label();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.labelAboutSoftware = new System.Windows.Forms.Label();
@@ -82,9 +76,7 @@
             this.tabCustomDesign.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.tabAbout.SuspendLayout();
-            this.groupBoxMoreApps.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.gbPreferences.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -371,10 +363,10 @@
             // 
             // tabAbout
             // 
+            this.tabAbout.Controls.Add(this.gbPreferences);
             this.tabAbout.Controls.Add(this.linkLabelDonate);
             this.tabAbout.Controls.Add(this.linkLabelLaim);
             this.tabAbout.Controls.Add(this.lblLaimAbout);
-            this.tabAbout.Controls.Add(this.groupBoxMoreApps);
             this.tabAbout.Controls.Add(this.pictureBox1);
             this.tabAbout.Controls.Add(this.linkLabel1);
             this.tabAbout.Controls.Add(this.labelAboutSoftware);
@@ -388,6 +380,37 @@
             this.tabAbout.TabIndex = 1;
             this.tabAbout.Text = "About";
             this.tabAbout.UseVisualStyleBackColor = true;
+            // 
+            // gbPreferences
+            // 
+            this.gbPreferences.Controls.Add(this.lblCheckForUpdatesNotice);
+            this.gbPreferences.Controls.Add(this.cbCheckForUpdates);
+            this.gbPreferences.Location = new System.Drawing.Point(27, 295);
+            this.gbPreferences.Name = "gbPreferences";
+            this.gbPreferences.Size = new System.Drawing.Size(394, 118);
+            this.gbPreferences.TabIndex = 10;
+            this.gbPreferences.TabStop = false;
+            this.gbPreferences.Text = "Preferences";
+            // 
+            // lblCheckForUpdatesNotice
+            // 
+            this.lblCheckForUpdatesNotice.Location = new System.Drawing.Point(17, 53);
+            this.lblCheckForUpdatesNotice.Name = "lblCheckForUpdatesNotice";
+            this.lblCheckForUpdatesNotice.Size = new System.Drawing.Size(356, 56);
+            this.lblCheckForUpdatesNotice.TabIndex = 1;
+            this.lblCheckForUpdatesNotice.Text = "This will allow the application to automatically check for updates.  The updates " +
+    "are NOT automatically downloaded.";
+            // 
+            // cbCheckForUpdates
+            // 
+            this.cbCheckForUpdates.AutoSize = true;
+            this.cbCheckForUpdates.Location = new System.Drawing.Point(20, 30);
+            this.cbCheckForUpdates.Name = "cbCheckForUpdates";
+            this.cbCheckForUpdates.Size = new System.Drawing.Size(140, 20);
+            this.cbCheckForUpdates.TabIndex = 0;
+            this.cbCheckForUpdates.Text = "Check for Updates";
+            this.cbCheckForUpdates.UseVisualStyleBackColor = true;
+            this.cbCheckForUpdates.CheckedChanged += new System.EventHandler(this.cbCheckForUpdates_CheckedChanged);
             // 
             // linkLabelDonate
             // 
@@ -426,117 +449,6 @@
             this.lblLaimAbout.Size = new System.Drawing.Size(157, 16);
             this.lblLaimAbout.TabIndex = 7;
             this.lblLaimAbout.Text = "Snap2HTML-NG by Laim";
-            // 
-            // groupBoxMoreApps
-            // 
-            this.groupBoxMoreApps.Controls.Add(this.label33);
-            this.groupBoxMoreApps.Controls.Add(this.label32);
-            this.groupBoxMoreApps.Controls.Add(this.linkLabel3);
-            this.groupBoxMoreApps.Controls.Add(this.label17);
-            this.groupBoxMoreApps.Controls.Add(this.linkLabel2);
-            this.groupBoxMoreApps.Controls.Add(this.label11);
-            this.groupBoxMoreApps.Controls.Add(this.pictureBox3);
-            this.groupBoxMoreApps.Controls.Add(this.pictureBox2);
-            this.groupBoxMoreApps.Location = new System.Drawing.Point(8, 266);
-            this.groupBoxMoreApps.Margin = new System.Windows.Forms.Padding(4);
-            this.groupBoxMoreApps.Name = "groupBoxMoreApps";
-            this.groupBoxMoreApps.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBoxMoreApps.Size = new System.Drawing.Size(424, 158);
-            this.groupBoxMoreApps.TabIndex = 5;
-            this.groupBoxMoreApps.TabStop = false;
-            this.groupBoxMoreApps.Text = "More utilities by RL Vision";
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label33.Location = new System.Drawing.Point(279, 33);
-            this.label33.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(117, 17);
-            this.label33.TabIndex = 13;
-            this.label33.Text = "Flash Renamer";
-            // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label32.Location = new System.Drawing.Point(77, 33);
-            this.label32.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(136, 17);
-            this.label32.TabIndex = 10;
-            this.label32.Text = "Exif Tag Remover";
-            // 
-            // linkLabel3
-            // 
-            this.linkLabel3.AutoSize = true;
-            this.linkLabel3.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.linkLabel3.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.linkLabel3.Location = new System.Drawing.Point(77, 123);
-            this.linkLabel3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.linkLabel3.Name = "linkLabel3";
-            this.linkLabel3.Size = new System.Drawing.Size(62, 16);
-            this.linkLabel3.TabIndex = 12;
-            this.linkLabel3.TabStop = true;
-            this.linkLabel3.Tag = "http://www.rlvision.com/snap2html/about.asp";
-            this.linkLabel3.Text = "More info";
-            this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel3_LinkClicked);
-            // 
-            // label17
-            // 
-            this.label17.Location = new System.Drawing.Point(77, 49);
-            this.label17.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(144, 91);
-            this.label17.TabIndex = 11;
-            this.label17.Text = "Delete all metadata before publishing images to protect your privacy.";
-            // 
-            // linkLabel2
-            // 
-            this.linkLabel2.AutoSize = true;
-            this.linkLabel2.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.linkLabel2.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.linkLabel2.Location = new System.Drawing.Point(279, 123);
-            this.linkLabel2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.linkLabel2.Name = "linkLabel2";
-            this.linkLabel2.Size = new System.Drawing.Size(62, 16);
-            this.linkLabel2.TabIndex = 10;
-            this.linkLabel2.TabStop = true;
-            this.linkLabel2.Tag = "http://www.rlvision.com/flashren/about.asp";
-            this.linkLabel2.Text = "More info";
-            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
-            // 
-            // label11
-            // 
-            this.label11.Location = new System.Drawing.Point(279, 49);
-            this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(136, 87);
-            this.label11.TabIndex = 9;
-            this.label11.Text = "Advanced file renaming utility that will save you lots of time.";
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox3.Image")));
-            this.pictureBox3.Location = new System.Drawing.Point(225, 33);
-            this.pictureBox3.Margin = new System.Windows.Forms.Padding(4);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(39, 48);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox3.TabIndex = 1;
-            this.pictureBox3.TabStop = false;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(13, 33);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(4);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(46, 39);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox2.TabIndex = 0;
-            this.pictureBox2.TabStop = false;
             // 
             // pictureBox1
             // 
@@ -653,10 +565,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.tabAbout.ResumeLayout(false);
             this.tabAbout.PerformLayout();
-            this.groupBoxMoreApps.ResumeLayout(false);
-            this.groupBoxMoreApps.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.gbPreferences.ResumeLayout(false);
+            this.gbPreferences.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -691,15 +601,6 @@
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.TextBox txtTitle;
 		private System.Windows.Forms.ToolTip toolTip1;
-		private System.Windows.Forms.GroupBox groupBoxMoreApps;
-		private System.Windows.Forms.Label label33;
-		private System.Windows.Forms.Label label32;
-		private System.Windows.Forms.LinkLabel linkLabel3;
-		private System.Windows.Forms.Label label17;
-		private System.Windows.Forms.LinkLabel linkLabel2;
-		private System.Windows.Forms.Label label11;
-		private System.Windows.Forms.PictureBox pictureBox3;
-		private System.Windows.Forms.PictureBox pictureBox2;
 		private System.Windows.Forms.TabPage tabCustomDesign;
 		private System.Windows.Forms.LinkLabel linkLabel4;
 		private System.Windows.Forms.Label label4;
@@ -714,6 +615,9 @@
         private System.Windows.Forms.LinkLabel linkLabelDonate;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel lblStatus;
+        private System.Windows.Forms.GroupBox gbPreferences;
+        private System.Windows.Forms.CheckBox cbCheckForUpdates;
+        private System.Windows.Forms.Label lblCheckForUpdatesNotice;
     }
 }
 

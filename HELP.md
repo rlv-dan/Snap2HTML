@@ -67,50 +67,33 @@ Here are some examples that shows how to use it:
 **Use snapshot from**:	"http://www.example.com/snapshot.html"
 
 # Command Line
-You can automate Snap2HTML by starting it from the command line with the 
-following options:
+Starting with Snap2HTML-NG version 3, the Command Line process has completely changed and been split out to it's own application.
 
-## Simple
-    Snap2HTMl.exe "c:\path\to\root\folder"
+## Usage:
+     Snap2HTML-NG.CLI [options]
 
-**Note**:   Starts the program with the given root path already set
+ ## Options:
+     -path:          [Required] The directory you want to scan
+     -output:        [Required] The directory where you want to save the file, including the filename unless using -randomize
+     -link:          [Optional] The directory where you want to link files in the html file
+     -title:         [Optional] The title of the file which appears at the top of the html file
+     -hidden         [Optional] Hides Hidden files from the scan, default is TRUE
+     -system         [Optional] Hides System files from the scan, default is TRUE
+     -help, -h       [Optional] Shows this information
+     -pattern        [Optional] Search pattern to only return certain files, default is *
+     -randomize      [Optional] Generates a random file name instead of needing to specify one in -output
 
-## Full
-
-    Snap2HTMl.exe -path:"root folder path" -outfile:"filename" [-link:"link to path"] [-title:"page title"] [-hidden] [-system] [-silent]
-
-### Paramters
-
-    -path:"root folder path"   - The root path to load.
-
-**Example**: -path:"c:\temp"
-                                         
-    -outfile:"filename"        - The filename to save the snapshot as. Don't forget the html extension! 
-
-**Example**: -outfile:"c:\temp\out.html"
-
-    -link:"link to path"       - The path to link files to. 
-
-**Example**: -link:"c:\temp"
-                                         
-    -title:"page title"        - Set the page title. If omitted, title is generated based on path.
-          
-    -hidden                    - Include hidden items
-
-    -system                    - Include system items
-
-    -silent                    - Run without showing the window (only if both -path and -outfile are used)
+ ## Examples:
+     Snap2HTML-NG.CLI -path:"C:\Users\%username%\Downloads" -output:"C:\Users\%username%\Desktop\Downloads.html"
+     Snap2HTML-NG.CLI -path:"C:\Users\%username%\Pictures" -output:"C:\Users\%username%\Desktop" -randomize
+     Snap2HTML-NG.CLI -path:"C:\Users\%username%\Downloads" -output:"C:\Users\%username%\Desktop" -link:"C:\Users\%username%\Downloads" -randomize
+     Snap2HTML-NG.CLI -path:"C:\Users\%username%\Downloads" -output:"C:\Users\%username%\Desktop" -link:"C:\Users\%username%\Downloads" -randomize -pattern:"*.mp4"
+     Snap2HTML-NG.CLI -path:"C:\Users\%username%\Videos" -output:"C:\Users\%username%\Desktop\videos.html" -link:"C:\Users\%username%\Videos" -pattern:"*.mp4" -title:"Home Videos"
 
 **Notes**:    
 
-When both -path and -outfile are specified, the program will automatically start generating the snapshot, and quit when done.
-
 Always surround paths and filenames with quotes ("")!
             
-In silent mode, in case or error the program will just quit without telling why.
-
-Do not include the [square brackets] when you write your command  line. (Square brackets signify optional command line parameters)
-
 # Template Design
 If you know html and javascript you may want to have a look at the file "template.html" in the application folder. This is the base for the output, and you can modify it with your own enhancements and design changes. 
 
