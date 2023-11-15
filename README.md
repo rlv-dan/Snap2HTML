@@ -33,7 +33,16 @@ This is some of the changes so far.
 - Writable Directory Path Textbox
 - Project upgraded to .NET Framework 4.8
 - Drag and Drop Optimization
+- Major code base rewrite
+- CLI split out to allow scheduling of snapshots
+- User Settings changed to allow scheduling
+- Command Line removed from GUI entirely
+- Updater (Off by default)
+- Much more; see Release Notes
 
 ## Privacy Notice
 
-Snap2HTML-NG does not connect to the internet. It does not phone home, check for updates, submit telemetry, spy on you or any other crap like that. It simply doesn't do anything behind your back and any data related to the  program is yours. As it should be.
+Snap2HTML-NG does not connect to the internet. It does not phone home, submit telemetry, spy on you or any other crap like that. It simply doesn't do anything behind your back and any data related to the  program is yours. As it should be.
+
+### Updates
+As of Version 3.0, there is a setting to auto check for updates.  This does not download any updates automatically and is disabled by default.  The above privacy notice still stands otherwise.
