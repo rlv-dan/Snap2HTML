@@ -813,7 +813,7 @@
 			var linkRoot = "[LINK ROOT]";
 			var sourceRoot = "[SOURCE ROOT]";
 			var sourceParent = sourceRoot.substring( 0, sourceRoot.lastIndexOf("/") +1 );
-			var originalHash = location.hash.replace(/#/,"");
+			var originalHash = decodeURIComponent(location.hash.replace(/#/,""));
 			var SelectedFolderID = "-1";
 			var currentView;
 			var onlyLinkExtensions = [];	// example: ["jpg","png"]
