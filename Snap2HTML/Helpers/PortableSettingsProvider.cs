@@ -3,13 +3,9 @@
 // If this does not compile: Project->Add Reference->.Net-> Doubleclick "System.Configuration"
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 using System.Configuration;
-using System.Configuration.Provider;
 using System.Windows.Forms;
 using System.Collections.Specialized;
-using Microsoft.Win32;
 using System.Xml;
 using System.IO;
  
@@ -112,14 +108,15 @@ public class PortableSettingsProvider : SettingsProvider {
     string ret = "";
  
     try {
+      // Will fail when there are no previous settings. This is ok.
+      // If Visual Studio breaks, just "Continue" until it starts.
       if (IsRoaming(setting)) {
         ret = SettingsXML.SelectSingleNode(SETTINGSROOT + "/" + setting.Name).InnerText;
       }
       else {
         ret = SettingsXML.SelectSingleNode(SETTINGSROOT + "/" + Environment.MachineName + "/" + setting.Name).InnerText;
       }
-    }
- 
+    } 
     catch (Exception ex) {
       if ((setting.DefaultValue != null)) {
         ret = setting.DefaultValue.ToString();

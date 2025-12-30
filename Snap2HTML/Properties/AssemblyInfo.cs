@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attr. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Snap2HTML")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Generate html file listings")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("RL Vision")]
 [assembly: AssemblyProduct("Snap2HTML")]
-[assembly: AssemblyCopyright( "Copyright © RL Vision 2011-2020" )]
+[assembly: AssemblyCopyright("Copyright © RL Vision 2011-2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion( "2.14.0.0" )]
-[assembly: AssemblyFileVersion( "2.14.0.0" )]
+[assembly: AssemblyVersion("2.5.0.0")]
+[assembly: AssemblyFileVersion("2.5.0.0")]
