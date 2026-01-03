@@ -1,7 +1,7 @@
 
  --- Snap2HTML ----------------------------------------------------------------
  
-  Freeware by RL Vision (c) 2011-2025
+  Freeware by RL Vision (c) 2011-2026
   Homepage: https://www.rlvision.com
   
   Portable:
@@ -203,6 +203,9 @@
 
  
  --- Version History ---------------------------------------------------------
+
+  v2.51 (2026-01-03)
+    Fix a linking issue
 
   v2.5 (2025-12-30)
     Complete rewrite of disk scanning code
