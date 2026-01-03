@@ -1639,9 +1639,6 @@
 				var linkRoot = decodeURI(getRootDirDataForDir(pathFolderId).linkRoot);
 				if (linkRoot !== "" && (viewOptions.onlyLinkTheseExtensions.length === 0 || viewOptions.onlyLinkTheseExtensions.indexOf(ext) !== -1)) {
 					var relativeRoot = getRootDirRelativePath(pathFolderId).replace(/\\/g, "/") + "/";
-					if(linkRoot.endsWith("/")) {
-						relativeRoot = relativeRoot.slice(1);
-					}
 					var fileLink = encodeURI(linkRoot + relativeRoot + filename).replace(/#/g, "%23");
 					var target = viewOptions.openLinksInNewTab ? " target='_blank'" : "";
 					return "<a href='" + fileLink + "' " + target + ">" + filenameHtml + "</a>";
