@@ -141,7 +141,7 @@
                                            Example: -outfile:"c:\temp\out.html"
 
               -link:"link to path"       - The path to link files to.
-                                           Example: -link:"c:\temp"
+                                           Example: -link:"c:/temp"
                                          
               -title:"page title"        - Set the page title. If omitted, title 
                                            is generated based on path.
@@ -153,8 +153,13 @@
 			  -silent                    - Run without showing the window (only
                                            if both -path and -outfile are used)
 
+  Example:  .\Snap2HTMl.exe -path:"D:\Downloads" -outfile:"C:\Temp\DL.html" -title:"Latest Files" -silent
+
+
   Notes:    When both -path and -outfile are specified, the program will 
             automatically start generating the snapshot, and quit when done.
+
+            Parameters must be in lower case. For example -Silent will not work.
 
             Always surround paths and filenames with quotes ("")!
             
@@ -203,6 +208,10 @@
 
  
  --- Version History ---------------------------------------------------------
+
+  v2.52 (2026-01-05)
+    Replace \ with / to help users link correctly when using commandline
+    Include missing config file needed for high dpi support
 
   v2.51 (2026-01-03)
     Fix a linking issue

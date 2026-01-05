@@ -78,7 +78,14 @@ namespace Snap2HTML
 					SetRootPath( splitCommandLine[1] );
 				}
 			}
-			
+            if (arguments.Exists("path") && !arguments.Exists("outfile"))
+			{
+                if (System.IO.Directory.Exists(splitCommandLine[1]))
+                {
+                    SetRootPath(splitCommandLine[1]);
+                }
+            }
+
             var settings = new SnapSettings();
 			if( arguments.Exists( "path" ) && arguments.Exists( "outfile" ) )
             {
@@ -120,7 +127,8 @@ namespace Snap2HTML
 				if( arguments.Exists( "link" ) )
 				{
 					settings.linkFiles = true;
-					settings.linkRoot = arguments.Single( "link" );
+					settings.linkRoot = arguments.Single( "link" )
+												 .Replace('\\', '/');
 				}
 
 				settings.title = "Snapshot of " + settings.rootFolder;
